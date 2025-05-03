@@ -31,6 +31,10 @@ export default tseslint.config(
         'warn',
         { allowConstantExport: true },
       ],
-    },
-  }
+    },ignores: [
+      "**/temp.js",
+      "config/*",
+      "jest.config.ts"
+    ],
+  },
 );
