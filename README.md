@@ -20,6 +20,20 @@ The main goal of this project is to learn and apply best practices in frontend d
 - Jest
 - CommerceTools
 
+## 📜 Available Scripts
+
+The following scripts are defined in the `package.json` and can be run using `npm run <script>`:
+
+| Script     | Description                                 |
+|------------|---------------------------------------------|
+| `dev`      | Starts the development server.              |
+| `build`    | Build for production.                       |
+| `preview`  | Preview the production build.               |
+| `lint`     | Lint the codebase.                          |
+| `format`   | Format all files with Prettier.             |
+| `prepare`  | Prepares Git hooks using Husky.             |
+| `test`     | Run tests with Jest.                        |
+
 
 ## 🚀 Running the Application
 
