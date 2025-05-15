@@ -3,54 +3,79 @@ import './RegisterPage.scss';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import apiRoot from '../utils/sdkClient';
-
-// Retrieve Project information and output the result to the log
+import React, { useState } from 'react';
 
 const thirteenYearsAgo = new Date();
 thirteenYearsAgo.setFullYear(thirteenYearsAgo.getFullYear() - 13);
 
-const registerSchema = z.object({
-    email: z
-        .string()
-        .email('Please enter a valid email address (ex. user@mail.ru)'),
-    password: z
-        .string()
-        .min(8, 'Password must be at least 8 characters')
-        .regex(
-            /^(?=.*[A-Z]).+$/,
-            'Password must be at least 1 uppercase letter'
-        )
-        .regex(
-            /^(?=.*[a-z]).+$/,
-            'Password must be at least 1 lowercase  letter'
-        )
-        .regex(/^(?=.*\d).+$/, 'Password must be at least 1 number'),
-    firstName: z
-        .string()
-        .min(1, 'First name must be at least 1 characters')
-        .regex(/^([a-z, A-Z])/, 'First name must contain only letters'),
-    lastName: z
-        .string()
-        .min(1, 'First name must be at least 1 characters')
-        .regex(/^([a-z, A-Z])/, 'Last name must contain only letters'),
-    dateOfBirth: z
-        .date()
-        .min(new Date('01-01-1900Z'), 'People must be alive')
-        .max(thirteenYearsAgo, 'Minimum 13 years'),
-    streetName: z.string().min(1, 'Street must be at least 1 characters'),
-    city: z
-        .string()
-        .min(1, 'City name must be at least 1 characters')
-        .regex(/^[A-Za-z]+$/, 'City  must contain only letters'),
-});
-type RegisterFormData = z.infer<typeof registerSchema>;
+const countriesIndex = {
+    US: /^\d{5}(-\d{4})?$/,
+    RU: /^\d{6}$/,
+    BY: /^\d{6}$/,
+    KZ: /^\d{6}$/,
+    def: /^\d{9999}$/,
+};
+
+const createSchema = (selectedCountry: keyof typeof countriesIndex) => {
+    const indexSchema = countriesIndex[selectedCountry];
+    return z.object({
+        email: z
+            .string()
+            .email('Please enter a valid email address (ex. user@mail.ru)'),
+        password: z
+            .string()
+            .min(8, 'Password must be at least 8 characters')
+            .regex(
+                /^(?=.*[A-Z]).+$/,
+                'Password must be at least 1 uppercase letter'
+            )
+            .regex(
+                /^(?=.*[a-z]).+$/,
+                'Password must be at least 1 lowercase  letter'
+            )
+            .regex(/^(?=.*\d).+$/, 'Password must be at least 1 number'),
+        firstName: z
+            .string()
+            .min(1, 'First name must be at least 1 characters')
+            .regex(/^([a-z, A-Z])/, 'First name must contain only letters'),
+        lastName: z
+            .string()
+            .min(1, 'First name must be at least 1 characters')
+            .regex(/^([a-z, A-Z])/, 'Last name must contain only letters'),
+        dateOfBirth: z
+            .date()
+            .min(new Date('01-01-1900Z'), 'People must be alive')
+            .max(thirteenYearsAgo, 'Minimum 13 years'),
+        streetName: z.string().min(1, 'Street must be at least 1 characters'),
+        city: z
+            .string()
+            .min(1, 'City name must be at least 1 characters')
+            .regex(/^[A-Za-z]+$/, 'City  must contain only letters'),
+        country: z.string().nonempty('Need to select a country'),
+        postalCode: z.string().regex(indexSchema, 'Incorrect postal code'),
+    });
+};
+
+interface RegisterFormData {
+    email: string;
+    password: string;
+    firstName: string;
+    lastName: string;
+    dateOfBirth: Date;
+    streetName: string;
+    city: string;
+    country: string;
+    postalCode: string;
+}
 function Registration() {
+    const [selectedOption, setSelectedOption] =
+        useState<keyof typeof countriesIndex>('def');
     const {
         register,
         handleSubmit,
         formState: { errors },
     } = useForm<RegisterFormData>({
-        resolver: zodResolver(registerSchema),
+        resolver: zodResolver(createSchema(selectedOption)),
         defaultValues: {
             email: '',
             password: '',
@@ -59,9 +84,15 @@ function Registration() {
             dateOfBirth: new Date(),
             streetName: '',
             city: '',
+            country: '',
+            postalCode: '',
         },
         mode: 'onTouched',
     });
+    const setIndexRegex = (e: React.ChangeEvent<HTMLSelectElement>) => {
+        setSelectedOption(e.target.value as keyof typeof countriesIndex);
+    };
+
     const onSubmit = async (data: RegisterFormData) => {
         const dateOfBirth = new Date(data.dateOfBirth)
             .toISOString()
@@ -74,6 +105,13 @@ function Registration() {
                     firstName: data.firstName,
                     lastName: data.lastName,
                     password: data.password,
+                    addresses: [
+                        {
+                            country: data.country,
+                            postalCode: data.postalCode,
+                            city: data.city,
+                        },
+                    ],
                     dateOfBirth: dateOfBirth,
                 },
             })
@@ -224,6 +262,46 @@ function Registration() {
                                 </div>
                             )}
                         </div>
+
+                        <div className="formGroup">
+                            <label htmlFor="country" className="formLabel">
+                                Country
+                            </label>
+                            <select
+                                id="country"
+                                className={`formInput ${errors.country ? 'error' : ''}`}
+                                {...register('country')}
+                                onChange={setIndexRegex}
+                            >
+                                <option value="">--Select a country--</option>
+                                <option value="US">United States</option>
+                                <option value="RU">Russia</option>
+                                <option value="BY">Belarus </option>
+                                <option value="KZ">Kazakhstan </option>
+                            </select>
+                            {errors.country && (
+                                <div className="formError">
+                                    {errors.country.message}
+                                </div>
+                            )}
+                        </div>
+                    </div>
+                    <div className="formGroup">
+                        <label htmlFor="postalCode" className="formLabel">
+                            Postal code
+                        </label>
+                        <input
+                            id="postalCode"
+                            type="text"
+                            className={`formInput ${errors.postalCode ? 'error' : ''}`}
+                            placeholder="-------"
+                            {...register('postalCode')}
+                        />
+                        {errors.postalCode && (
+                            <div className="formError">
+                                {errors.postalCode.message}
+                            </div>
+                        )}
                     </div>
 
                     <div className="formGroup">
