@@ -6,31 +6,27 @@ import {
     type HttpMiddlewareOptions, // Required for sending HTTP requests
 } from '@commercetools/ts-client';
 
-const projectKey = '{projectKey}';
-const scopes = ['{scope}'];
-
 // Configure authMiddlewareOptions
 const authMiddlewareOptions: AuthMiddlewareOptions = {
-    host: 'https://auth.{region}.commercetools.com',
-    projectKey: projectKey,
+    host: 'https://auth.australia-southeast1.gcp.commercetools.com',
+    projectKey: 'mergemates',
     credentials: {
-        clientId: '{clientID}',
-        clientSecret: '{clientSecret}',
+        clientId: 'dZnENdU2BB32IKq7Bc_0AlsW',
+        clientSecret: 'WYfOviHMQFxXFNtWurOwi_wBkZKTUHvp',
     },
-    scopes,
+    scopes: ['manage_project:mergemates'],
     httpClient: fetch,
 };
 
 // Configure httpMiddlewareOptions
 const httpMiddlewareOptions: HttpMiddlewareOptions = {
-    host: 'https://api.{region}.commercetools.com',
+    host: 'https://api.australia-southeast1.gcp.commercetools.com',
     httpClient: fetch,
 };
 
 // Export the ClientBuilder
 export const ctpClient = new ClientBuilder()
-    .withProjectKey(projectKey) // .withProjectKey() is not required if the projectKey is included in authMiddlewareOptions
     .withClientCredentialsFlow(authMiddlewareOptions)
     .withHttpMiddleware(httpMiddlewareOptions)
-    .withLoggerMiddleware() // Include middleware for logging
+    .withLoggerMiddleware()
     .build();
