@@ -1,9 +1,10 @@
 // import { useEffect, useState } from 'react';
+import HeroSection from '../../components/hero/HeroSection';
 
 const HomePage = () => {
     return (
         <div className="home">
-            <p>In development...</p>
+            <HeroSection />
         </div>
     );
 };
