@@ -33,7 +33,6 @@ const Header = () => {
                                 <Link to="/not-found" className="item-link">
                                     Deals
                                 </Link>
-                                Deals
                             </li>
                             <li className="nav__list__item">
                                 <Link to="/not-found" className="item-link">
