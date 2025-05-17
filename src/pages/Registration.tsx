@@ -11,13 +11,28 @@ thirteenYearsAgo.setFullYear(thirteenYearsAgo.getFullYear() - 13);
 const countriesIndex = {
     US: /^\d{5}(-\d{4})?$/,
     RU: /^\d{6}$/,
-    BY: /^\d{6}$/,
+    BY: /^(220|22[1-9]|2[3-9]\d|[3-9]\d{3})\d{3}$/,
     KZ: /^\d{6}$/,
     def: /^\d{9999}$/,
+    DE: /^\d{5}$/,
+    UK: /^([A-Z]{1,2}\d[A-Z]?\s?\d[A-Z]{2})$/,
+    CA: /^[A-Z]\d[A-Z]\s?\d[A-Z]\d$/,
+};
+
+const countriesIndexText = {
+    US: 'Incorrect postal code (ex. 12345-6789)',
+    RU: 'Incorrect postal code (ex. 105043)',
+    BY: 'Incorrect postal code (ex. 230025)',
+    KZ: 'Incorrect postal code (ex. 010017)',
+    def: 'Incorrect postal code',
+    DE: 'Incorrect postal code (ex. 10115)',
+    UK: 'Incorrect postal code (ex. SW1A 1AA)',
+    CA: 'Incorrect postal code (ex. K1A 0B1)',
 };
 
 const createSchema = (selectedCountry: keyof typeof countriesIndex) => {
     const indexSchema = countriesIndex[selectedCountry];
+    const indexText = countriesIndexText[selectedCountry];
     return z.object({
         email: z
             .string()
@@ -52,7 +67,7 @@ const createSchema = (selectedCountry: keyof typeof countriesIndex) => {
             .min(1, 'City name must be at least 1 characters')
             .regex(/^[A-Za-z]+$/, 'City  must contain only letters'),
         country: z.string().nonempty('Need to select a country'),
-        postalCode: z.string().regex(indexSchema, 'Incorrect postal code'),
+        postalCode: z.string().regex(indexSchema, indexText),
     });
 };
 
@@ -274,10 +289,13 @@ function Registration() {
                                 onChange={setIndexRegex}
                             >
                                 <option value="">--Select a country--</option>
-                                <option value="US">United States</option>
-                                <option value="RU">Russia</option>
-                                <option value="BY">Belarus </option>
                                 <option value="KZ">Kazakhstan </option>
+                                <option value="UK">United Kingdom</option>
+                                <option value="RU">Russia</option>
+                                <option value="CA">Canada </option>
+                                <option value="BY">Belarus </option>
+                                <option value="US">United States</option>
+                                <option value="DE">Germany </option>
                             </select>
                             {errors.country && (
                                 <div className="formError">
