@@ -1,9 +1,15 @@
-import Registration from './pages/Registration';
-import './styles/global.scss';
+import './App.css';
+
+import Header from './components/header/Header';
+import Main from './components/main/Main';
+import Footer from './components/footer/Footer';
+
 export function App() {
     return (
         <>
-            <Registration />
+            <Header />
+            <Main />
+            <Footer />
         </>
     );
 }

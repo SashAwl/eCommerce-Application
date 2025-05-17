@@ -1,6 +1,4 @@
-@use './variables.scss' as *;
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@500;600;700&display=swap');
-
 * {
     margin: 0;
     padding: 0;
@@ -8,16 +6,16 @@
 }
 
 :root {
-    --surface: #{$surface};
-    --surface-hover: #{$surface-hover};
-    --background: #{$background};
-    --border: #{$border};
+    --surface: #1e1e1e;
+    --surface-hover: #2a2a2a;
+    --background: #121212;
+    --border: #333333;
 }
 
 body {
     font-family: 'Inter', sans-serif;
-    background-color: $background;
-    color: $text-primary;
+    background-color: #121212;
+    color: #ffffff;
     line-height: 1.6;
     font-size: 14px;
 }
@@ -32,10 +30,14 @@ h6 {
     font-weight: 600;
 }
 
+.app-container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
 main {
     flex: 1;
-    max-width: 1280px;
-    padding: 0 20px;
     margin: 0 auto;
 }
 
@@ -80,4 +82,4 @@ img {
     .row {
         flex-direction: column;
     }
-}
+} /*# sourceMappingURL=global.css.map */
