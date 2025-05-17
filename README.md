@@ -1,5 +1,7 @@
 # eCommerce-Application
 
+[![Link](https://img.shields.io/badge/View%20Demo-Online-brightgreen?logo=netlify)](https://sprint2--commercetools-gamestore.netlify.app/)
+
 ## Description
 
 A modern e-commerce web app where users can browse products, add them to a cart, and simulate purchases. It's built with up-to-date frontend tools and serves as a starting point for real online stores.
