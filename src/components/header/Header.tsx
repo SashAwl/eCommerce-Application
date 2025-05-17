@@ -1,0 +1,74 @@
+// import { useState } from 'react';
+import './HeaderStyles.scss';
+
+const Header = () => {
+    return (
+        <header className="header">
+            <div className="container">
+                <div className="header__inner">
+                    <a href="#" className="logo">
+                        <i className="fas fa-gamepad"></i>
+                        GameStore
+                    </a>
+
+                    <nav className="nav">
+                        <ul className="nav__list">
+                            <li className="nav__list__item">
+                                <a href="#" className="nav__item">
+                                    Home
+                                </a>
+                            </li>
+                            <li className="nav__list__item">
+                                <a href="#" className="nav__item">
+                                    Games
+                                </a>
+                            </li>
+                            <li className="nav__list__item">
+                                <a href="#" className="nav__item">
+                                    Categories
+                                </a>
+                            </li>
+                            <li className="nav__list__item">
+                                <a href="#" className="nav__item">
+                                    Deals
+                                </a>
+                            </li>
+                            <li className="nav__list__item">
+                                <a href="#" className="nav__item">
+                                    About
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
+
+                    <div className="header__icons">
+                        <div className="search">
+                            <form>
+                                <input
+                                    id="search-input"
+                                    type="text"
+                                    placeholder="Search games..."
+                                    className="search__input"
+                                />
+                            </form>
+                            <i className="search__icon fas fa-search"></i>
+                        </div>
+                        <a href="#" className="header__icon">
+                            <i className="fas fa-shopping-cart"></i>
+                        </a>
+                        <a href="#" className="header__icon">
+                            <i className="fas fa-heart"></i>
+                        </a>
+                        <button className="btn-auth">Log Out</button>
+                    </div>
+
+                    <div className="menu-toggle">
+                        <i className="fas fa-bars"></i>
+                    </div>
+                </div>
+            </div>
+        </header>
+    );
+};
+
+export default Header;
