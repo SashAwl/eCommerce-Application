@@ -1,7 +1,9 @@
+import Router from '../../routes/Router';
+
 const Main = () => {
     return (
         <main>
-            <p>In development...</p>
+            <Router />
         </main>
     );
 };

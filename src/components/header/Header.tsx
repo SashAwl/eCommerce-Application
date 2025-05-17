@@ -1,4 +1,5 @@
 // import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import './HeaderStyles.scss';
 
 const Header = () => {
@@ -6,37 +7,38 @@ const Header = () => {
         <header className="header">
             <div className="container">
                 <div className="header__inner">
-                    <a href="#" className="logo">
+                    <Link to="/" className="logo">
                         <i className="fas fa-gamepad"></i>
                         GameStore
-                    </a>
+                    </Link>
 
                     <nav className="nav">
                         <ul className="nav__list">
                             <li className="nav__list__item">
-                                <a href="#" className="nav__item">
+                                <Link to="/" className="item-link">
                                     Home
-                                </a>
+                                </Link>
                             </li>
                             <li className="nav__list__item">
-                                <a href="#" className="nav__item">
+                                <Link to="/not-found" className="item-link">
                                     Games
-                                </a>
+                                </Link>
                             </li>
                             <li className="nav__list__item">
-                                <a href="#" className="nav__item">
+                                <Link to="/not-found" className="item-link">
                                     Categories
-                                </a>
+                                </Link>
                             </li>
                             <li className="nav__list__item">
-                                <a href="#" className="nav__item">
+                                <Link to="/not-found" className="item-link">
                                     Deals
-                                </a>
+                                </Link>
+                                Deals
                             </li>
                             <li className="nav__list__item">
-                                <a href="#" className="nav__item">
+                                <Link to="/not-found" className="item-link">
                                     About
-                                </a>
+                                </Link>
                             </li>
                         </ul>
                     </nav>

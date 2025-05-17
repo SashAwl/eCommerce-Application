@@ -62,18 +62,18 @@
 
         &__item {
             margin-left: $spacing-lg;
+        }
+    }
 
-            a {
-                color: $text-primary;
-                text-decoration: none;
-                font-weight: 500;
-                transition: $transition;
+    .item-link {
+        color: $text-primary;
+        text-decoration: none;
+        font-weight: 500;
+        transition: $transition;
 
-                &:hover,
-                &.active {
-                    color: $primary;
-                }
-            }
+        &:hover,
+        &.active {
+            color: $primary;
         }
     }
 }
