@@ -5,7 +5,9 @@ interface IGameStore {
     isLogin: boolean;
     customerId: string;
     token: string;
-    changeStatus: () => void;
+    login: () => void;
+    logout: () => void;
+
     isOneAddress: boolean;
     changeAddressStatus: () => void;
 }
@@ -16,7 +18,8 @@ export const useGameStore = create<IGameStore>()(
             isLogin: false,
             customerId: '',
             token: '',
-            changeStatus: () => set((state) => ({ isLogin: !state.isLogin })),
+            login: () => set(() => ({ isLogin: true })),
+            logout: () => set(() => ({ isLogin: false })),
             changeAddressStatus: () =>
                 set((state) => ({ isOneAddress: !state.isOneAddress })),
 
