@@ -5,12 +5,16 @@ import { useGameStore } from '../../store/store';
 
 const Header = () => {
     const isLogin = useGameStore((state) => state.isLogin);
-    console.log(isLogin);
 
     const logOut = useGameStore((state) => state.logout);
 
     const logoutHandler = () => {
-        logOut();
+        try {
+            localStorage.clear();
+            logOut();
+        } catch (error) {
+            console.error('Ошибка при логауте:', error);
+        }
     };
 
     return (

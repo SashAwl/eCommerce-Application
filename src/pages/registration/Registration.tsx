@@ -6,6 +6,7 @@ import apiRoot from '../../utils/sdkClient';
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useGameStore } from '../../store/store';
+import { ErrorObject } from '@commercetools/platform-sdk';
 
 const thirteenYearsAgo = new Date();
 thirteenYearsAgo.setFullYear(thirteenYearsAgo.getFullYear() - 13);
@@ -58,9 +59,13 @@ function Registration() {
     const [isOneAddress, setOneAddress] = useState(false);
 
     const loginStore = useGameStore((state) => state.login);
-    const storeIsLogin = useGameStore((state) => state.isLogin);
 
-    console.log(storeIsLogin);
+    const setSuccessMessage = useGameStore((state) => state.setSuccessMessage);
+    const clearSuccesMessage = useGameStore(
+        (state) => state.clearSuccessMessage
+    );
+    const setErrorMessage = useGameStore((state) => state.setErrorMessage);
+    const clearErrorMessage = useGameStore((state) => state.clearErrorMessage);
 
     const createSchema = (
         selectedOption: keyof typeof countriesIndex,
@@ -262,14 +267,25 @@ function Registration() {
                 body,
             })
             .execute()
-            .then(async ({ body }) => {
-                console.log(body.customer.id);
-                await navigate('/home');
-                loginStore();
-                console.log(storeIsLogin);
+            .then(async ({ statusCode }) => {
+                if (statusCode === 201) {
+                    await navigate('/home');
+                    loginStore();
+                    setSuccessMessage('User successfully registered');
+                    setTimeout(() => {
+                        clearSuccesMessage();
+                    }, 2000);
+                }
             })
 
-            .catch(console.error);
+            .catch((error: ErrorObject) => {
+                setErrorMessage(
+                    `${error.message} Please sign in or use a different email address.`
+                );
+                setTimeout(() => {
+                    clearErrorMessage();
+                }, 2000);
+            });
     };
 
     return (
