@@ -279,12 +279,21 @@ function Registration() {
             })
 
             .catch((error: ErrorObject) => {
-                setErrorMessage(
-                    `${error.message} Please sign in or use a different email address.`
-                );
+                if (error.code === 'DuplicateField') {
+                    setErrorMessage(
+                        `${error.message} Please sign in or use a different email address.`
+                    );
+                }
+                if (error.statusCode === 400 || error.statusCode === 404) {
+                    setErrorMessage(
+                        `${error.message} Please change your details and try again.`
+                    );
+                } else {
+                    setErrorMessage(`Something went wrong, please try again`);
+                }
                 setTimeout(() => {
                     clearErrorMessage();
-                }, 2000);
+                }, 3000);
             });
     };
 
