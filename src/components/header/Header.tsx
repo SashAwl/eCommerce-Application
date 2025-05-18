@@ -1,8 +1,18 @@
 // import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import './HeaderStyles.scss';
+import { useGameStore } from '../../store/store';
 
 const Header = () => {
+    const isLogin = useGameStore((state) => state.isLogin);
+    console.log(isLogin);
+
+    const logOut = useGameStore((state) => state.logout);
+
+    const logoutHandler = () => {
+        logOut();
+    };
+
     return (
         <header className="header">
             <div className="container">
@@ -60,7 +70,26 @@ const Header = () => {
                         <a href="#" className="header__icon">
                             <i className="fas fa-heart"></i>
                         </a>
-                        <button className="btn-auth">Log In</button>
+
+                        {!isLogin && (
+                            <div className="btn-auth">
+                                <Link to="/login" className="item-link">
+                                    Log in
+                                </Link>
+                            </div>
+                        )}
+                        {!isLogin && (
+                            <div className="btn-auth">
+                                <Link to="/registration" className="item-link">
+                                    Sign up
+                                </Link>
+                            </div>
+                        )}
+                        {isLogin && (
+                            <div className="btn-auth" onClick={logoutHandler}>
+                                Logout
+                            </div>
+                        )}
                     </div>
 
                     <div className="menu-toggle">
