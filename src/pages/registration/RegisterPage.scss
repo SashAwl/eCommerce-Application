@@ -1,0 +1,210 @@
+@import './../../styles/variables.scss';
+
+.authContainer {
+    display: flex;
+    min-height: calc(100vh - 70px);
+}
+
+.authImage {
+    flex: 1;
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: $spacing-xl;
+    color: white;
+    background-image: url(./../../assets/images/BackgroundRegistration.avif);
+
+    h2 {
+        font-size: 36px;
+        margin-bottom: $spacing-md;
+        font-family: 'Poppins', sans-serif;
+        font-weight: 700;
+    }
+
+    p {
+        font-size: 16px;
+        max-width: 400px;
+        line-height: 1.6;
+    }
+}
+
+.authFormContainer {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: $spacing-xl;
+    background-color: var(--background);
+}
+
+.authForm {
+    width: 100%;
+    max-width: 500px;
+
+    h1 {
+        font-size: 28px;
+        margin-bottom: $spacing-lg;
+        font-family: 'Poppins', sans-serif;
+        font-weight: 600;
+    }
+    h3 {
+        margin-bottom: $spacing-md;
+        margin-top: $spacing-md;
+        color: $accent;
+    }
+}
+
+.nameGroup {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: $spacing-md;
+}
+
+.formGroup {
+    margin-bottom: $spacing-md;
+}
+.formCheckBox {
+    width: 30px;
+    padding-top: 2px;
+    height: 1em;
+}
+.formBox {
+    display: flex;
+    justify-content: space-between;
+    vertical-align: middle;
+}
+.formLabel {
+    display: block;
+    margin-bottom: $spacing-xs;
+    font-weight: 500;
+    color: $text-primary;
+}
+
+.formInput {
+    width: 100%;
+    padding: 12px;
+    background-color: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: $border-radius-md;
+    color: $text-primary;
+    font-family: 'Inter', sans-serif;
+    transition: $transition;
+
+    &:focus {
+        outline: none;
+        border-color: $primary;
+    }
+
+    &.error {
+        border-color: $error;
+    }
+
+    &::placeholder {
+        color: $text-tertiary;
+    }
+}
+
+.formError {
+    color: $error;
+    font-size: 12px;
+    margin-top: $spacing-xs;
+}
+
+.formCheckbox {
+    display: flex;
+    align-items: center;
+    margin-bottom: $spacing-md;
+
+    input {
+        margin-right: $spacing-sm;
+        cursor: pointer;
+    }
+
+    label {
+        cursor: pointer;
+        color: $text-primary;
+        font-size: 14px;
+
+        a {
+            color: $primary;
+            text-decoration: none;
+
+            &:hover {
+                text-decoration: underline;
+            }
+        }
+    }
+}
+
+.btnPrimary {
+    background-color: $primary;
+    color: white;
+    border: none;
+    padding: 12px;
+    border-radius: $border-radius-md;
+    font-weight: 500;
+    cursor: pointer;
+    transition: $transition;
+    width: 100%;
+    font-size: 16px;
+
+    &:hover:not(:disabled) {
+        background-color: $primary-dark;
+    }
+
+    &:disabled {
+        opacity: 0.7;
+        cursor: not-allowed;
+    }
+}
+
+.formFooter {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: $spacing-md;
+
+    span {
+        color: $text-secondary;
+    }
+
+    a {
+        color: $primary;
+        text-decoration: none;
+        font-weight: 500;
+
+        &:hover {
+            text-decoration: underline;
+        }
+    }
+}
+
+@media (max-width: 992px) {
+    .authContainer {
+        flex-direction: column;
+    }
+
+    .authImage {
+        height: 300px;
+    }
+}
+
+@media (max-width: 576px) {
+    .authFormContainer {
+        padding: $spacing-md;
+    }
+
+    .nameGroup {
+        grid-template-columns: 1fr;
+    }
+
+    .authImage {
+        padding: $spacing-md;
+
+        h2 {
+            font-size: 28px;
+        }
+    }
+}
