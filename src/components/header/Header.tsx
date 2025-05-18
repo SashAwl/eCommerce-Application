@@ -60,7 +60,9 @@ const Header = () => {
                         <a href="#" className="header__icon">
                             <i className="fas fa-heart"></i>
                         </a>
-                        <button className="btn-auth">Log In</button>
+                        <Link to={'/login'} className="btn-auth">
+                            Log In
+                        </Link>
                     </div>
 
                     <div className="menu-toggle">
