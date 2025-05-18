@@ -9,7 +9,7 @@ const Footer = () => {
                     <div className="footer__column">
                         <Link to="/" className="footerLogo">
                             <i className="fas fa-gamepad"></i>
-                            GameVault
+                            GameStore
                         </Link>
                         <p className="footerDescription">
                             Your one-stop shop for all gaming needs. Find the
