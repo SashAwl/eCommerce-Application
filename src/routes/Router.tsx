@@ -4,6 +4,10 @@ import NotFoundPage from '../pages/not-found/NotFoundPage';
 import Registration from '../pages/registration/Registration';
 import LoginPage from '../pages/login/Login';
 import { useGameStore } from '../store/store';
+import Cart from '../pages/cart/Cart';
+import Heart from '../pages/heart/Heart';
+import Games from '../pages/games/Games';
+import About from '../pages/about/About';
 
 export default function Router() {
     const isLogin = useGameStore((state) => state.isLogin);
@@ -21,6 +25,10 @@ export default function Router() {
                 path="/login"
                 element={!isLogin ? <LoginPage /> : <HomePage />}
             />
+            <Route path="/cart" element={<Cart />} />
+            <Route path="/heart" element={<Heart />} />
+            <Route path="/games" element={<Games />} />
+            <Route path="/about" element={<About />} />
             <Route path="/*" element={<NotFoundPage />} />
         </Routes>
     );

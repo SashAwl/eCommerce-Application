@@ -1,9 +1,10 @@
-// import { useState } from 'react';
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import './HeaderStyles.scss';
 import { useGameStore } from '../../store/store';
 
 const Header = () => {
+    const [menuOpen, setMenuOpen] = useState(false);
     const isLogin = useGameStore((state) => state.isLogin);
 
     const logOut = useGameStore((state) => state.logout);
@@ -17,16 +18,20 @@ const Header = () => {
         }
     };
 
+    const toggleMenu = () => {
+        setMenuOpen(!menuOpen);
+    };
+
     return (
         <header className="header">
             <div className="container">
                 <div className="header__inner">
                     <Link to="/" className="logo">
                         <i className="fas fa-gamepad"></i>
-                        GameStore
+                        <p className="logo__heading">GameStore</p>
                     </Link>
 
-                    <nav className="nav">
+                    <nav className={`nav ${menuOpen ? 'active' : ''}`}>
                         <ul className="nav__list">
                             <li className="nav__list__item">
                                 <Link to="/" className="item-link">
@@ -34,7 +39,7 @@ const Header = () => {
                                 </Link>
                             </li>
                             <li className="nav__list__item">
-                                <Link to="/not-found" className="item-link">
+                                <Link to="/games" className="item-link">
                                     Games
                                 </Link>
                             </li>
@@ -44,12 +49,7 @@ const Header = () => {
                                 </Link>
                             </li>
                             <li className="nav__list__item">
-                                <Link to="/not-found" className="item-link">
-                                    Deals
-                                </Link>
-                            </li>
-                            <li className="nav__list__item">
-                                <Link to="/not-found" className="item-link">
+                                <Link to="/about" className="item-link">
                                     About
                                 </Link>
                             </li>
@@ -68,23 +68,29 @@ const Header = () => {
                             </form>
                             <i className="search__icon fas fa-search"></i>
                         </div>
-                        <a href="#" className="header__icon">
+                        <Link to="/cart" className="header__icon">
                             <i className="fas fa-shopping-cart"></i>
-                        </a>
-                        <a href="#" className="header__icon">
+                        </Link>
+                        <Link to="/heart" className="header__icon">
                             <i className="fas fa-heart"></i>
-                        </a>
+                        </Link>
 
                         {!isLogin && (
                             <div className="btn-auth">
-                                <Link to="/login" className="item-link">
+                                <Link
+                                    to="/login"
+                                    className="item-link item-btn"
+                                >
                                     Log in
                                 </Link>
                             </div>
                         )}
                         {!isLogin && (
                             <div className="btn-auth">
-                                <Link to="/registration" className="item-link">
+                                <Link
+                                    to="/registration"
+                                    className="item-link item-btn"
+                                >
                                     Sign up
                                 </Link>
                             </div>
@@ -96,8 +102,10 @@ const Header = () => {
                         )}
                     </div>
 
-                    <div className="menu-toggle">
-                        <i className="fas fa-bars"></i>
+                    <div className="menu-toggle" onClick={toggleMenu}>
+                        <i
+                            className={`fas ${menuOpen ? 'fa-times' : 'fa-bars'}`}
+                        ></i>
                     </div>
                 </div>
             </div>
