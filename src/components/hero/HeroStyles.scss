@@ -3,6 +3,7 @@
 .hero {
     position: relative;
     height: 500px;
+    max-width: 1200px;
     overflow: hidden;
     border-radius: $border-radius-md;
     margin: $spacing-lg 0;
