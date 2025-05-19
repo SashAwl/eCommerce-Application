@@ -4,6 +4,28 @@ import { Link, useNavigate } from 'react-router-dom';
 import apiRoot from '../../utils/sdkClient';
 import { MyCustomerSignin } from '@commercetools/platform-sdk';
 import { useGameStore } from '../../store/store';
+import { z } from 'zod';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+
+const loginSchema = z.object({
+    email: z.string().email('Please enter a valid email address'),
+    password: z
+        .string()
+        .min(8, 'Password must be at least 8 characters')
+        .regex(
+            /^(?=.*[A-Z]).+$/,
+            'Password must be at least 1 uppercase letter'
+        )
+        .regex(
+            /^(?=.*[a-z]).+$/,
+            'Password must be at least 1 lowercase  letter'
+        )
+        .regex(/^(?=.*\d).+$/, 'Password must be at least 1 number'),
+    rememberMe: z.boolean().optional(),
+});
+
+type LoginFormData = z.infer<typeof loginSchema>;
 
 export function LoginPage() {
     const refLogin = useRef<HTMLInputElement>(null);
@@ -11,6 +33,20 @@ export function LoginPage() {
 
     const navigate = useNavigate();
     const gameStore = useGameStore();
+
+    const {
+        register,
+        handleSubmit,
+        formState: { errors },
+    } = useForm<LoginFormData>({
+        resolver: zodResolver(loginSchema),
+        defaultValues: {
+            email: '',
+            password: '',
+            rememberMe: false,
+        },
+    });
+    console.log(register, handleSubmit);
 
     const onSubmit = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         e.preventDefault();
@@ -31,9 +67,13 @@ export function LoginPage() {
                         body: loginData,
                     })
                     .execute();
-                console.log(response.body);
-                gameStore.login();
                 await navigate('/');
+                gameStore.login();
+                gameStore.setSuccessMessage('User successfully logged in');
+                setTimeout(() => {
+                    gameStore.clearSuccessMessage();
+                }, 2000);
+                console.log(response.body);
             } catch (error) {
                 console.error(error);
             }
@@ -54,8 +94,9 @@ export function LoginPage() {
                             id="email"
                             type="email"
                             placeholder="Enter your email"
-                            className="form_input"
                             ref={refLogin}
+                            className={`form_input ${errors.email ? 'error' : ''}`}
+                            // {...register('email')}
                         />
                         <label className="form_label" htmlFor="password">
                             Password
