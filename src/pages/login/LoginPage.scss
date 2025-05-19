@@ -62,6 +62,12 @@
     }
 }
 
+.form_error {
+    color: $error;
+    font-size: 12px;
+    margin-top: $spacing-xs;
+}
+
 .btn_primary {
     background-color: $primary;
     color: white;
