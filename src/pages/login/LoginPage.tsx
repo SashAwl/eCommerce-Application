@@ -1,12 +1,16 @@
 import { useRef } from 'react';
 import './LoginPage.scss';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import apiRoot from '../../utils/sdkClient';
 import { MyCustomerSignin } from '@commercetools/platform-sdk';
+import { useGameStore } from '../../store/store';
 
 export function LoginPage() {
     const refLogin = useRef<HTMLInputElement>(null);
     const refPassword = useRef<HTMLInputElement>(null);
+
+    const navigate = useNavigate();
+    const gameStore = useGameStore();
 
     const onSubmit = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         e.preventDefault();
@@ -19,14 +23,20 @@ export function LoginPage() {
         };
 
         void (async () => {
-            const response = await apiRoot
-                .me()
-                .login()
-                .post({
-                    body: loginData,
-                })
-                .execute();
-            console.log(response.body);
+            try {
+                const response = await apiRoot
+                    .me()
+                    .login()
+                    .post({
+                        body: loginData,
+                    })
+                    .execute();
+                console.log(response.body);
+                gameStore.login();
+                await navigate('/');
+            } catch (error) {
+                console.error(error);
+            }
         })();
     };
 
