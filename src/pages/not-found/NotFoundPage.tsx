@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import './NotFoundStyles.scss';
 
 export default function NotFoundPage() {
@@ -12,9 +13,10 @@ export default function NotFoundPage() {
                     The page you are looking for does not exist or has been
                     moved.
                 </p>
-                <a href="/" className="notfound__button">
+
+                <Link to="/" className="notfound__button">
                     Return to Home
-                </a>
+                </Link>
             </div>
         </div>
     );

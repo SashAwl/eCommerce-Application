@@ -1,0 +1,40 @@
+@use './../../styles/variables.scss';
+
+.popup__show {
+    top: 20px;
+    width: 250px;
+    height: 100px;
+    opacity: 95%;
+}
+.popup__hide {
+    top: -300px;
+    opacity: 0;
+}
+.popup {
+    position: fixed;
+    left: calc(50% - 125px);
+    color: variables.$text-primary;
+    border-radius: variables.$border-radius-sm;
+    z-index: 1000;
+    line-height: 100px;
+    transition: opacity 0.5s ease;
+    margin: 0 auto;
+}
+
+.popup_background__success {
+    background-color: variables.$success;
+}
+
+.popup_text {
+    width: 100%;
+    padding: 20px;
+    display: inline-block;
+    vertical-align: middle;
+    line-height: 1.25;
+    text-align: center;
+    opacity: 70%;
+}
+
+.popup_background__error {
+    background-color: variables.$error;
+}

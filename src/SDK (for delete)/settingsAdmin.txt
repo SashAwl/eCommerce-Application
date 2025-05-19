@@ -1,0 +1,31 @@
+import fetch from 'node-fetch';
+  import {
+    ClientBuilder,
+    type AuthMiddlewareOptions,
+    type HttpMiddlewareOptions,
+  } from '@commercetools/sdk-client-v2';
+
+  // Configure authMiddlewareOptions
+  const authMiddlewareOptions: AuthMiddlewareOptions = {
+    host: 'https://auth.australia-southeast1.gcp.commercetools.com',
+    projectKey: 'mergemates',
+    credentials: {
+      clientId: "dZnENdU2BB32IKq7Bc_0AlsW",
+      clientSecret: "WYfOviHMQFxXFNtWurOwi_wBkZKTUHvp",
+    },
+    scopes: ['manage_project:mergemates'],
+    fetch,
+  };
+
+  // Configure httpMiddlewareOptions
+  const httpMiddlewareOptions: HttpMiddlewareOptions = {
+    host: 'https://api.australia-southeast1.gcp.commercetools.com',
+    fetch,
+  };
+
+  // Export the ClientBuilder
+  export const ctpClient = new ClientBuilder()
+    .withClientCredentialsFlow(authMiddlewareOptions)
+    .withHttpMiddleware(httpMiddlewareOptions)
+    .withLoggerMiddleware()
+    .build();
