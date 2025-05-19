@@ -1,11 +1,35 @@
-import { useState } from 'react';
+import { useRef } from 'react';
 import './LoginPage.scss';
+import { Link } from 'react-router-dom';
+import apiRoot from '../../utils/sdkClient';
+import { MyCustomerSignin } from '@commercetools/platform-sdk';
 
-export function LoginPage(props: {
-    onLogin?: (login: string, password: string) => void;
-}) {
-    const [login, setLogin] = useState('');
-    const [password, setPassword] = useState('');
+export function LoginPage() {
+    const refLogin = useRef<HTMLInputElement>(null);
+    const refPassword = useRef<HTMLInputElement>(null);
+
+    const onSubmit = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+        e.preventDefault();
+        const email = refLogin.current!.value;
+        const password = refPassword.current!.value;
+
+        const loginData: MyCustomerSignin = {
+            email,
+            password,
+        };
+
+        void (async () => {
+            const response = await apiRoot
+                .me()
+                .login()
+                .post({
+                    body: loginData,
+                })
+                .execute();
+            console.log(response.body);
+        })();
+    };
+
     return (
         <div className="auth__container">
             <div className="auth_form__container">
@@ -21,10 +45,7 @@ export function LoginPage(props: {
                             type="email"
                             placeholder="Enter your email"
                             className="form_input"
-                            value={login}
-                            onInput={(e) =>
-                                setLogin((e.target as HTMLInputElement).value)
-                            }
+                            ref={refLogin}
                         />
                         <label className="form_label" htmlFor="password">
                             Password
@@ -34,25 +55,15 @@ export function LoginPage(props: {
                             type="password"
                             placeholder="Enter your password"
                             className="form_input"
-                            value={password}
-                            onInput={(e) =>
-                                setPassword(
-                                    (e.target as HTMLInputElement).value
-                                )
-                            }
+                            ref={refPassword}
                         />
                     </div>
-                    <button
-                        type="submit"
-                        className="btn_primary"
-                        onClick={() => props.onLogin?.(login, password)}
-                    >
+                    <button className="btn_primary" onClick={onSubmit}>
                         Sign In
                     </button>
 
                     <div className="form_footer">
-                        <a href="#forgot-password">Forgot password?</a>
-                        <a href="#">Create account</a>
+                        <Link to="/registration">Create account</Link>
                     </div>
                 </form>
             </div>

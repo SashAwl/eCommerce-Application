@@ -300,7 +300,7 @@ function Registration() {
     return (
         <div className="authContainer">
             <div className="authImage">
-                <h2>Join GameVault</h2>
+                <h2>Join GameStore</h2>
                 <p>
                     Create an account to start building your game collection and
                     access exclusive member benefits.

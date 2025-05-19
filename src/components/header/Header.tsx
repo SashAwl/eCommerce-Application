@@ -89,7 +89,7 @@ const Header = () => {
                         )}
                         {isLogin && (
                             <div className="btn-auth" onClick={logoutHandler}>
-                                Logout
+                                Log out
                             </div>
                         )}
                     </div>
