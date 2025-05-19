@@ -120,7 +120,6 @@ export function LoginPage() {
                         </label>
                         <input
                             id="email"
-                            type="email"
                             placeholder="Enter your email"
                             className={`form_input ${errors.email ? 'error' : ''}`}
                             {...register('email')}
