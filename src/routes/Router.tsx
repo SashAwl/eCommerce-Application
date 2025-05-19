@@ -12,6 +12,7 @@ export default function Router() {
             <Route path="/home" element={<HomePage />} />
             <Route path="/not-found" element={<NotFoundPage />} />
             <Route path="/login" element={<LoginPage />} />
+            <Route path="/*" element={<NotFoundPage />} />
         </Routes>
     );
 }

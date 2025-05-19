@@ -14,7 +14,7 @@ export default function NotFoundPage() {
                     moved.
                 </p>
 
-                <Link to="/not-found" className="notfound__button">
+                <Link to="/" className="notfound__button">
                     Return to Home
                 </Link>
             </div>
