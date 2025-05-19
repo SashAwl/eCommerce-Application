@@ -6,7 +6,6 @@ import { useGameStore } from '../../store/store';
 const Header = () => {
     const [menuOpen, setMenuOpen] = useState(false);
     const isLogin = useGameStore((state) => state.isLogin);
-
     const logOut = useGameStore((state) => state.logout);
 
     const logoutHandler = () => {
