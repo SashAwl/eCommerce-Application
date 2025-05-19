@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import './HeaderStyles.scss';
 import { useGameStore } from '../../store/store';
@@ -20,6 +20,25 @@ const Header = () => {
     const toggleMenu = () => {
         setMenuOpen(!menuOpen);
     };
+
+    useEffect(() => {
+        const handleClickOutside = (event: MouseEvent) => {
+            if (
+                event.target instanceof HTMLElement &&
+                (event.target.closest('.item-link') ||
+                    !event.target.closest('.nav')) &&
+                !event.target.closest('.menu-toggle')
+            ) {
+                setMenuOpen(false);
+            }
+        };
+
+        document.addEventListener('click', handleClickOutside);
+
+        return () => {
+            document.removeEventListener('click', handleClickOutside);
+        };
+    }, []);
 
     return (
         <header className="header">
@@ -96,7 +115,9 @@ const Header = () => {
                         )}
                         {isLogin && (
                             <div className="btn-auth" onClick={logoutHandler}>
-                                Log out
+                                <Link to="/" className="item-link item-btn">
+                                    Logout
+                                </Link>
                             </div>
                         )}
                     </div>
