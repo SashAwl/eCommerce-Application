@@ -3,7 +3,7 @@ import './RegisterPage.scss';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import apiRoot from '../../utils/sdkClient';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useGameStore } from '../../store/store';
 import { ErrorObject } from '@commercetools/platform-sdk';
@@ -50,6 +50,9 @@ interface RegisterFormData {
 }
 function Registration() {
     const navigate = useNavigate();
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, []);
     const [selectedOption, setSelectedOption] =
         useState<keyof typeof countriesIndex>('def');
     const [selectedBillOption, setSelectedBillOption] =
