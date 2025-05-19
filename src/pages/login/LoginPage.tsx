@@ -2,7 +2,7 @@ import { useRef } from 'react';
 import './LoginPage.scss';
 import { Link, useNavigate } from 'react-router-dom';
 import apiRoot from '../../utils/sdkClient';
-import { MyCustomerSignin } from '@commercetools/platform-sdk';
+import { ErrorObject, MyCustomerSignin } from '@commercetools/platform-sdk';
 import { useGameStore } from '../../store/store';
 import { z } from 'zod';
 import { useForm } from 'react-hook-form';
@@ -74,8 +74,45 @@ export function LoginPage() {
                     gameStore.clearSuccessMessage();
                 }, 2000);
                 console.log(response.body);
-            } catch (error) {
-                console.error(error);
+            } catch (e: unknown) {
+                const error = e as ErrorObject;
+                console.error('Login error:', error);
+                let message = 'An unknown error occurred during login.';
+                const errBody = error.body as
+                    | {
+                          message: string;
+                          errors: {
+                              message?: string;
+                              code: string;
+                          }[];
+                      }
+                    | undefined;
+                if (errBody?.message) {
+                    message = errBody.message;
+                } else if (error.message) {
+                    message = error.message;
+                }
+
+                if (
+                    error.body &&
+                    Array.isArray(errBody?.errors) &&
+                    errBody.errors.length > 0
+                ) {
+                    const ctError = errBody.errors[0];
+                    if (ctError.code === 'InvalidCredentials') {
+                        message =
+                            'Invalid email or password. Please try again.';
+                    } else {
+                        message = ctError.message ?? message;
+                    }
+                } else if (error.statusCode === 400) {
+                    message = 'Invalid email or password provided.';
+                }
+
+                gameStore.setErrorMessage(message);
+                setTimeout(() => {
+                    gameStore.clearErrorMessage();
+                }, 2000);
             }
         })();
     };
