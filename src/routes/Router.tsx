@@ -1,4 +1,5 @@
 import { Routes, Route } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
 import HomePage from '../pages/home/Home';
 import NotFoundPage from '../pages/not-found/NotFoundPage';
 import { LoginPage } from '../pages/login/LoginPage';
@@ -17,13 +18,21 @@ export default function Router() {
             <Route path="/" element={<HomePage />} />
             <Route
                 path="/registration"
-                element={!isLogin ? <Registration /> : <HomePage />}
+                element={
+                    !isLogin ? (
+                        <Registration />
+                    ) : (
+                        <Navigate to="/home" replace />
+                    )
+                }
             />
             <Route path="/home" element={<HomePage />} />
             <Route path="/not-found" element={<NotFoundPage />} />
             <Route
                 path="/login"
-                element={!isLogin ? <LoginPage /> : <HomePage />}
+                element={
+                    !isLogin ? <LoginPage /> : <Navigate to="/home" replace />
+                }
             />
             <Route path="/cart" element={<Cart />} />
             <Route path="/heart" element={<Heart />} />
