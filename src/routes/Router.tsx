@@ -11,7 +11,10 @@ export default function Router() {
     return (
         <Routes>
             <Route path="/" element={<HomePage />} />
-            <Route path="/registration" element={<Registration />} />
+            <Route
+                path="/registration"
+                element={!isLogin ? <LoginPage /> : <Registration />}
+            />
             <Route path="/home" element={<HomePage />} />
             <Route path="/not-found" element={<NotFoundPage />} />
             <Route
