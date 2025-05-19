@@ -7,21 +7,21 @@ const Footer = () => {
             <div className="container">
                 <div className="footer__columns">
                     <div className="footer__column">
-                        <Link to="/" className="footerLogo">
+                        <Link to="/" className="footer__logo">
                             <i className="fas fa-gamepad"></i>
                             GameStore
                         </Link>
-                        <p className="footerDescription">
+                        <p className="footer__description">
                             Your one-stop shop for all gaming needs. Find the
                             latest titles, best deals, and build your ultimate
                             game collection.
                         </p>
-                        <div className="footerSocial">
+                        <div className="footer__social">
                             <a
                                 href="https://facebook.com"
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="socialIcon"
+                                className="social-icon"
                             >
                                 <i className="fab fa-facebook-f"></i>
                             </a>
@@ -29,7 +29,7 @@ const Footer = () => {
                                 href="https://twitter.com"
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="socialIcon"
+                                className="social-icon"
                             >
                                 <i className="fab fa-twitter"></i>
                             </a>
@@ -37,7 +37,7 @@ const Footer = () => {
                                 href="https://instagram.com"
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="socialIcon"
+                                className="social-icon"
                             >
                                 <i className="fab fa-instagram"></i>
                             </a>
@@ -45,7 +45,7 @@ const Footer = () => {
                                 href="https://discord.com"
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="socialIcon"
+                                className="social-icon"
                             >
                                 <i className="fab fa-discord"></i>
                             </a>
@@ -53,16 +53,16 @@ const Footer = () => {
                     </div>
                 </div>
 
-                <div className="footerBottom">
-                    <div className="footerCopyright">
+                <div className="footer__bottom">
+                    <div className="footer__copyright">
                         &copy; {new Date().getFullYear()} GameStore. All rights
                         reserved.
                     </div>
-                    <div className="footerPayment">
-                        <i className="fa-brands fa-cc-visa paymentIcon"></i>
-                        <i className="fa-brands fa-cc-mastercard paymentIcon"></i>
-                        <i className="fa-brands fa-cc-paypal paymentIcon"></i>
-                        <i className="fa-brands fa-cc-discover paymentIcon"></i>
+                    <div className="footer__payment">
+                        <i className="fa-brands fa-cc-visa payment-icon"></i>
+                        <i className="fa-brands fa-cc-mastercard payment-icon"></i>
+                        <i className="fa-brands fa-cc-paypal payment-icon"></i>
+                        <i className="fa-brands fa-cc-discover payment-icon"></i>
                     </div>
                 </div>
             </div>
