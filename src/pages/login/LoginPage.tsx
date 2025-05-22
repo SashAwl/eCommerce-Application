@@ -16,7 +16,28 @@ const CT_AUTH_URL_TOKEN = `${CT_AUTH_URL}/oauth/${CTP_PROJECT_KEY}/customers/tok
 const credentials = btoa(`${CT_CLIENT_ID}:${CT_CLIENT_SECRET}`);
 
 const loginSchema = z.object({
-    email: z.string().email('Please enter a valid email address'),
+    email: z
+        .string()
+        .min(1, 'Email address must be at least 1 character')
+        .regex(/^\S.*\S$/, {
+            message:
+                'Email address must not contain leading or trailing whitespace.',
+        })
+        .regex(/^\S*$/, {
+            message: 'Email address must not contain whitespaces.',
+        })
+        .regex(/^[^\s@]+@[^\s@]+\.[^\s@]+$/, {
+            message:
+                'Email address must contain a domain name (e.g., example.com).',
+        })
+        .regex(/^[^@\s]+@[^@\s]+$/, {
+            message:
+                'Email address must contain an "@" symbol separating local part and domain name.',
+        })
+        .regex(
+            /^(?!\.)(?!.*\.\.)([a-z0-9_'+\-\\.]*)[a-z0-9_+-]@([a-z0-9][a-z0-9\\-]*\.)+[a-z]{2,}$/i,
+            { message: 'Please enter a valid email address' }
+        ),
     password: z
         .string()
         .min(8, 'Password must be at least 8 characters')
