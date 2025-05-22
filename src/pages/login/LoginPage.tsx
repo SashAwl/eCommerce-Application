@@ -18,7 +18,7 @@ const credentials = btoa(`${CT_CLIENT_ID}:${CT_CLIENT_SECRET}`);
 const loginSchema = z.object({
     email: z
         .string()
-        .min(1, 'Email address must be at least 1 character')
+        .min(5, 'Email address must be at least 5 character')
         .regex(/^\S.*\S$/, {
             message:
                 'Email address must not contain leading or trailing whitespace.',
@@ -65,6 +65,7 @@ export function LoginPage() {
         formState: { errors },
     } = useForm<LoginFormData>({
         resolver: zodResolver(loginSchema),
+        mode: 'onChange',
         defaultValues: {
             email: '',
             password: '',
