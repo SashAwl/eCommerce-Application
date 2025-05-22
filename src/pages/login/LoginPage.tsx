@@ -7,8 +7,37 @@ import { z } from 'zod';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 
+const CTP_PROJECT_KEY = 'mergemates';
+const CT_CLIENT_ID = 'dZnENdU2BB32IKq7Bc_0AlsW';
+const CT_CLIENT_SECRET = 'WYfOviHMQFxXFNtWurOwi_wBkZKTUHvp';
+const CT_CLIENT_SCOPE = 'manage_project:mergemates';
+const CT_AUTH_URL = 'https://auth.australia-southeast1.gcp.commercetools.com';
+const CT_AUTH_URL_TOKEN = `${CT_AUTH_URL}/oauth/${CTP_PROJECT_KEY}/customers/token`;
+const credentials = btoa(`${CT_CLIENT_ID}:${CT_CLIENT_SECRET}`);
+
 const loginSchema = z.object({
-    email: z.string().email('Please enter a valid email address'),
+    email: z
+        .string()
+        .min(5, 'Email address must be at least 5 character')
+        .regex(/^\S.*\S$/, {
+            message:
+                'Email address must not contain leading or trailing whitespace.',
+        })
+        .regex(/^\S*$/, {
+            message: 'Email address must not contain whitespaces.',
+        })
+        .regex(/^[^\s@]+@[^\s@]+\.[^\s@]+$/, {
+            message:
+                'Email address must contain a domain name (e.g., example.com).',
+        })
+        .regex(/^[^@\s]+@[^@\s]+$/, {
+            message:
+                'Email address must contain an "@" symbol separating local part and domain name.',
+        })
+        .regex(
+            /^(?!\.)(?!.*\.\.)([a-z0-9_'+\-\\.]*)[a-z0-9_+-]@([a-z0-9][a-z0-9\\-]*\.)+[a-z]{2,}$/i,
+            { message: 'Please enter a valid email address' }
+        ),
     password: z
         .string()
         .min(8, 'Password must be at least 8 characters')
@@ -36,6 +65,7 @@ export function LoginPage() {
         formState: { errors },
     } = useForm<LoginFormData>({
         resolver: zodResolver(loginSchema),
+        mode: 'onChange',
         defaultValues: {
             email: '',
             password: '',
@@ -63,7 +93,34 @@ export function LoginPage() {
             setTimeout(() => {
                 gameStore.clearSuccessMessage();
             }, 2000);
-            console.log(response.body);
+            console.log('response.body: ', response.body);
+
+            const tokenAccess = await fetch(CT_AUTH_URL_TOKEN, {
+                method: 'POST',
+                headers: {
+                    Authorization: `Basic ${credentials}`,
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: new URLSearchParams({
+                    grant_type: 'password',
+                    username: data.email,
+                    password: data.password,
+                    scope: CT_CLIENT_SCOPE,
+                }),
+            });
+
+            if (!tokenAccess.ok) {
+                throw new Error('Failed to fetch auth token');
+            }
+
+            // interface TokenResponse {
+            //     access_token: string;
+            //     token_type: string;
+            //     expires_in: number;
+            //     scope: string;
+            // }
+            // const tokenData = (await tokenAccess.json()) as TokenResponse;
+            // localStorage.setItem('authToken', JSON.stringify(tokenData));
         } catch (e: unknown) {
             const error = e as ErrorObject;
             console.error('Login error:', error);
