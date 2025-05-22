@@ -91,15 +91,14 @@ export function LoginPage() {
                 throw new Error('Failed to fetch auth token');
             }
 
-            interface TokenResponse {
-                access_token: string;
-                token_type: string;
-                expires_in: number;
-                scope: string;
-            }
-
-            const tokenData = (await tokenAccess.json()) as TokenResponse;
-            localStorage.setItem('authToken', JSON.stringify(tokenData));
+            // interface TokenResponse {
+            //     access_token: string;
+            //     token_type: string;
+            //     expires_in: number;
+            //     scope: string;
+            // }
+            // const tokenData = (await tokenAccess.json()) as TokenResponse;
+            // localStorage.setItem('authToken', JSON.stringify(tokenData));
         } catch (e: unknown) {
             const error = e as ErrorObject;
             console.error('Login error:', error);
