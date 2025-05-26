@@ -1,13 +1,13 @@
 import React from 'react';
 
-interface InputFieldProps extends React.InputHTMLAttributes<HTMLSelectElement> {
+interface SelectFieldProps
+    extends React.InputHTMLAttributes<HTMLSelectElement> {
     label: string;
     inputId: string;
     error?: string;
-    errorMessage?: string;
 }
 
-const SelectField: React.FC<InputFieldProps> = ({
+const SelectField: React.FC<SelectFieldProps> = ({
     inputId,
     label,
     error,

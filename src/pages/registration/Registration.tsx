@@ -12,8 +12,8 @@ import {
 } from '../../utils/registration/registrFormvalidation';
 import { IRegisterBody, RegisterFormData } from '../../types/interfaces';
 import { generateRequestBody } from '../../utils/registration/submitForm';
-import InputField from '../../components/registration/inputField';
-import SelectField from '../../components/registration/selectField';
+import InputField from '../../components/registration/InputField';
+import SelectField from '../../components/registration/SelectField';
 
 function Registration() {
     const navigate = useNavigate();
