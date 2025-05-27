@@ -6,21 +6,27 @@ import {
     type HttpMiddlewareOptions, // Required for sending HTTP requests
 } from '@commercetools/ts-client';
 
+console.log({
+    clientId: import.meta.env.VITE_CT_CLIENT_ID_ADMIN,
+    clientSecret: import.meta.env.VITE_CT_CLIENT_SECRET_ADMIN,
+    projectKey: import.meta.env.VITE_CT_PROJECT_KEY,
+});
 // Configure authMiddlewareOptions
+const scopes = import.meta.env.VITE_CT_SCOPES_ADMIN || '';
 const authMiddlewareOptions: AuthMiddlewareOptions = {
-    host: 'https://auth.australia-southeast1.gcp.commercetools.com',
-    projectKey: 'mergemates',
+    host: import.meta.env.VITE_CT_AUTH_URL,
+    projectKey: import.meta.env.VITE_CT_PROJECT_KEY,
     credentials: {
-        clientId: 'dZnENdU2BB32IKq7Bc_0AlsW',
-        clientSecret: 'WYfOviHMQFxXFNtWurOwi_wBkZKTUHvp',
+        clientId: import.meta.env.VITE_CT_CLIENT_ID_ADMIN,
+        clientSecret: import.meta.env.VITE_CT_CLIENT_SECRET_ADMIN,
     },
-    scopes: ['manage_project:mergemates'],
+    scopes: scopes.split(' '),
     httpClient: fetch,
 };
 
 // Configure httpMiddlewareOptions
 const httpMiddlewareOptions: HttpMiddlewareOptions = {
-    host: 'https://api.australia-southeast1.gcp.commercetools.com',
+    host: import.meta.env.VITE_CT_API_URL,
     httpClient: fetch,
 };
 
