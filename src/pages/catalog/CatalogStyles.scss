@@ -1,0 +1,30 @@
+@use '../../styles/variables.scss' as *;
+
+.catalog {
+    &__category {
+        display: flex;
+        gap: 20px;
+
+        &__item {
+            padding: 10px 20px;
+            border: 2px solid $border;
+            border-radius: $border-radius-md;
+            background-color: $surface;
+            color: $text-secondary;
+            cursor: pointer;
+            transition: $transition;
+            font-weight: 500;
+
+            &:hover {
+                border-color: $primary;
+                color: $text-primary;
+            }
+
+            &.active {
+                background-color: $primary;
+                border-color: $primary;
+                color: white;
+            }
+        }
+    }
+}
