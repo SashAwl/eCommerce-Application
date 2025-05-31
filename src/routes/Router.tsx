@@ -9,6 +9,7 @@ import Cart from '../pages/cart/Cart';
 import Heart from '../pages/heart/Heart';
 import Games from '../pages/games/Games';
 import About from '../pages/about/About';
+import Game from '../pages/game/Game';
 
 export default function Router() {
     const isLogin = useGameStore((state) => state.isLogin);
@@ -37,6 +38,8 @@ export default function Router() {
             <Route path="/cart" element={<Cart />} />
             <Route path="/heart" element={<Heart />} />
             <Route path="/games" element={<Games />} />
+            <Route path="/game/:gameId" element={<Game />} />
+
             <Route path="/about" element={<About />} />
             <Route path="/*" element={<NotFoundPage />} />
         </Routes>

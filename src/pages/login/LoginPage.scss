@@ -1,4 +1,4 @@
-@import '../../styles/variables.scss';
+@use '../../styles/variables.scss';
 
 .auth__container {
     display: flex;
@@ -10,7 +10,7 @@
     display: flex;
     justify-content: center;
     // align-items: center;
-    padding: $spacing-xl;
+    padding: variables.$spacing-xl;
     background-color: var(--background);
 }
 
@@ -20,22 +20,22 @@
 
     h1 {
         font-size: 28px;
-        margin-bottom: $spacing-lg;
+        margin-bottom: variables.$spacing-lg;
         font-family: 'Poppins', sans-serif;
         font-weight: 600;
     }
 }
 
 .form_group {
-    margin-bottom: $spacing-md;
+    margin-bottom: variables.$spacing-md;
 }
 
 .form_label {
     display: block;
-    margin-bottom: $spacing-xs;
+    margin-bottom: variables.$spacing-xs;
     padding-top: 10px;
     font-weight: 500;
-    color: $text-primary;
+    color: variables.$text-primary;
 }
 
 .form_input {
@@ -43,45 +43,45 @@
     padding: 12px;
     background-color: var(--surface);
     border: 1px solid var(--border);
-    border-radius: $border-radius-md;
-    color: $text-primary;
+    border-radius: variables.$border-radius-md;
+    color: variables.$text-primary;
     font-family: 'Inter', sans-serif;
-    transition: $transition;
+    transition: variables.$transition;
 
     &:focus {
         outline: none;
-        border-color: $primary;
+        border-color: variables.$primary;
     }
 
     &.error {
-        border-color: $error;
+        border-color: variables.$error;
     }
 
     &::placeholder {
-        color: $text-tertiary;
+        color: variables.$text-tertiary;
     }
 }
 
 .form_error {
-    color: $error;
+    color: variables.$error;
     font-size: 12px;
-    margin-top: $spacing-xs;
+    margin-top: variables.$spacing-xs;
 }
 
 .btn_primary {
-    background-color: $primary;
+    background-color: variables.$primary;
     color: white;
     border: none;
     padding: 12px;
-    border-radius: $border-radius-md;
+    border-radius: variables.$border-radius-md;
     font-weight: 500;
     cursor: pointer;
-    transition: $transition;
+    transition: variables.$transition;
     width: 100%;
     font-size: 16px;
 
     &:hover:not(:disabled) {
-        background-color: $primary-dark;
+        background-color: variables.$primary-dark;
     }
 
     &:disabled {
@@ -94,10 +94,10 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-top: $spacing-md;
+    margin-top: variables.$spacing-md;
 
     a {
-        color: $primary;
+        color: variables.$primary;
         text-decoration: none;
 
         &:hover {
@@ -114,6 +114,6 @@
 
 @media (max-width: 576px) {
     .authFormContainer {
-        padding: $spacing-md;
+        padding: variables.$spacing-md;
     }
 }
