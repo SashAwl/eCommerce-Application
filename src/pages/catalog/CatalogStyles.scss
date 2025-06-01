@@ -5,6 +5,7 @@
     padding: $spacing-lg 0;
     width: calc(100vw - 40px);
     background-color: $background;
+    padding-bottom: $spacing-xxl;
 
     &__title {
         font-size: 2.5rem;
@@ -12,7 +13,6 @@
         color: $text-primary;
         text-align: center;
         margin-bottom: $spacing-xl;
-        padding-top: $spacing-xl;
         font-family: 'Poppins', sans-serif;
     }
 

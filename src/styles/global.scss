@@ -16,7 +16,7 @@
 
 body {
     font-family: 'Inter', sans-serif;
-    background-color: $background;
+    // background-color: $background;
     color: $text-primary;
     line-height: 1.6;
     font-size: 14px;
@@ -37,6 +37,8 @@ main {
     width: 100%;
     flex: 1;
     margin: 0 auto;
+    padding: 50px 0;
+    background-color: #121212;
 }
 
 a {
