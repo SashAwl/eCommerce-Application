@@ -1,0 +1,123 @@
+@use '../../styles/variables.scss' as *;
+
+.catalog {
+    min-height: 100vh;
+    padding: $spacing-lg 0;
+    width: calc(100vw - 40px);
+    background-color: $background;
+    padding-bottom: $spacing-xxl;
+
+    &__title {
+        font-size: 2.5rem;
+        font-weight: 700;
+        color: $text-primary;
+        text-align: center;
+        margin-bottom: $spacing-xl;
+        font-family: 'Poppins', sans-serif;
+    }
+
+    &__category {
+        margin: 30px 0;
+
+        &__heading {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: $text-primary;
+            margin-bottom: $spacing-md;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        &__list {
+            display: flex;
+            gap: $spacing-sm;
+            flex-wrap: wrap;
+        }
+
+        &__item {
+            padding: 10px 20px;
+            border: 2px solid $border;
+            border-radius: $border-radius-md;
+            background-color: $surface;
+            color: $text-secondary;
+            cursor: pointer;
+            transition: $transition;
+            font-weight: 500;
+
+            &:hover {
+                border-color: $primary;
+                color: $text-primary;
+            }
+
+            &.active {
+                background-color: $primary;
+                border-color: $primary;
+                color: white;
+            }
+        }
+    }
+
+    &__products {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: $spacing-lg;
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+    }
+
+    .no-results {
+        text-align: center;
+        padding: $spacing-xxl;
+        color: $text-secondary;
+
+        &__icon {
+            font-size: 4rem;
+            color: $text-tertiary;
+            margin-bottom: $spacing-md;
+        }
+
+        &__heading {
+            font-size: 1.5rem;
+            margin-bottom: $spacing-sm;
+            color: $text-primary;
+        }
+
+        &__text {
+            font-size: 16px;
+        }
+    }
+}
+
+@media (max-width: 768px) {
+    .container {
+        padding: 0 $spacing-sm;
+    }
+
+    .title {
+        font-size: 2rem;
+    }
+
+    .filterControls {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .categories {
+        justify-content: center;
+    }
+
+    .productsGrid {
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        gap: $spacing-md;
+    }
+
+    .searchContainer {
+        flex-direction: column;
+
+        .searchInput {
+            margin-bottom: $spacing-sm;
+        }
+    }
+}
