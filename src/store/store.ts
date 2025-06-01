@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
-import { Category, Product } from '@commercetools/platform-sdk';
+import { Category, ProductProjection } from '@commercetools/platform-sdk';
 
 interface IGameStore {
     isLogin: boolean;
@@ -28,10 +28,10 @@ interface CategoryState {
 }
 
 interface ProductsState {
-    products: Product[];
+    products: ProductProjection[];
     loading: boolean;
     error: string | null;
-    setProducts: (productsList: Product[]) => void;
+    setProducts: (productsList: ProductProjection[]) => void;
     setLoadingStatus: (loadingStatus: boolean) => void;
     setError: (errorMessage: string) => void;
 }
