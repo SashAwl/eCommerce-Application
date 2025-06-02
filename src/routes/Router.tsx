@@ -37,7 +37,7 @@ export default function Router() {
             />
             <Route path="/cart" element={<Cart />} />
             <Route path="/heart" element={<Heart />} />
-            <Route path="/games" element={<Games />} />
+            {/* <Route path="/games" element={<Games />} /> */}
             <Route path="/game/:gameId" element={<Game />} />
             <Route path="/catalog" element={<Catalog />} />
             <Route path="/about" element={<About />} />
