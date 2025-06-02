@@ -9,6 +9,7 @@ interface IGameData {
     name: string;
     description: string;
     price: string;
+    discounted: string | null;
     platform: string;
     genres: string;
 }
@@ -26,6 +27,7 @@ function Game() {
         price: 'N/A',
         platform: 'PC',
         genres: 'Game',
+        discounted: null,
     });
     const [gameImages, setGameImages] = useState<string[]>([]);
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
@@ -33,6 +35,7 @@ function Game() {
     const [modalImageIndex, setModalImageIndex] = useState(0);
 
     useEffect(() => {
+        window.scrollTo(0, 0);
         if (!gameId) return;
         const fetchData = async () => {
             try {
@@ -85,12 +88,18 @@ function Game() {
                         if (pricesArr?.length) {
                             const price =
                                 Number(pricesArr[0].value.centAmount) / 100;
-
+                            const discount = pricesArr[0]?.discounted
+                                ? Number(
+                                      pricesArr[0]?.discounted.value.centAmount
+                                  ) / 100
+                                : null;
                             setGameData((prevItems) => ({
                                 ...prevItems,
                                 ['price']: ` ${price}`,
+                                ['discounted']: ` ${discount}`,
                             }));
                         }
+
                         body.masterData.current.masterVariant.attributes?.forEach(
                             (attr: attributes) => {
                                 let value = '';
@@ -255,9 +264,29 @@ function Game() {
 
                         {
                             <div className={'gamePrice'}>
-                                <span className={'price'}>
-                                    ${gameData.price}
-                                </span>
+                                {gameData.discounted ? (
+                                    <div className={'discountPrice'}>
+                                        <span className={'originalPrice'}>
+                                            ${gameData.price}
+                                        </span>
+                                        <span className={'discountedPrice'}>
+                                            ${gameData.discounted}
+                                        </span>
+                                        <span className={'discount'}>
+                                            {Math.round(
+                                                ((+gameData.price -
+                                                    +gameData.discounted) /
+                                                    +gameData.price) *
+                                                    100
+                                            )}
+                                            % OFF
+                                        </span>
+                                    </div>
+                                ) : (
+                                    <span className={'price'}>
+                                        ${gameData.price}
+                                    </span>
+                                )}
                             </div>
                         }
 
