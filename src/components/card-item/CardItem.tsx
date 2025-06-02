@@ -21,7 +21,7 @@ const CardItem = ({
     const formattedPrice = (price: number): string => (price / 100).toFixed(2);
     return (
         <div className="card-item">
-            <Link to={`/catalog/${id}`}>
+            <Link to={`/game/${id}`}>
                 <img
                     src={
                         imageUrl ||
@@ -32,7 +32,7 @@ const CardItem = ({
                 />
             </Link>
             <div className="card-item__content">
-                <Link to={`/catalog/${id}`}>
+                <Link to={`/game/${id}`}>
                     <h3 className="card-item__title">{title}</h3>
                 </Link>
                 <div className="card-item__category">{category}</div>
