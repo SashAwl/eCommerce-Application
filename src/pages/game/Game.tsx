@@ -47,8 +47,6 @@ function Game() {
                     .get()
                     .execute()
                     .then(({ body }) => {
-                        console.log(body);
-
                         setGame(body);
                         if (body.masterData.staged.masterVariant.images) {
                             body.masterData.staged.masterVariant.images.forEach(
@@ -125,7 +123,7 @@ function Game() {
             }
         };
         fetchData().catch((err) => {
-            console.log(err);
+            console.error(err);
         });
     }, [gameId]);
     const handlePrevImage = () => {
