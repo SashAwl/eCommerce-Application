@@ -9,7 +9,7 @@ interface IGameData {
     name: string;
     description: string;
     price: string;
-    discounted: string | null;
+    discounted?: string;
     platform: string;
     genres: string;
 }
@@ -27,13 +27,12 @@ function Game() {
         price: 'N/A',
         platform: 'PC',
         genres: 'Game',
-        discounted: null,
     });
     const [gameImages, setGameImages] = useState<string[]>([]);
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
     const [showImageModal, setShowImageModal] = useState(false);
     const [modalImageIndex, setModalImageIndex] = useState(0);
-
+    const [gameCategories, setCategories] = useState<string[]>([]);
     useEffect(() => {
         window.scrollTo(0, 0);
         if (!gameId) return;
@@ -96,8 +95,13 @@ function Game() {
                             setGameData((prevItems) => ({
                                 ...prevItems,
                                 ['price']: ` ${price}`,
-                                ['discounted']: ` ${discount}`,
                             }));
+                            if (discount) {
+                                setGameData((prevItems) => ({
+                                    ...prevItems,
+                                    ['discounted']: ` ${discount}`,
+                                }));
+                            }
                         }
 
                         body.masterData.current.masterVariant.attributes?.forEach(
@@ -124,6 +128,36 @@ function Game() {
                                 }
                             }
                         );
+
+                        body.masterData.current.categories.forEach(
+                            (categoria) => {
+                                apiRoot
+                                    .categories()
+                                    .withId({ ID: categoria.id })
+                                    .get()
+                                    .execute()
+                                    .then((data) => {
+                                        const categoriaArr = [
+                                            ...new Set(
+                                                Object.values(data.body.name)
+                                            ),
+                                        ];
+                                        categoriaArr.forEach((el) => {
+                                            setCategories((prevItems) => {
+                                                if (prevItems.includes(el)) {
+                                                    return prevItems;
+                                                } else {
+                                                    return [...prevItems, el];
+                                                }
+                                            });
+                                        });
+                                    })
+                                    .catch((err) => {
+                                        console.error(err);
+                                    });
+                            }
+                        );
+
                         setLoading(false);
                     });
             } catch (error) {
@@ -247,11 +281,7 @@ function Game() {
                     </div>
 
                     <div className={'gameInfo'}>
-                        <h1 className={'gameTitle'}>
-                            {gameData.name === ''
-                                ? 'Untitled Game'
-                                : gameData.name}
-                        </h1>
+                        <h1 className={'gameTitle'}>{gameData.name}</h1>
 
                         <div className={'gameMeta'}>
                             <span className={'category'}>
@@ -260,6 +290,11 @@ function Game() {
                             <span className={'category'}>
                                 {gameData.platform}
                             </span>
+                            {gameCategories.map((item, ind) => (
+                                <span key={ind} className={'category'}>
+                                    {item}
+                                </span>
+                            ))}
                         </div>
 
                         {
