@@ -1,0 +1,143 @@
+@use '../../styles/variables.scss';
+
+.user-profile-page {
+    min-height: 100vh;
+    padding: variables.$spacing-lg 0;
+    background-color: var(--background);
+}
+
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 0 variables.$spacing-md;
+}
+
+.title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: variables.$text-primary;
+    text-align: center;
+    margin-bottom: variables.$spacing-xl;
+    font-family: 'Poppins', sans-serif;
+}
+
+.section {
+    background-color: variables.$surface;
+    border-radius: variables.$border-radius-lg;
+    padding: variables.$spacing-lg;
+    margin-bottom: variables.$spacing-lg;
+    box-shadow: variables.$shadow;
+}
+
+.edit-button,
+.add-button {
+    display: flex;
+    align-items: center;
+    gap: variables.$spacing-sm;
+    padding: 8px 16px;
+    background-color: variables.$primary;
+    color: white;
+    border: none;
+    border-radius: variables.$border-radius-md;
+    cursor: pointer;
+    transition: variables.$transition;
+    font-weight: 500;
+
+    &:hover {
+        background-color: variables.$primary-dark;
+    }
+
+    i {
+        font-size: 14px;
+    }
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+    gap: variables.$spacing-md;
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: variables.$spacing-md;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: variables.$spacing-sm;
+
+    label {
+        font-weight: 500;
+        color: variables.$text-secondary;
+        font-size: 14px;
+    }
+}
+
+.input {
+    padding: 12px 16px;
+    border: 2px solid variables.$border;
+    border-radius: variables.$border-radius-md;
+    background-color: variables.$background;
+    color: variables.$text-primary;
+    font-size: 16px;
+    transition: variables.$transition;
+
+    &:focus {
+        outline: none;
+        border-color: variables.$primary;
+    }
+
+    &::placeholder {
+        color: variables.$text-tertiary;
+    }
+}
+
+.error {
+    color: variables.$error;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.form-actions {
+    display: flex;
+    gap: variables.$spacing-md;
+    margin-top: variables.$spacing-md;
+}
+
+
+@media (max-width: 768px) {
+    .container {
+        padding: 0 variables.$spacing-sm;
+    }
+
+    .title {
+        font-size: 2rem;
+    }
+
+    .section-header {
+        flex-direction: column;
+        gap: variables.$spacing-md;
+        align-items: stretch;
+
+        h2 {
+            text-align: center;
+        }
+    }
+
+    .form-row {
+        grid-template-columns: 1fr;
+    }
+
+    .info-ttem {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: variables.$spacing-sm;
+
+        label {
+            min-width: auto;
+        }
+    }
+}

@@ -1,12 +1,21 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
-import { Category, ProductProjection } from '@commercetools/platform-sdk';
+import {
+    Category,
+    ProductProjection,
+    Customer,
+} from '@commercetools/platform-sdk';
 
 interface IGameStore {
     isLogin: boolean;
     customerId: string;
     token: string;
-    login: () => void;
+    userName: string;
+
+    customer: Customer | null;
+    setCustomer: (change: (customer: Customer | null) => Customer) => void;
+
+    login: (customer: Customer) => void;
     logout: () => void;
     successMessage: string;
     setSuccessMessage: (message: string) => void;
@@ -42,8 +51,16 @@ export const useGameStore = create<IGameStore>()(
             isLogin: false,
             customerId: '',
             token: '',
-            login: () => set(() => ({ isLogin: true })),
-            logout: () => set(() => ({ isLogin: false })),
+            userName: '',
+
+            customer: null,
+            setCustomer: (change) =>
+                set((store) => ({
+                    customer: change(store.customer),
+                })),
+
+            login: (customer) => set(() => ({ isLogin: true, customer })),
+            logout: () => set(() => ({ isLogin: false, customer: null })),
 
             successMessage: '',
             setSuccessMessage: (message) => set({ successMessage: message }),

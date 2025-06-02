@@ -9,6 +9,8 @@ import Cart from '../pages/cart/Cart';
 import Heart from '../pages/heart/Heart';
 import Catalog from '../pages/catalog/Catalog';
 import About from '../pages/about/About';
+import { UserProfilePage } from '../pages/user-profile/UserProfilePage';
+// import UserProfilePage from '../pages/user-profile/UserProfilePage';
 
 export default function Router() {
     const isLogin = useGameStore((state) => state.isLogin);
@@ -34,6 +36,7 @@ export default function Router() {
                     !isLogin ? <LoginPage /> : <Navigate to="/home" replace />
                 }
             />
+            <Route path="/profile" element={<UserProfilePage />} />
             <Route path="/cart" element={<Cart />} />
             <Route path="/heart" element={<Heart />} />
             <Route path="/catalog" element={<Catalog />} />
