@@ -51,6 +51,22 @@
         margin-bottom: auto;
     }
 
+    .sale {
+        color: #e5bc5c;
+        font-weight: 800;
+        font-size: 21px;
+    }
+
+    .old-price {
+        opacity: 40%;
+    }
+
+    &__price-box {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+    }
+
     &__actions {
         display: flex;
         margin-top: $spacing-sm;
