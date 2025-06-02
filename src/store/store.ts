@@ -1,5 +1,6 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
+import { Category, ProductProjection } from '@commercetools/platform-sdk';
 
 interface IGameStore {
     isLogin: boolean;
@@ -15,6 +16,24 @@ interface IGameStore {
     clearErrorMessage: () => void;
     isOneAddress: boolean;
     changeAddressStatus: () => void;
+}
+
+interface CategoryState {
+    categories: Category[];
+    loading: boolean;
+    error: string | null;
+    setCategories: (categorList: Category[]) => void;
+    setLoadingStatus: (loadingStatus: boolean) => void;
+    setError: (errorMessage: string) => void;
+}
+
+interface ProductsState {
+    products: ProductProjection[];
+    loading: boolean;
+    error: string | null;
+    setProducts: (productsList: ProductProjection[]) => void;
+    setLoadingStatus: (loadingStatus: boolean) => void;
+    setError: (errorMessage: string) => void;
 }
 
 export const useGameStore = create<IGameStore>()(
@@ -44,3 +63,21 @@ export const useGameStore = create<IGameStore>()(
         }
     )
 );
+
+export const useCategoryStore = create<CategoryState>((set) => ({
+    categories: [],
+    loading: false,
+    error: null,
+    setCategories: (categoryList) => set({ categories: categoryList }),
+    setLoadingStatus: (loadingStatus) => set({ loading: loadingStatus }),
+    setError: (errorMessage) => set({ error: errorMessage }),
+}));
+
+export const useProductsStore = create<ProductsState>((set) => ({
+    products: [],
+    loading: false,
+    error: null,
+    setProducts: (productsList) => set({ products: productsList }),
+    setLoadingStatus: (loadingStatus) => set({ loading: loadingStatus }),
+    setError: (errorMessage) => set({ error: errorMessage }),
+}));
