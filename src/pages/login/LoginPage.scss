@@ -10,7 +10,7 @@
     display: flex;
     justify-content: center;
     // align-items: center;
-    padding: variables.$spacing-xl;
+    padding: $spacing-xl;
     background-color: var(--background);
 }
 
@@ -20,22 +20,22 @@
 
     h1 {
         font-size: 28px;
-        margin-bottom: variables.$spacing-lg;
+        margin-bottom: $spacing-lg;
         font-family: 'Poppins', sans-serif;
         font-weight: 600;
     }
 }
 
 .form_group {
-    margin-bottom: variables.$spacing-md;
+    margin-bottom: $spacing-md;
 }
 
 .form_label {
     display: block;
-    margin-bottom: variables.$spacing-xs;
+    margin-bottom: $spacing-xs;
     padding-top: 10px;
     font-weight: 500;
-    color: variables.$text-primary;
+    color: $text-primary;
 }
 
 .form_input {
@@ -43,45 +43,45 @@
     padding: 12px;
     background-color: var(--surface);
     border: 1px solid var(--border);
-    border-radius: variables.$border-radius-md;
-    color: variables.$text-primary;
+    border-radius: $border-radius-md;
+    color: $text-primary;
     font-family: 'Inter', sans-serif;
-    transition: variables.$transition;
+    transition: $transition;
 
     &:focus {
         outline: none;
-        border-color: variables.$primary;
+        border-color: $primary;
     }
 
     &.error {
-        border-color: variables.$error;
+        border-color: $error;
     }
 
     &::placeholder {
-        color: variables.$text-tertiary;
+        color: $text-tertiary;
     }
 }
 
 .form_error {
-    color: variables.$error;
+    color: $error;
     font-size: 12px;
-    margin-top: variables.$spacing-xs;
+    margin-top: $spacing-xs;
 }
 
 .btn_primary {
-    background-color: variables.$primary;
+    background-color: $primary;
     color: white;
     border: none;
     padding: 12px;
-    border-radius: variables.$border-radius-md;
+    border-radius: $border-radius-md;
     font-weight: 500;
     cursor: pointer;
-    transition: variables.$transition;
+    transition: $transition;
     width: 100%;
     font-size: 16px;
 
     &:hover:not(:disabled) {
-        background-color: variables.$primary-dark;
+        background-color: $primary-dark;
     }
 
     &:disabled {
@@ -94,10 +94,10 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-top: variables.$spacing-md;
+    margin-top: $spacing-md;
 
     a {
-        color: variables.$primary;
+        color: $primary;
         text-decoration: none;
 
         &:hover {
@@ -114,6 +114,6 @@
 
 @media (max-width: 576px) {
     .authFormContainer {
-        padding: variables.$spacing-md;
+        padding: $spacing-md;
     }
 }
