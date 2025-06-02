@@ -391,6 +391,126 @@
   dependencies:
     "@jridgewell/trace-mapping" "0.3.9"
 
+"@esbuild/aix-ppc64@0.25.3":
+  version "0.25.3"
+  resolved "https://registry.npmjs.org/@esbuild/aix-ppc64/-/aix-ppc64-0.25.3.tgz"
+  integrity sha512-W8bFfPA8DowP8l//sxjJLSLkD8iEjMc7cBVyP+u4cEv9sM7mdUCkgsj+t0n/BWPFtv7WWCN5Yzj0N6FJNUUqBQ==
+
+"@esbuild/android-arm@0.25.3":
+  version "0.25.3"
+  resolved "https://registry.npmjs.org/@esbuild/android-arm/-/android-arm-0.25.3.tgz"
+  integrity sha512-PuwVXbnP87Tcff5I9ngV0lmiSu40xw1At6i3GsU77U7cjDDB4s0X2cyFuBiDa1SBk9DnvWwnGvVaGBqoFWPb7A==
+
+"@esbuild/android-arm64@0.25.3":
+  version "0.25.3"
+  resolved "https://registry.npmjs.org/@esbuild/android-arm64/-/android-arm64-0.25.3.tgz"
+  integrity sha512-XelR6MzjlZuBM4f5z2IQHK6LkK34Cvv6Rj2EntER3lwCBFdg6h2lKbtRjpTTsdEjD/WSe1q8UyPBXP1x3i/wYQ==
+
+"@esbuild/android-x64@0.25.3":
+  version "0.25.3"
+  resolved "https://registry.npmjs.org/@esbuild/android-x64/-/android-x64-0.25.3.tgz"
+  integrity sha512-ogtTpYHT/g1GWS/zKM0cc/tIebFjm1F9Aw1boQ2Y0eUQ+J89d0jFY//s9ei9jVIlkYi8AfOjiixcLJSGNSOAdQ==
+
+"@esbuild/darwin-arm64@0.25.3":
+  version "0.25.3"
+  resolved "https://registry.npmjs.org/@esbuild/darwin-arm64/-/darwin-arm64-0.25.3.tgz"
+  integrity sha512-eESK5yfPNTqpAmDfFWNsOhmIOaQA59tAcF/EfYvo5/QWQCzXn5iUSOnqt3ra3UdzBv073ykTtmeLJZGt3HhA+w==
+
+"@esbuild/darwin-x64@0.25.3":
+  version "0.25.3"
+  resolved "https://registry.npmjs.org/@esbuild/darwin-x64/-/darwin-x64-0.25.3.tgz"
+  integrity sha512-Kd8glo7sIZtwOLcPbW0yLpKmBNWMANZhrC1r6K++uDR2zyzb6AeOYtI6udbtabmQpFaxJ8uduXMAo1gs5ozz8A==
+
+"@esbuild/freebsd-arm64@0.25.3":
+  version "0.25.3"
+  resolved "https://registry.npmjs.org/@esbuild/freebsd-arm64/-/freebsd-arm64-0.25.3.tgz"
+  integrity sha512-EJiyS70BYybOBpJth3M0KLOus0n+RRMKTYzhYhFeMwp7e/RaajXvP+BWlmEXNk6uk+KAu46j/kaQzr6au+JcIw==
+
+"@esbuild/freebsd-x64@0.25.3":
+  version "0.25.3"
+  resolved "https://registry.npmjs.org/@esbuild/freebsd-x64/-/freebsd-x64-0.25.3.tgz"
+  integrity sha512-Q+wSjaLpGxYf7zC0kL0nDlhsfuFkoN+EXrx2KSB33RhinWzejOd6AvgmP5JbkgXKmjhmpfgKZq24pneodYqE8Q==
+
+"@esbuild/linux-arm@0.25.3":
+  version "0.25.3"
+  resolved "https://registry.npmjs.org/@esbuild/linux-arm/-/linux-arm-0.25.3.tgz"
+  integrity sha512-dUOVmAUzuHy2ZOKIHIKHCm58HKzFqd+puLaS424h6I85GlSDRZIA5ycBixb3mFgM0Jdh+ZOSB6KptX30DD8YOQ==
+
+"@esbuild/linux-arm64@0.25.3":
+  version "0.25.3"
+  resolved "https://registry.npmjs.org/@esbuild/linux-arm64/-/linux-arm64-0.25.3.tgz"
+  integrity sha512-xCUgnNYhRD5bb1C1nqrDV1PfkwgbswTTBRbAd8aH5PhYzikdf/ddtsYyMXFfGSsb/6t6QaPSzxtbfAZr9uox4A==
+
+"@esbuild/linux-ia32@0.25.3":
+  version "0.25.3"
+  resolved "https://registry.npmjs.org/@esbuild/linux-ia32/-/linux-ia32-0.25.3.tgz"
+  integrity sha512-yplPOpczHOO4jTYKmuYuANI3WhvIPSVANGcNUeMlxH4twz/TeXuzEP41tGKNGWJjuMhotpGabeFYGAOU2ummBw==
+
+"@esbuild/linux-loong64@0.25.3":
+  version "0.25.3"
+  resolved "https://registry.npmjs.org/@esbuild/linux-loong64/-/linux-loong64-0.25.3.tgz"
+  integrity sha512-P4BLP5/fjyihmXCELRGrLd793q/lBtKMQl8ARGpDxgzgIKJDRJ/u4r1A/HgpBpKpKZelGct2PGI4T+axcedf6g==
+
+"@esbuild/linux-mips64el@0.25.3":
+  version "0.25.3"
+  resolved "https://registry.npmjs.org/@esbuild/linux-mips64el/-/linux-mips64el-0.25.3.tgz"
+  integrity sha512-eRAOV2ODpu6P5divMEMa26RRqb2yUoYsuQQOuFUexUoQndm4MdpXXDBbUoKIc0iPa4aCO7gIhtnYomkn2x+bag==
+
+"@esbuild/linux-ppc64@0.25.3":
+  version "0.25.3"
+  resolved "https://registry.npmjs.org/@esbuild/linux-ppc64/-/linux-ppc64-0.25.3.tgz"
+  integrity sha512-ZC4jV2p7VbzTlnl8nZKLcBkfzIf4Yad1SJM4ZMKYnJqZFD4rTI+pBG65u8ev4jk3/MPwY9DvGn50wi3uhdaghg==
+
+"@esbuild/linux-riscv64@0.25.3":
+  version "0.25.3"
+  resolved "https://registry.npmjs.org/@esbuild/linux-riscv64/-/linux-riscv64-0.25.3.tgz"
+  integrity sha512-LDDODcFzNtECTrUUbVCs6j9/bDVqy7DDRsuIXJg6so+mFksgwG7ZVnTruYi5V+z3eE5y+BJZw7VvUadkbfg7QA==
+
+"@esbuild/linux-s390x@0.25.3":
+  version "0.25.3"
+  resolved "https://registry.npmjs.org/@esbuild/linux-s390x/-/linux-s390x-0.25.3.tgz"
+  integrity sha512-s+w/NOY2k0yC2p9SLen+ymflgcpRkvwwa02fqmAwhBRI3SC12uiS10edHHXlVWwfAagYSY5UpmT/zISXPMW3tQ==
+
+"@esbuild/linux-x64@0.25.3":
+  version "0.25.3"
+  resolved "https://registry.npmjs.org/@esbuild/linux-x64/-/linux-x64-0.25.3.tgz"
+  integrity sha512-nQHDz4pXjSDC6UfOE1Fw9Q8d6GCAd9KdvMZpfVGWSJztYCarRgSDfOVBY5xwhQXseiyxapkiSJi/5/ja8mRFFA==
+
+"@esbuild/netbsd-arm64@0.25.3":
+  version "0.25.3"
+  resolved "https://registry.npmjs.org/@esbuild/netbsd-arm64/-/netbsd-arm64-0.25.3.tgz"
+  integrity sha512-1QaLtOWq0mzK6tzzp0jRN3eccmN3hezey7mhLnzC6oNlJoUJz4nym5ZD7mDnS/LZQgkrhEbEiTn515lPeLpgWA==
+
+"@esbuild/netbsd-x64@0.25.3":
+  version "0.25.3"
+  resolved "https://registry.npmjs.org/@esbuild/netbsd-x64/-/netbsd-x64-0.25.3.tgz"
+  integrity sha512-i5Hm68HXHdgv8wkrt+10Bc50zM0/eonPb/a/OFVfB6Qvpiirco5gBA5bz7S2SHuU+Y4LWn/zehzNX14Sp4r27g==
+
+"@esbuild/openbsd-arm64@0.25.3":
+  version "0.25.3"
+  resolved "https://registry.npmjs.org/@esbuild/openbsd-arm64/-/openbsd-arm64-0.25.3.tgz"
+  integrity sha512-zGAVApJEYTbOC6H/3QBr2mq3upG/LBEXr85/pTtKiv2IXcgKV0RT0QA/hSXZqSvLEpXeIxah7LczB4lkiYhTAQ==
+
+"@esbuild/openbsd-x64@0.25.3":
+  version "0.25.3"
+  resolved "https://registry.npmjs.org/@esbuild/openbsd-x64/-/openbsd-x64-0.25.3.tgz"
+  integrity sha512-fpqctI45NnCIDKBH5AXQBsD0NDPbEFczK98hk/aa6HJxbl+UtLkJV2+Bvy5hLSLk3LHmqt0NTkKNso1A9y1a4w==
+
+"@esbuild/sunos-x64@0.25.3":
+  version "0.25.3"
+  resolved "https://registry.npmjs.org/@esbuild/sunos-x64/-/sunos-x64-0.25.3.tgz"
+  integrity sha512-ROJhm7d8bk9dMCUZjkS8fgzsPAZEjtRJqCAmVgB0gMrvG7hfmPmz9k1rwO4jSiblFjYmNvbECL9uhaPzONMfgA==
+
+"@esbuild/win32-arm64@0.25.3":
+  version "0.25.3"
+  resolved "https://registry.npmjs.org/@esbuild/win32-arm64/-/win32-arm64-0.25.3.tgz"
+  integrity sha512-YWcow8peiHpNBiIXHwaswPnAXLsLVygFwCB3A7Bh5jRkIBFWHGmNQ48AlX4xDvQNoMZlPYzjVOQDYEzWCqufMQ==
+
+"@esbuild/win32-ia32@0.25.3":
+  version "0.25.3"
+  resolved "https://registry.npmjs.org/@esbuild/win32-ia32/-/win32-ia32-0.25.3.tgz"
+  integrity sha512-qspTZOIGoXVS4DpNqUYUs9UxVb04khS1Degaw/MnfMe7goQ3lTfQ13Vw4qY/Nj0979BGvMRpAYbs/BAxEvU8ew==
+
 "@esbuild/win32-x64@0.25.3":
   version "0.25.3"
   resolved "https://registry.npmjs.org/@esbuild/win32-x64/-/win32-x64-0.25.3.tgz"
@@ -771,6 +891,101 @@
     "@nodelib/fs.scandir" "2.1.5"
     fastq "^1.6.0"
 
+"@rollup/rollup-android-arm-eabi@4.40.1":
+  version "4.40.1"
+  resolved "https://registry.npmjs.org/@rollup/rollup-android-arm-eabi/-/rollup-android-arm-eabi-4.40.1.tgz"
+  integrity sha512-kxz0YeeCrRUHz3zyqvd7n+TVRlNyTifBsmnmNPtk3hQURUyG9eAB+usz6DAwagMusjx/zb3AjvDUvhFGDAexGw==
+
+"@rollup/rollup-android-arm64@4.40.1":
+  version "4.40.1"
+  resolved "https://registry.npmjs.org/@rollup/rollup-android-arm64/-/rollup-android-arm64-4.40.1.tgz"
+  integrity sha512-PPkxTOisoNC6TpnDKatjKkjRMsdaWIhyuMkA4UsBXT9WEZY4uHezBTjs6Vl4PbqQQeu6oION1w2voYZv9yquCw==
+
+"@rollup/rollup-darwin-arm64@4.40.1":
+  version "4.40.1"
+  resolved "https://registry.npmjs.org/@rollup/rollup-darwin-arm64/-/rollup-darwin-arm64-4.40.1.tgz"
+  integrity sha512-VWXGISWFY18v/0JyNUy4A46KCFCb9NVsH+1100XP31lud+TzlezBbz24CYzbnA4x6w4hx+NYCXDfnvDVO6lcAA==
+
+"@rollup/rollup-darwin-x64@4.40.1":
+  version "4.40.1"
+  resolved "https://registry.npmjs.org/@rollup/rollup-darwin-x64/-/rollup-darwin-x64-4.40.1.tgz"
+  integrity sha512-nIwkXafAI1/QCS7pxSpv/ZtFW6TXcNUEHAIA9EIyw5OzxJZQ1YDrX+CL6JAIQgZ33CInl1R6mHet9Y/UZTg2Bw==
+
+"@rollup/rollup-freebsd-arm64@4.40.1":
+  version "4.40.1"
+  resolved "https://registry.npmjs.org/@rollup/rollup-freebsd-arm64/-/rollup-freebsd-arm64-4.40.1.tgz"
+  integrity sha512-BdrLJ2mHTrIYdaS2I99mriyJfGGenSaP+UwGi1kB9BLOCu9SR8ZpbkmmalKIALnRw24kM7qCN0IOm6L0S44iWw==
+
+"@rollup/rollup-freebsd-x64@4.40.1":
+  version "4.40.1"
+  resolved "https://registry.npmjs.org/@rollup/rollup-freebsd-x64/-/rollup-freebsd-x64-4.40.1.tgz"
+  integrity sha512-VXeo/puqvCG8JBPNZXZf5Dqq7BzElNJzHRRw3vjBE27WujdzuOPecDPc/+1DcdcTptNBep3861jNq0mYkT8Z6Q==
+
+"@rollup/rollup-linux-arm-gnueabihf@4.40.1":
+  version "4.40.1"
+  resolved "https://registry.npmjs.org/@rollup/rollup-linux-arm-gnueabihf/-/rollup-linux-arm-gnueabihf-4.40.1.tgz"
+  integrity sha512-ehSKrewwsESPt1TgSE/na9nIhWCosfGSFqv7vwEtjyAqZcvbGIg4JAcV7ZEh2tfj/IlfBeZjgOXm35iOOjadcg==
+
+"@rollup/rollup-linux-arm-musleabihf@4.40.1":
+  version "4.40.1"
+  resolved "https://registry.npmjs.org/@rollup/rollup-linux-arm-musleabihf/-/rollup-linux-arm-musleabihf-4.40.1.tgz"
+  integrity sha512-m39iO/aaurh5FVIu/F4/Zsl8xppd76S4qoID8E+dSRQvTyZTOI2gVk3T4oqzfq1PtcvOfAVlwLMK3KRQMaR8lg==
+
+"@rollup/rollup-linux-arm64-gnu@4.40.1":
+  version "4.40.1"
+  resolved "https://registry.npmjs.org/@rollup/rollup-linux-arm64-gnu/-/rollup-linux-arm64-gnu-4.40.1.tgz"
+  integrity sha512-Y+GHnGaku4aVLSgrT0uWe2o2Rq8te9hi+MwqGF9r9ORgXhmHK5Q71N757u0F8yU1OIwUIFy6YiJtKjtyktk5hg==
+
+"@rollup/rollup-linux-arm64-musl@4.40.1":
+  version "4.40.1"
+  resolved "https://registry.npmjs.org/@rollup/rollup-linux-arm64-musl/-/rollup-linux-arm64-musl-4.40.1.tgz"
+  integrity sha512-jEwjn3jCA+tQGswK3aEWcD09/7M5wGwc6+flhva7dsQNRZZTe30vkalgIzV4tjkopsTS9Jd7Y1Bsj6a4lzz8gQ==
+
+"@rollup/rollup-linux-loongarch64-gnu@4.40.1":
+  version "4.40.1"
+  resolved "https://registry.npmjs.org/@rollup/rollup-linux-loongarch64-gnu/-/rollup-linux-loongarch64-gnu-4.40.1.tgz"
+  integrity sha512-ySyWikVhNzv+BV/IDCsrraOAZ3UaC8SZB67FZlqVwXwnFhPihOso9rPOxzZbjp81suB1O2Topw+6Ug3JNegejQ==
+
+"@rollup/rollup-linux-powerpc64le-gnu@4.40.1":
+  version "4.40.1"
+  resolved "https://registry.npmjs.org/@rollup/rollup-linux-powerpc64le-gnu/-/rollup-linux-powerpc64le-gnu-4.40.1.tgz"
+  integrity sha512-BvvA64QxZlh7WZWqDPPdt0GH4bznuL6uOO1pmgPnnv86rpUpc8ZxgZwcEgXvo02GRIZX1hQ0j0pAnhwkhwPqWg==
+
+"@rollup/rollup-linux-riscv64-gnu@4.40.1":
+  version "4.40.1"
+  resolved "https://registry.npmjs.org/@rollup/rollup-linux-riscv64-gnu/-/rollup-linux-riscv64-gnu-4.40.1.tgz"
+  integrity sha512-EQSP+8+1VuSulm9RKSMKitTav89fKbHymTf25n5+Yr6gAPZxYWpj3DzAsQqoaHAk9YX2lwEyAf9S4W8F4l3VBQ==
+
+"@rollup/rollup-linux-riscv64-musl@4.40.1":
+  version "4.40.1"
+  resolved "https://registry.npmjs.org/@rollup/rollup-linux-riscv64-musl/-/rollup-linux-riscv64-musl-4.40.1.tgz"
+  integrity sha512-n/vQ4xRZXKuIpqukkMXZt9RWdl+2zgGNx7Uda8NtmLJ06NL8jiHxUawbwC+hdSq1rrw/9CghCpEONor+l1e2gA==
+
+"@rollup/rollup-linux-s390x-gnu@4.40.1":
+  version "4.40.1"
+  resolved "https://registry.npmjs.org/@rollup/rollup-linux-s390x-gnu/-/rollup-linux-s390x-gnu-4.40.1.tgz"
+  integrity sha512-h8d28xzYb98fMQKUz0w2fMc1XuGzLLjdyxVIbhbil4ELfk5/orZlSTpF/xdI9C8K0I8lCkq+1En2RJsawZekkg==
+
+"@rollup/rollup-linux-x64-gnu@4.40.1":
+  version "4.40.1"
+  resolved "https://registry.npmjs.org/@rollup/rollup-linux-x64-gnu/-/rollup-linux-x64-gnu-4.40.1.tgz"
+  integrity sha512-XiK5z70PEFEFqcNj3/zRSz/qX4bp4QIraTy9QjwJAb/Z8GM7kVUsD0Uk8maIPeTyPCP03ChdI+VVmJriKYbRHQ==
+
+"@rollup/rollup-linux-x64-musl@4.40.1":
+  version "4.40.1"
+  resolved "https://registry.npmjs.org/@rollup/rollup-linux-x64-musl/-/rollup-linux-x64-musl-4.40.1.tgz"
+  integrity sha512-2BRORitq5rQ4Da9blVovzNCMaUlyKrzMSvkVR0D4qPuOy/+pMCrh1d7o01RATwVy+6Fa1WBw+da7QPeLWU/1mQ==
+
+"@rollup/rollup-win32-arm64-msvc@4.40.1":
+  version "4.40.1"
+  resolved "https://registry.npmjs.org/@rollup/rollup-win32-arm64-msvc/-/rollup-win32-arm64-msvc-4.40.1.tgz"
+  integrity sha512-b2bcNm9Kbde03H+q+Jjw9tSfhYkzrDUf2d5MAd1bOJuVplXvFhWz7tRtWvD8/ORZi7qSCy0idW6tf2HgxSXQSg==
+
+"@rollup/rollup-win32-ia32-msvc@4.40.1":
+  version "4.40.1"
+  resolved "https://registry.npmjs.org/@rollup/rollup-win32-ia32-msvc/-/rollup-win32-ia32-msvc-4.40.1.tgz"
+  integrity sha512-DfcogW8N7Zg7llVEfpqWMZcaErKfsj9VvmfSyRjCyo4BI3wPEfrzTtJkZG6gKP/Z92wFm6rz2aDO7/JfiR/whA==
+
 "@rollup/rollup-win32-x64-msvc@4.40.1":
   version "4.40.1"
   resolved "https://registry.npmjs.org/@rollup/rollup-win32-x64-msvc/-/rollup-win32-x64-msvc-4.40.1.tgz"
@@ -799,6 +1014,51 @@
   version "0.3.0"
   resolved "https://registry.npmjs.org/@standard-schema/utils/-/utils-0.3.0.tgz"
   integrity sha512-e7Mew686owMaPJVNNLs55PUvgz371nKgwsc4vxE49zsODpJEnxgxRo2y/OKrqueavXgZNMDVj3DdHFlaSAeU8g==
+
+"@swc/core-darwin-arm64@1.11.24":
+  version "1.11.24"
+  resolved "https://registry.npmjs.org/@swc/core-darwin-arm64/-/core-darwin-arm64-1.11.24.tgz"
+  integrity sha512-dhtVj0PC1APOF4fl5qT2neGjRLgHAAYfiVP8poJelhzhB/318bO+QCFWAiimcDoyMgpCXOhTp757gnoJJrheWA==
+
+"@swc/core-darwin-x64@1.11.24":
+  version "1.11.24"
+  resolved "https://registry.npmjs.org/@swc/core-darwin-x64/-/core-darwin-x64-1.11.24.tgz"
+  integrity sha512-H/3cPs8uxcj2Fe3SoLlofN5JG6Ny5bl8DuZ6Yc2wr7gQFBmyBkbZEz+sPVgsID7IXuz7vTP95kMm1VL74SO5AQ==
+
+"@swc/core-linux-arm-gnueabihf@1.11.24":
+  version "1.11.24"
+  resolved "https://registry.npmjs.org/@swc/core-linux-arm-gnueabihf/-/core-linux-arm-gnueabihf-1.11.24.tgz"
+  integrity sha512-PHJgWEpCsLo/NGj+A2lXZ2mgGjsr96ULNW3+T3Bj2KTc8XtMUkE8tmY2Da20ItZOvPNC/69KroU7edyo1Flfbw==
+
+"@swc/core-linux-arm64-gnu@1.11.24":
+  version "1.11.24"
+  resolved "https://registry.npmjs.org/@swc/core-linux-arm64-gnu/-/core-linux-arm64-gnu-1.11.24.tgz"
+  integrity sha512-C2FJb08+n5SD4CYWCTZx1uR88BN41ZieoHvI8A55hfVf2woT8+6ZiBzt74qW2g+ntZ535Jts5VwXAKdu41HpBg==
+
+"@swc/core-linux-arm64-musl@1.11.24":
+  version "1.11.24"
+  resolved "https://registry.npmjs.org/@swc/core-linux-arm64-musl/-/core-linux-arm64-musl-1.11.24.tgz"
+  integrity sha512-ypXLIdszRo0re7PNNaXN0+2lD454G8l9LPK/rbfRXnhLWDBPURxzKlLlU/YGd2zP98wPcVooMmegRSNOKfvErw==
+
+"@swc/core-linux-x64-gnu@1.11.24":
+  version "1.11.24"
+  resolved "https://registry.npmjs.org/@swc/core-linux-x64-gnu/-/core-linux-x64-gnu-1.11.24.tgz"
+  integrity sha512-IM7d+STVZD48zxcgo69L0yYptfhaaE9cMZ+9OoMxirNafhKKXwoZuufol1+alEFKc+Wbwp+aUPe/DeWC/Lh3dg==
+
+"@swc/core-linux-x64-musl@1.11.24":
+  version "1.11.24"
+  resolved "https://registry.npmjs.org/@swc/core-linux-x64-musl/-/core-linux-x64-musl-1.11.24.tgz"
+  integrity sha512-DZByJaMVzSfjQKKQn3cqSeqwy6lpMaQDQQ4HPlch9FWtDx/dLcpdIhxssqZXcR2rhaQVIaRQsCqwV6orSDGAGw==
+
+"@swc/core-win32-arm64-msvc@1.11.24":
+  version "1.11.24"
+  resolved "https://registry.npmjs.org/@swc/core-win32-arm64-msvc/-/core-win32-arm64-msvc-1.11.24.tgz"
+  integrity sha512-Q64Ytn23y9aVDKN5iryFi8mRgyHw3/kyjTjT4qFCa8AEb5sGUuSj//AUZ6c0J7hQKMHlg9do5Etvoe61V98/JQ==
+
+"@swc/core-win32-ia32-msvc@1.11.24":
+  version "1.11.24"
+  resolved "https://registry.npmjs.org/@swc/core-win32-ia32-msvc/-/core-win32-ia32-msvc-1.11.24.tgz"
+  integrity sha512-9pKLIisE/Hh2vJhGIPvSoTK4uBSPxNVyXHmOrtdDot4E1FUUI74Vi8tFdlwNbaj8/vusVnb8xPXsxF1uB0VgiQ==
 
 "@swc/core-win32-x64-msvc@1.11.24":
   version "1.11.24"
@@ -2095,6 +2355,11 @@ fs.realpath@^1.0.0:
   version "1.0.0"
   resolved "https://registry.npmjs.org/fs.realpath/-/fs.realpath-1.0.0.tgz"
   integrity sha512-OO0pH2lK6a0hZnAdau5ItzHPI6pUlvI7jMVnxUQRtw4owF2wk8lOSabtGDCTP4Ggrg2MbGnWO9X8K1t4+fGMDw==
+
+fsevents@^2.3.2, fsevents@~2.3.2, fsevents@~2.3.3:
+  version "2.3.3"
+  resolved "https://registry.npmjs.org/fsevents/-/fsevents-2.3.3.tgz"
+  integrity sha512-5xoDfX+fL7faATnagmWPpbFtwh/R77WmMMqqHGS65C3vvB0YHrgF+B1YmZ3441tMj5n63k0212XNoJwzlhffQw==
 
 function-bind@^1.1.2:
   version "1.1.2"
@@ -3604,6 +3869,101 @@ rxjs@^7.4.0:
   version "2.1.2"
   resolved "https://registry.npmjs.org/safer-buffer/-/safer-buffer-2.1.2.tgz"
   integrity sha512-YZo3K82SD7Riyi0E1EQPojLz7kpepnSQI9IyPbHHg1XXXevb5dJI7tpyN2ADxGcQbHG7vcyRHk0cbwqcQriUtg==
+
+sass-embedded-android-arm@1.89.0:
+  version "1.89.0"
+  resolved "https://registry.npmjs.org/sass-embedded-android-arm/-/sass-embedded-android-arm-1.89.0.tgz"
+  integrity sha512-s6jxkEZQQrtyIGZX6Sbcu7tEixFG2VkqFgrX11flm/jZex7KaxnZtFace+wnYAgHqzzYpx0kNzJUpT+GXxm8CA==
+
+sass-embedded-android-arm64@1.89.0:
+  version "1.89.0"
+  resolved "https://registry.npmjs.org/sass-embedded-android-arm64/-/sass-embedded-android-arm64-1.89.0.tgz"
+  integrity sha512-pr4R3p5R+Ul9ZA5nzYbBJQFJXW6dMGzgpNBhmaToYDgDhmNX5kg0mZAUlGLHvisLdTiR6oEfDDr9QI6tnD2nqA==
+
+sass-embedded-android-ia32@1.89.0:
+  version "1.89.0"
+  resolved "https://registry.npmjs.org/sass-embedded-android-ia32/-/sass-embedded-android-ia32-1.89.0.tgz"
+  integrity sha512-GoNnNGYmp1F0ZMHqQbAurlQsjBMZKtDd5H60Ruq86uQFdnuNqQ9wHKJsJABxMnjfAn60IjefytM5PYTMcAmbfA==
+
+sass-embedded-android-riscv64@1.89.0:
+  version "1.89.0"
+  resolved "https://registry.npmjs.org/sass-embedded-android-riscv64/-/sass-embedded-android-riscv64-1.89.0.tgz"
+  integrity sha512-di+i4KkKAWTNksaQYTqBEERv46qV/tvv14TPswEfak7vcTQ2pj2mvV4KGjLYfU2LqRkX/NTXix9KFthrzFN51Q==
+
+sass-embedded-android-x64@1.89.0:
+  version "1.89.0"
+  resolved "https://registry.npmjs.org/sass-embedded-android-x64/-/sass-embedded-android-x64-1.89.0.tgz"
+  integrity sha512-1cRRDAnmAS1wLaxfFf6PCHu9sKW8FNxdM7ZkanwxO9mztrCu/uvfqTmaurY9+RaKvPus7sGYFp46/TNtl/wRjg==
+
+sass-embedded-darwin-arm64@1.89.0:
+  version "1.89.0"
+  resolved "https://registry.npmjs.org/sass-embedded-darwin-arm64/-/sass-embedded-darwin-arm64-1.89.0.tgz"
+  integrity sha512-EUNUzI0UkbQ6dASPyf09S3x7fNT54PjyD594ZGTY14Yh4qTuacIj27ckLmreAJNNu5QxlbhyYuOtz+XN5bMMxA==
+
+sass-embedded-darwin-x64@1.89.0:
+  version "1.89.0"
+  resolved "https://registry.npmjs.org/sass-embedded-darwin-x64/-/sass-embedded-darwin-x64-1.89.0.tgz"
+  integrity sha512-23R8zSuB31Fq/MYpmQ38UR2C26BsYb66VVpJgWmWl/N+sgv/+l9ECuSPMbYNgM3vb9TP9wk9dgL6KkiCS5tAyg==
+
+sass-embedded-linux-arm@1.89.0:
+  version "1.89.0"
+  resolved "https://registry.npmjs.org/sass-embedded-linux-arm/-/sass-embedded-linux-arm-1.89.0.tgz"
+  integrity sha512-KAzA1XD74d8/fiJXxVnLfFwfpmD2XqUJZz+DL6ZAPNLH1sb+yCP7brktaOyClDc/MBu61JERdHaJjIZhfX0Yqw==
+
+sass-embedded-linux-arm64@1.89.0:
+  version "1.89.0"
+  resolved "https://registry.npmjs.org/sass-embedded-linux-arm64/-/sass-embedded-linux-arm64-1.89.0.tgz"
+  integrity sha512-g9Lp57qyx51ttKj0AN/edV43Hu1fBObvD7LpYwVfs6u3I95r0Adi90KujzNrUqXxJVmsfUwseY8kA8zvcRjhYA==
+
+sass-embedded-linux-ia32@1.89.0:
+  version "1.89.0"
+  resolved "https://registry.npmjs.org/sass-embedded-linux-ia32/-/sass-embedded-linux-ia32-1.89.0.tgz"
+  integrity sha512-5fxBeXyvBr3pb+vyrx9V6yd7QDRXkAPbwmFVVhjqshBABOXelLysEFea7xokh/tM8JAAQ4O8Ls3eW3Eojb477g==
+
+sass-embedded-linux-musl-arm@1.89.0:
+  version "1.89.0"
+  resolved "https://registry.npmjs.org/sass-embedded-linux-musl-arm/-/sass-embedded-linux-musl-arm-1.89.0.tgz"
+  integrity sha512-0Q1JeEU4/tzH7fwAwarfIh+Swn3aXG/jPhVsZpbR1c1VzkeaPngmXdmLJcVXsdb35tjk84DuYcFtJlE1HYGw4Q==
+
+sass-embedded-linux-musl-arm64@1.89.0:
+  version "1.89.0"
+  resolved "https://registry.npmjs.org/sass-embedded-linux-musl-arm64/-/sass-embedded-linux-musl-arm64-1.89.0.tgz"
+  integrity sha512-50oelrOtN64u15vJN9uJryIuT0+UPjyeoq0zdWbY8F7LM9294Wf+Idea+nqDUWDCj1MHndyPFmR1mjeuRouJhw==
+
+sass-embedded-linux-musl-ia32@1.89.0:
+  version "1.89.0"
+  resolved "https://registry.npmjs.org/sass-embedded-linux-musl-ia32/-/sass-embedded-linux-musl-ia32-1.89.0.tgz"
+  integrity sha512-ILWqpTd+0RdsSw977iVAJf4CLetIbcQgLQf17ycS1N4StZKVRZs1bBfZhg/f/HU/4p5HondPAwepgJepZZdnFA==
+
+sass-embedded-linux-musl-riscv64@1.89.0:
+  version "1.89.0"
+  resolved "https://registry.npmjs.org/sass-embedded-linux-musl-riscv64/-/sass-embedded-linux-musl-riscv64-1.89.0.tgz"
+  integrity sha512-n2V+Tdjj7SAuiuElJYhWiHjjB1YU0cuFvL1/m5K+ecdNStfHFWIzvBT6/vzQnBOWjI4eZECNVuQ8GwGWCufZew==
+
+sass-embedded-linux-musl-x64@1.89.0:
+  version "1.89.0"
+  resolved "https://registry.npmjs.org/sass-embedded-linux-musl-x64/-/sass-embedded-linux-musl-x64-1.89.0.tgz"
+  integrity sha512-KOHJdouBK3SLJKZLnFYzuxs3dn+6jaeO3p4p1JUYAcVfndcvh13Sg2sLGfOfpg7Og6ws2Nnqnx0CyL26jPJ7ag==
+
+sass-embedded-linux-riscv64@1.89.0:
+  version "1.89.0"
+  resolved "https://registry.npmjs.org/sass-embedded-linux-riscv64/-/sass-embedded-linux-riscv64-1.89.0.tgz"
+  integrity sha512-0A/UWeKX6MYhVLWLkdX3NPKHO+mvIwzaf6TxGCy3vS3TODWaeDUeBhHShAr7YlOKv5xRGxf7Gx7FXCPV0mUyMA==
+
+sass-embedded-linux-x64@1.89.0:
+  version "1.89.0"
+  resolved "https://registry.npmjs.org/sass-embedded-linux-x64/-/sass-embedded-linux-x64-1.89.0.tgz"
+  integrity sha512-dRBoOFPDWctHPYK3hTk3YzyX/icVrXiw7oOjbtpaDr6JooqIWBe16FslkWyvQzdmfOFy80raKVjgoqT7DsznkQ==
+
+sass-embedded-win32-arm64@1.89.0:
+  version "1.89.0"
+  resolved "https://registry.npmjs.org/sass-embedded-win32-arm64/-/sass-embedded-win32-arm64-1.89.0.tgz"
+  integrity sha512-RnlVZ14hC/W7ubzvhqnbGfjU5PFNoFP/y5qycgCy+Mezb0IKbWvZ2Lyzux8TbL3OIjOikkNpfXoNQrX706WLAA==
+
+sass-embedded-win32-ia32@1.89.0:
+  version "1.89.0"
+  resolved "https://registry.npmjs.org/sass-embedded-win32-ia32/-/sass-embedded-win32-ia32-1.89.0.tgz"
+  integrity sha512-eFe9VMNG+90nuoE3eXDy+38+uEHGf7xcqalq5+0PVZfR+H9RlaEbvIUNflZV94+LOH8Jb4lrfuekhHgWDJLfSg==
 
 sass-embedded-win32-x64@1.89.0:
   version "1.89.0"
