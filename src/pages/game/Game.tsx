@@ -9,6 +9,7 @@ interface IGameData {
     name: string;
     description: string;
     price: string;
+    discounted?: string;
     platform: string;
     genres: string;
 }
@@ -31,8 +32,9 @@ function Game() {
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
     const [showImageModal, setShowImageModal] = useState(false);
     const [modalImageIndex, setModalImageIndex] = useState(0);
-
+    const [gameCategories, setCategories] = useState<string[]>([]);
     useEffect(() => {
+        window.scrollTo(0, 0);
         if (!gameId) return;
         const fetchData = async () => {
             try {
@@ -85,12 +87,23 @@ function Game() {
                         if (pricesArr?.length) {
                             const price =
                                 Number(pricesArr[0].value.centAmount) / 100;
-
+                            const discount = pricesArr[0]?.discounted
+                                ? Number(
+                                      pricesArr[0]?.discounted.value.centAmount
+                                  ) / 100
+                                : null;
                             setGameData((prevItems) => ({
                                 ...prevItems,
                                 ['price']: ` ${price}`,
                             }));
+                            if (discount) {
+                                setGameData((prevItems) => ({
+                                    ...prevItems,
+                                    ['discounted']: ` ${discount}`,
+                                }));
+                            }
                         }
+
                         body.masterData.current.masterVariant.attributes?.forEach(
                             (attr: attributes) => {
                                 let value = '';
@@ -115,6 +128,36 @@ function Game() {
                                 }
                             }
                         );
+
+                        body.masterData.current.categories.forEach(
+                            (categoria) => {
+                                apiRoot
+                                    .categories()
+                                    .withId({ ID: categoria.id })
+                                    .get()
+                                    .execute()
+                                    .then((data) => {
+                                        const categoriaArr = [
+                                            ...new Set(
+                                                Object.values(data.body.name)
+                                            ),
+                                        ];
+                                        categoriaArr.forEach((el) => {
+                                            setCategories((prevItems) => {
+                                                if (prevItems.includes(el)) {
+                                                    return prevItems;
+                                                } else {
+                                                    return [...prevItems, el];
+                                                }
+                                            });
+                                        });
+                                    })
+                                    .catch((err) => {
+                                        console.error(err);
+                                    });
+                            }
+                        );
+
                         setLoading(false);
                     });
             } catch (error) {
@@ -238,11 +281,7 @@ function Game() {
                     </div>
 
                     <div className={'gameInfo'}>
-                        <h1 className={'gameTitle'}>
-                            {gameData.name === ''
-                                ? 'Untitled Game'
-                                : gameData.name}
-                        </h1>
+                        <h1 className={'gameTitle'}>{gameData.name}</h1>
 
                         <div className={'gameMeta'}>
                             <span className={'category'}>
@@ -251,13 +290,38 @@ function Game() {
                             <span className={'category'}>
                                 {gameData.platform}
                             </span>
+                            {gameCategories.map((item, ind) => (
+                                <span key={ind} className={'category'}>
+                                    {item}
+                                </span>
+                            ))}
                         </div>
 
                         {
                             <div className={'gamePrice'}>
-                                <span className={'price'}>
-                                    ${gameData.price}
-                                </span>
+                                {gameData.discounted ? (
+                                    <div className={'discountPrice'}>
+                                        <span className={'originalPrice'}>
+                                            ${gameData.price}
+                                        </span>
+                                        <span className={'discountedPrice'}>
+                                            ${gameData.discounted}
+                                        </span>
+                                        <span className={'discount'}>
+                                            {Math.round(
+                                                ((+gameData.price -
+                                                    +gameData.discounted) /
+                                                    +gameData.price) *
+                                                    100
+                                            )}
+                                            % OFF
+                                        </span>
+                                    </div>
+                                ) : (
+                                    <span className={'price'}>
+                                        ${gameData.price}
+                                    </span>
+                                )}
                             </div>
                         }
 
