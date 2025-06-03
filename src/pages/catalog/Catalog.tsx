@@ -12,6 +12,7 @@ const Catalog = () => {
 
     const [searchQuery, setSearchQuery] = useState('');
     const [sortBy, setSortBy] = useState('name');
+    const [ageRating, setAgeRating] = useState('--');
     const [minPrice, setMinPrice] = useState(0);
     const [maxPrice, setMaxPrice] = useState(100);
     const { products, setProducts, setLoadingStatus, setError } =
@@ -31,21 +32,43 @@ const Catalog = () => {
             };
             console.log(getCategoryId(selectedCategory));
 
-            const queryArgs: { where?: string; staged: boolean } = {
-                staged: false,
-            };
+            const whereList: string[] = [];
 
             if (selectedCategory.toLowerCase() !== 'all') {
                 const categoryId = getCategoryId(selectedCategory);
                 if (categoryId) {
-                    queryArgs.where = `categories(id = "${categoryId}")`;
+                    whereList.push(`categories(id="${categoryId}")`);
                 }
             }
 
+            if (ageRating && ageRating !== '--') {
+                whereList.push(
+                    `masterVariant(attributes(name="ageRating" and value(key="${ageRating}")))`
+                );
+            }
+
+            if (minPrice > 0) {
+                whereList.push(
+                    `masterVariant(prices(value(centAmount >= ${minPrice * 100})))`
+                );
+            }
+
+            if (maxPrice > 0) {
+                whereList.push(
+                    `masterVariant(prices(value(centAmount <= ${maxPrice * 100})))`
+                );
+            }
+
+            const where =
+                whereList.length > 0 ? whereList.join(' and ') : undefined;
+            console.log(where);
             const response = await apiRoot
                 .productProjections()
                 .get({
-                    queryArgs,
+                    queryArgs: {
+                        staged: false,
+                        ...(whereList.length > 0 && { where: whereList }),
+                    },
                 })
                 .execute();
 
@@ -70,7 +93,15 @@ const Catalog = () => {
             fetchCategories().catch((error) => console.log(error));
         }
         setLoadingStatus(false);
-    }, [selectedCategory, minPrice, maxPrice, searchQuery, sortBy, categories]);
+    }, [
+        selectedCategory,
+        minPrice,
+        maxPrice,
+        searchQuery,
+        sortBy,
+        categories,
+        ageRating,
+    ]);
 
     const validProducts = products.filter((product) => {
         return (
@@ -81,6 +112,13 @@ const Catalog = () => {
             product.masterVariant.prices?.[0]?.value?.centAmount !== undefined
         );
     });
+
+    function clearFilter(): void {
+        setSelectedCategory('all');
+        setAgeRating('--');
+        setMinPrice(0);
+        setMaxPrice(100);
+    }
     return (
         <div className="catalog container">
             <div className="container">
@@ -123,6 +161,21 @@ const Catalog = () => {
                         </div>
 
                         <div className="catalog__filter__group">
+                            <label>Age rating:</label>
+                            <select
+                                value={ageRating}
+                                onChange={(e) => setAgeRating(e.target.value)}
+                                className="select"
+                            >
+                                <option value="--">--</option>
+                                <option value="0+">0+</option>
+                                <option value="10+">10+</option>
+                                <option value="13+">13+</option>
+                                <option value="18+">18+</option>
+                            </select>
+                        </div>
+
+                        <div className="catalog__filter__group">
                             <label>Price Range:</label>
                             <div className="price-range">
                                 <input
@@ -149,6 +202,13 @@ const Catalog = () => {
                             </div>
                         </div>
                     </div>
+
+                    <button
+                        onClick={clearFilter}
+                        className="catalog__clear__button"
+                    >
+                        Clear
+                    </button>
                 </div>
                 <div className="catalog__category">
                     <h2 className="catalog__category__heading">Categories</h2>
