@@ -215,8 +215,8 @@
 
 .default-badge {
     position: absolute;
-    top: -8px;
-    right: -8px;
+    top: 0;
+    right: 8px;
     background-color: variables.$success;
     color: white;
     padding: 4px 8px;

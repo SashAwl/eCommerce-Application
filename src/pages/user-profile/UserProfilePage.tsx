@@ -4,18 +4,7 @@ import { z } from 'zod';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useGameStore } from '../../store/store';
-import { Address as AddressAPI } from '@commercetools/platform-sdk';
-
-interface Address extends AddressAPI {
-    id?: string;
-    // firstName: string;
-    // lastName: string;
-    // streetName: string;
-    // city: string;
-    // postalCode: string;
-    // country: string;
-    isDefault?: boolean;
-}
+import { Address } from '@commercetools/platform-sdk';
 
 // interface UserProfile {
 //     firstName: string;
@@ -143,7 +132,6 @@ export function UserProfilePage() {
             const newAddress: Address = {
                 ...data,
                 id: Date.now().toString(),
-                isDefault: userProfile?.addresses.length === 0,
             };
             gameStore.setCustomer((prev) => ({
                 ...prev!,
@@ -169,10 +157,14 @@ export function UserProfilePage() {
     const handleSetDefaultAddress = (addressId: string) => {
         gameStore.setCustomer((prev) => ({
             ...prev!,
-            addresses: prev!.addresses.map((addr) => ({
-                ...addr,
-                isDefault: addr.id === addressId,
-            })),
+            defaultShippingAddressId: addressId,
+        }));
+    };
+
+    const handleSetDefaultAddressBilling = (addressId: string) => {
+        gameStore.setCustomer((prev) => ({
+            ...prev!,
+            defaultBillingAddressId: addressId,
         }));
     };
 
@@ -414,9 +406,18 @@ export function UserProfilePage() {
                         {userProfile?.addresses.map((address) => (
                             <div key={address.id} className="address-card">
                                 <div className="address-info">
-                                    {address.isDefault && (
-                                        <span className="defaultBadge">
-                                            Default
+                                    {(address.id ===
+                                        userProfile.defaultShippingAddressId ||
+                                        address.id ===
+                                            userProfile.defaultBillingAddressId) && (
+                                        <span className="default-badge">
+                                            {address.id ===
+                                            userProfile.defaultShippingAddressId
+                                                ? address.id ===
+                                                  userProfile.defaultBillingAddressId
+                                                    ? 'Default Shipping and Billing'
+                                                    : 'Default Shipping'
+                                                : 'Default Billing'}
                                         </span>
                                     )}
                                     <h3>
@@ -437,7 +438,8 @@ export function UserProfilePage() {
                                     >
                                         <i className="fas fa-edit"></i>
                                     </button>
-                                    {!address.isDefault && (
+                                    {address.id !==
+                                        userProfile.defaultShippingAddressId && (
                                         <button
                                             onClick={() =>
                                                 handleSetDefaultAddress(
@@ -445,7 +447,21 @@ export function UserProfilePage() {
                                                 )
                                             }
                                             className="action-button"
-                                            title="Set as default"
+                                            title="Set as default shipping"
+                                        >
+                                            <i className="fas fa-star"></i>
+                                        </button>
+                                    )}
+                                    {address.id !==
+                                        userProfile.defaultBillingAddressId && (
+                                        <button
+                                            onClick={() =>
+                                                handleSetDefaultAddressBilling(
+                                                    address.id!
+                                                )
+                                            }
+                                            className="action-button"
+                                            title="Set as default billing"
                                         >
                                             <i className="fas fa-star"></i>
                                         </button>
