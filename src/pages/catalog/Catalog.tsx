@@ -117,7 +117,7 @@ const Catalog = () => {
         setSelectedCategory('all');
         setAgeRating('--');
         setMinPrice(0);
-        setMaxPrice(0);
+        setMaxPrice(100);
     }
     return (
         <div className="catalog container">
