@@ -88,7 +88,7 @@ export function LoginPage() {
                 })
                 .execute();
             await navigate('/');
-            gameStore.login();
+            gameStore.login(response.body.customer);
             gameStore.setSuccessMessage('User successfully logged in');
             setTimeout(() => {
                 gameStore.clearSuccessMessage();
