@@ -15,7 +15,7 @@ interface IGameStore {
     customer: Customer | null;
     setCustomer: (change: (customer: Customer | null) => Customer) => void;
 
-    login: (customer: Customer) => void;
+    login: (customer?: Customer) => void;
     logout: () => void;
     successMessage: string;
     setSuccessMessage: (message: string) => void;

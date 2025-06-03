@@ -1,4 +1,5 @@
 @use '../../styles/variables.scss';
+@use 'sass:color';
 
 .user-profile-page {
     min-height: 100vh;
@@ -49,6 +50,37 @@
 
     i {
         font-size: 14px;
+    }
+}
+
+.add-button {
+    background-color: variables.$success;
+
+    &:hover {
+        background-color: color.adjust(variables.$success, $lightness: -10%);
+    }
+}
+
+.profile-info {
+    display: grid;
+    gap: variables.$spacing-md;
+}
+
+.info-item {
+    display: flex;
+    align-items: center;
+    gap: variables.$spacing-md;
+    padding: variables.$spacing-sm 0;
+
+    label {
+        font-weight: 600;
+        color: variables.$text-secondary;
+        min-width: 120px;
+    }
+
+    span {
+        color: variables.$text-primary;
+        font-size: 16px;
     }
 }
 
@@ -107,6 +139,134 @@
     margin-top: variables.$spacing-md;
 }
 
+.save-button {
+    padding: 12px 24px;
+    background-color: variables.$primary;
+    color: white;
+    border: none;
+    border-radius: variables.$border-radius-md;
+    cursor: pointer;
+    transition: variables.$transition;
+    font-weight: 500;
+
+    &:hover {
+        background-color: variables.$primary-dark;
+    }
+}
+
+.cancel-button {
+    padding: 12px 24px;
+    background-color: transparent;
+    color: variables.$text-secondary;
+    border: 2px solid variables.$border;
+    border-radius: variables.$border-radius-md;
+    cursor: pointer;
+    transition: variables.$transition;
+    font-weight: 500;
+
+    &:hover {
+        border-color: variables.$text-secondary;
+        color: variables.$text-primary;
+    }
+}
+
+.addresses-list {
+    display: flex;
+    flex-direction: column;
+    gap: variables.$spacing-md;
+    margin-bottom: variables.$spacing-lg;
+}
+
+.address-card {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: variables.$spacing-md;
+    background-color: variables.$background;
+    border: 2px solid variables.$border;
+    border-radius: variables.$border-radius-md;
+    transition: variables.$transition;
+
+    &:hover {
+        border-color: variables.$primary;
+    }
+}
+
+.address-info {
+    flex: 1;
+    position: relative;
+
+    h3 {
+        font-size: 1.1rem;
+        font-weight: 600;
+        color: variables.$text-primary;
+        margin-bottom: variables.$spacing-sm;
+    }
+
+    p {
+        color: variables.$text-secondary;
+        margin-bottom: 4px;
+
+        &:last-child {
+            margin-bottom: 0;
+        }
+    }
+}
+
+.default-badge {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    background-color: variables.$success;
+    color: white;
+    padding: 4px 8px;
+    border-radius: variables.$border-radius-sm;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.address-actions {
+    display: flex;
+    gap: variables.$spacing-sm;
+}
+
+.action-button {
+    padding: 8px 10px;
+    background-color: transparent;
+    color: variables.$text-secondary;
+    border: 2px solid variables.$border;
+    border-radius: variables.$border-radius-sm;
+    cursor: pointer;
+    transition: variables.$transition;
+
+    &:hover {
+        border-color: variables.$primary;
+        color: variables.$primary;
+    }
+
+    &:last-child:hover {
+        border-color: variables.$error;
+        color: variables.$error;
+    }
+
+    i {
+        font-size: 14px;
+    }
+}
+
+.address-form {
+    background-color: variables.$background;
+    border: 2px solid variables.$border;
+    border-radius: variables.$border-radius-md;
+    padding: variables.$spacing-lg;
+
+    h3 {
+        font-size: 1.2rem;
+        font-weight: 600;
+        color: variables.$text-primary;
+        margin-bottom: variables.$spacing-md;
+    }
+}
 
 @media (max-width: 768px) {
     .container {
@@ -131,7 +291,20 @@
         grid-template-columns: 1fr;
     }
 
-    .info-ttem {
+    .address-card {
+        flex-direction: column;
+        gap: variables.$spacing-md;
+    }
+
+    .address-actions {
+        justify-content: flex-end;
+    }
+
+    .form-actions {
+        flex-direction: column;
+    }
+
+    .info-item {
         flex-direction: column;
         align-items: flex-start;
         gap: variables.$spacing-sm;

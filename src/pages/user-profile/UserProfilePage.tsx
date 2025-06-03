@@ -3,8 +3,19 @@ import { useEffect, useState } from 'react';
 import { z } from 'zod';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-// import { Address } from '@commercetools/platform-sdk';
 import { useGameStore } from '../../store/store';
+import { Address as AddressAPI } from '@commercetools/platform-sdk';
+
+interface Address extends AddressAPI {
+    id?: string;
+    // firstName: string;
+    // lastName: string;
+    // streetName: string;
+    // city: string;
+    // postalCode: string;
+    // country: string;
+    isDefault?: boolean;
+}
 
 // interface UserProfile {
 //     firstName: string;
@@ -21,11 +32,38 @@ const profileSchema = z.object({
     dateOfBirth: z.string().min(1, 'Date of birth is required'),
 });
 
+const passwordSchema = z
+    .object({
+        currentPassword: z.string().min(6, 'Current password is required'),
+        newPassword: z
+            .string()
+            .min(8, 'New password must be at least 8 characters'),
+        confirmPassword: z.string(),
+    })
+    .refine((data) => data.newPassword === data.confirmPassword, {
+        message: "Passwords don't match",
+        path: ['confirmPassword'],
+    });
+
+const addressSchema = z.object({
+    firstName: z.string().min(1, 'First name is required'),
+    lastName: z.string().min(1, 'Last name is required'),
+    streetName: z.string().min(1, 'Street name is required'),
+    city: z.string().min(1, 'City is required'),
+    postalCode: z.string().min(1, 'Postal code is required'),
+    country: z.string().min(1, 'Country is required'),
+});
+
 type ProfileFormData = z.infer<typeof profileSchema>;
+type AddressFormData = z.infer<typeof addressSchema>;
+type PasswordFormData = z.infer<typeof passwordSchema>;
 
 export function UserProfilePage() {
     const gameStore = useGameStore();
     const [isEditing, setIsEditing] = useState(false);
+    const [isEditingPassword, setIsEditingPassword] = useState(false);
+    const [editingAddress, setEditingAddress] = useState<string | null>(null);
+    const [showAddAddress, setShowAddAddress] = useState(false);
 
     // const userProfile = useState<UserProfile>();
     const userProfile = gameStore.customer;
@@ -37,6 +75,27 @@ export function UserProfilePage() {
             lastName: userProfile?.lastName,
             email: userProfile?.email,
             dateOfBirth: userProfile?.dateOfBirth,
+        },
+    });
+
+    const addressForm = useForm<AddressFormData>({
+        resolver: zodResolver(addressSchema),
+        defaultValues: {
+            firstName: '',
+            lastName: '',
+            streetName: '',
+            city: '',
+            postalCode: '',
+            country: '',
+        },
+    });
+
+    const passwordForm = useForm<PasswordFormData>({
+        resolver: zodResolver(passwordSchema),
+        defaultValues: {
+            currentPassword: '',
+            newPassword: '',
+            confirmPassword: '',
         },
     });
 
@@ -63,23 +122,81 @@ export function UserProfilePage() {
         // }, 1000);
     };
 
+    // const onSubmitPassword = (data: PasswordFormData) => {
+    //     setIsEditingPassword(false);
+    //     passwordForm.reset();
+    // };
+    const onSubmitPassword = () => {
+        console.log();
+    };
+
+    const onSubmitAddress = (data: AddressFormData) => {
+        if (editingAddress) {
+            gameStore.setCustomer((prev) => ({
+                ...prev!,
+                addresses: prev!.addresses.map((addr) =>
+                    addr.id === editingAddress ? { ...addr, ...data } : addr
+                ),
+            }));
+            setEditingAddress(null);
+        } else {
+            const newAddress: Address = {
+                ...data,
+                id: Date.now().toString(),
+                isDefault: userProfile?.addresses.length === 0,
+            };
+            gameStore.setCustomer((prev) => ({
+                ...prev!,
+                addresses: [...prev!.addresses, newAddress],
+            }));
+            setShowAddAddress(false);
+        }
+        addressForm.reset();
+    };
+
+    const handleEditAddress = (address: Address) => {
+        addressForm.reset(address);
+        setEditingAddress(address.id ?? null);
+    };
+
+    const handleDeleteAddress = (addressId: string) => {
+        gameStore.setCustomer((prev) => ({
+            ...prev!,
+            addresses: prev!.addresses.filter((addr) => addr.id !== addressId),
+        }));
+    };
+
+    const handleSetDefaultAddress = (addressId: string) => {
+        gameStore.setCustomer((prev) => ({
+            ...prev!,
+            addresses: prev!.addresses.map((addr) => ({
+                ...addr,
+                isDefault: addr.id === addressId,
+            })),
+        }));
+    };
+
     return (
         <div className="user-profile-page">
             <div className="container">
                 <h1 className="title">My Profile</h1>
+
                 <div className="section personal-info-field">
-                    <h2>Personal information</h2>
-                    <button
-                        onClick={() => setIsEditing(!isEditing)}
-                        className="edit-button"
-                    >
-                        <i
-                            className={
-                                isEditing ? 'fas fa-times' : 'fas fa-edit'
-                            }
-                        ></i>
-                        {isEditing ? 'Cancel' : 'Edit'}
-                    </button>
+                    <div className="section-header">
+                        <h2>Personal information</h2>
+                        <button
+                            onClick={() => setIsEditing(!isEditing)}
+                            className="edit-button"
+                        >
+                            <i
+                                className={
+                                    isEditing ? 'fas fa-times' : 'fas fa-edit'
+                                }
+                            ></i>
+                            {isEditing ? 'Cancel' : 'Edit'}
+                        </button>
+                    </div>
+
                     {isEditing ? (
                         <form
                             onSubmit={(e) =>
@@ -156,7 +273,7 @@ export function UserProfilePage() {
                             </div>
 
                             <div className="form-actions">
-                                <button type="submit" className="saveButton">
+                                <button type="submit" className="save-button">
                                     Save Changes
                                 </button>
                             </div>
@@ -167,30 +284,332 @@ export function UserProfilePage() {
                                 <label>First Name:</label>
                                 <span>{userProfile?.firstName}</span>
                             </div>
-                            <div className="info-ttem">
+                            <div className="info-item">
                                 <label>Last Name:</label>
                                 <span>{userProfile?.lastName}</span>
                             </div>
-                            <div className="info-ttem">
+                            <div className="info-item">
                                 <label>Email:</label>
                                 <span>{userProfile?.email}</span>
                             </div>
-                            <div className="info-ttem">
+                            <div className="info-item">
                                 <label>Date of Birth:</label>
                                 <span>
-                                    {new Date(
-                                        userProfile.dateOfBirth
-                                    ).toLocaleDateString()}
+                                    {userProfile?.dateOfBirth
+                                        ? new Date(
+                                              userProfile.dateOfBirth
+                                          ).toLocaleDateString()
+                                        : null}
                                 </span>
                             </div>
                         </div>
                     )}
                 </div>
                 <div className="section password-field">
-                    <h2>Password</h2>
+                    <div className="section-header">
+                        <h2>Password</h2>
+                        <button
+                            onClick={() =>
+                                setIsEditingPassword(!isEditingPassword)
+                            }
+                            className="edit-button"
+                        >
+                            <i
+                                className={
+                                    isEditingPassword
+                                        ? 'fas fa-times'
+                                        : 'fas fa-key'
+                                }
+                            ></i>
+                            {isEditingPassword ? 'Cancel' : 'Change Password'}
+                        </button>
+                    </div>
+
+                    {isEditingPassword && (
+                        <form
+                            onSubmit={(e) =>
+                                void passwordForm.handleSubmit(
+                                    onSubmitPassword
+                                )(e)
+                            }
+                            className="form"
+                        >
+                            <div className="form-group">
+                                <label>Current Password</label>
+                                <input
+                                    type="password"
+                                    {...passwordForm.register(
+                                        'currentPassword'
+                                    )}
+                                    className="input"
+                                />
+                                {passwordForm.formState.errors
+                                    .currentPassword && (
+                                    <span className="error">
+                                        {
+                                            passwordForm.formState.errors
+                                                .currentPassword.message
+                                        }
+                                    </span>
+                                )}
+                            </div>
+
+                            <div className="form-group">
+                                <label>New Password</label>
+                                <input
+                                    type="password"
+                                    {...passwordForm.register('newPassword')}
+                                    className="input"
+                                />
+                                {passwordForm.formState.errors.newPassword && (
+                                    <span className="error">
+                                        {
+                                            passwordForm.formState.errors
+                                                .newPassword.message
+                                        }
+                                    </span>
+                                )}
+                            </div>
+
+                            <div className="form-group">
+                                <label>Confirm New Password</label>
+                                <input
+                                    type="password"
+                                    {...passwordForm.register(
+                                        'confirmPassword'
+                                    )}
+                                    className="input"
+                                />
+                                {passwordForm.formState.errors
+                                    .confirmPassword && (
+                                    <span className="error">
+                                        {
+                                            passwordForm.formState.errors
+                                                .confirmPassword.message
+                                        }
+                                    </span>
+                                )}
+                            </div>
+
+                            <div className="form-actions">
+                                <button type="submit" className="save-button">
+                                    Update Password
+                                </button>
+                            </div>
+                        </form>
+                    )}
                 </div>
                 <div className="section addresses-field">
-                    <h2>Addresses</h2>
+                    <div className="section-header">
+                        <h2>Addresses</h2>
+                        <button
+                            onClick={() => setShowAddAddress(true)}
+                            className="add-button"
+                        >
+                            <i className="fas fa-plus"></i>
+                            Add Address
+                        </button>
+                    </div>
+                    <div className="addresses-list">
+                        {userProfile?.addresses.map((address) => (
+                            <div key={address.id} className="address-card">
+                                <div className="address-info">
+                                    {address.isDefault && (
+                                        <span className="defaultBadge">
+                                            Default
+                                        </span>
+                                    )}
+                                    <h3>
+                                        {address.firstName} {address.lastName}
+                                    </h3>
+                                    <p>{address.streetName}</p>
+                                    <p>
+                                        {address.city}, {address.postalCode}
+                                    </p>
+                                    <p>{address.country}</p>
+                                </div>
+                                <div className="address-actions">
+                                    <button
+                                        onClick={() =>
+                                            handleEditAddress(address)
+                                        }
+                                        className="action-button"
+                                    >
+                                        <i className="fas fa-edit"></i>
+                                    </button>
+                                    {!address.isDefault && (
+                                        <button
+                                            onClick={() =>
+                                                handleSetDefaultAddress(
+                                                    address.id!
+                                                )
+                                            }
+                                            className="action-button"
+                                            title="Set as default"
+                                        >
+                                            <i className="fas fa-star"></i>
+                                        </button>
+                                    )}
+                                    <button
+                                        onClick={() =>
+                                            handleDeleteAddress(address.id!)
+                                        }
+                                        className="action-button"
+                                    >
+                                        <i className="fas fa-trash"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+
+                    {(showAddAddress || editingAddress) && (
+                        <div className="addressForm">
+                            <h3>
+                                {editingAddress
+                                    ? 'Edit Address'
+                                    : 'Add New Address'}
+                            </h3>
+                            <form
+                                onSubmit={(e) =>
+                                    void addressForm.handleSubmit(
+                                        onSubmitAddress
+                                    )(e)
+                                }
+                                className="form"
+                            >
+                                <div className="form-row">
+                                    <div className="form-group">
+                                        <label>First Name</label>
+                                        <input
+                                            {...addressForm.register(
+                                                'firstName'
+                                            )}
+                                            className="input"
+                                        />
+                                        {addressForm.formState.errors
+                                            .firstName && (
+                                            <span className="error">
+                                                {
+                                                    addressForm.formState.errors
+                                                        .firstName.message
+                                                }
+                                            </span>
+                                        )}
+                                    </div>
+                                    <div className="form-group">
+                                        <label>Last Name</label>
+                                        <input
+                                            {...addressForm.register(
+                                                'lastName'
+                                            )}
+                                            className="input"
+                                        />
+                                        {addressForm.formState.errors
+                                            .lastName && (
+                                            <span className="error">
+                                                {
+                                                    addressForm.formState.errors
+                                                        .lastName.message
+                                                }
+                                            </span>
+                                        )}
+                                    </div>
+                                </div>
+
+                                <div className="form-group">
+                                    <label>Street Address</label>
+                                    <input
+                                        {...addressForm.register('streetName')}
+                                        className="input"
+                                    />
+                                    {addressForm.formState.errors
+                                        .streetName && (
+                                        <span className="error">
+                                            {
+                                                addressForm.formState.errors
+                                                    .streetName.message
+                                            }
+                                        </span>
+                                    )}
+                                </div>
+
+                                <div className="form-row">
+                                    <div className="form-group">
+                                        <label>City</label>
+                                        <input
+                                            {...addressForm.register('city')}
+                                            className="input"
+                                        />
+                                        {addressForm.formState.errors.city && (
+                                            <span className="error">
+                                                {
+                                                    addressForm.formState.errors
+                                                        .city.message
+                                                }
+                                            </span>
+                                        )}
+                                    </div>
+                                    <div className="form-group">
+                                        <label>Postal Code</label>
+                                        <input
+                                            {...addressForm.register(
+                                                'postalCode'
+                                            )}
+                                            className="input"
+                                        />
+                                        {addressForm.formState.errors
+                                            .postalCode && (
+                                            <span className="error">
+                                                {
+                                                    addressForm.formState.errors
+                                                        .postalCode.message
+                                                }
+                                            </span>
+                                        )}
+                                    </div>
+                                </div>
+
+                                <div className="form-group">
+                                    <label>Country</label>
+                                    <input
+                                        {...addressForm.register('country')}
+                                        className="input"
+                                    />
+                                    {addressForm.formState.errors.country && (
+                                        <span className="error">
+                                            {
+                                                addressForm.formState.errors
+                                                    .country.message
+                                            }
+                                        </span>
+                                    )}
+                                </div>
+
+                                <div className="form-actions">
+                                    <button
+                                        type="submit"
+                                        className="save-button"
+                                    >
+                                        {editingAddress
+                                            ? 'Update Address'
+                                            : 'Add Address'}
+                                    </button>
+                                    <button
+                                        type="button"
+                                        onClick={() => {
+                                            setShowAddAddress(false);
+                                            setEditingAddress(null);
+                                            addressForm.reset();
+                                        }}
+                                        className="cancel-button"
+                                    >
+                                        Cancel
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    )}
                 </div>
             </div>
         </div>
