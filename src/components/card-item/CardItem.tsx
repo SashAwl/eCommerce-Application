@@ -18,7 +18,6 @@ const CardItem = ({
     discountPrice,
     imageUrl,
 }: CardProps) => {
-    console.log(price);
     const formattedPrice = (price: number): string => (price / 100).toFixed(2);
     return (
         <div className="card-item">
