@@ -11,7 +11,7 @@ const Catalog = () => {
     const [selectedCategory, setSelectedCategory] = useState('all');
 
     const [searchQuery, setSearchQuery] = useState('');
-    const [sortBy, setSortBy] = useState('name');
+    const [sortBy, setSortBy] = useState('--');
     const [ageRating, setAgeRating] = useState('--');
     const [minPrice, setMinPrice] = useState(0);
     const [maxPrice, setMaxPrice] = useState(100);
@@ -118,6 +118,8 @@ const Catalog = () => {
         setAgeRating('--');
         setMinPrice(0);
         setMaxPrice(100);
+        setSortBy('--');
+        setSearchQuery('');
     }
     return (
         <div className="catalog container">
@@ -130,7 +132,7 @@ const Catalog = () => {
                             placeholder="Search games..."
                             value={searchQuery}
                             onChange={(e) => setSearchQuery(e.target.value)}
-                            className="catalog__search__input"
+                            className={`catalog__search__input ${searchQuery ? 'checked-filter' : ''}`}
                         />
                         <button
                             onClick={() => {
@@ -148,8 +150,9 @@ const Catalog = () => {
                             <select
                                 value={sortBy}
                                 onChange={(e) => setSortBy(e.target.value)}
-                                className="select"
+                                className={`select ${sortBy !== '--' ? 'checked-filter' : ''}`}
                             >
+                                <option value="--">--</option>
                                 <option value="name">Name</option>
                                 <option value="price-low">
                                     Price: Low to High
@@ -165,7 +168,7 @@ const Catalog = () => {
                             <select
                                 value={ageRating}
                                 onChange={(e) => setAgeRating(e.target.value)}
-                                className="select"
+                                className={`select ${ageRating !== '--' ? 'checked-filter' : ''}`}
                             >
                                 <option value="--">--</option>
                                 <option value="0+">0+</option>
@@ -177,7 +180,9 @@ const Catalog = () => {
 
                         <div className="catalog__filter__group">
                             <label>Price Range:</label>
-                            <div className="price-range">
+                            <div
+                                className={`price-range ${maxPrice !== 100 || minPrice !== 0 ? 'checked-filter' : ''}`}
+                            >
                                 <input
                                     type="number"
                                     placeholder="Min"

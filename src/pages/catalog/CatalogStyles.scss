@@ -217,6 +217,11 @@
             font-weight: 500;
         }
     }
+
+    .checked-filter {
+        outline: 1px solid #b559a1;
+        border-radius: 10px;
+    }
 }
 
 @media (max-width: 768px) {
