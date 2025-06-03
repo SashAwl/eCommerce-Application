@@ -5,14 +5,14 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useGameStore } from '../../store/store';
 import { Address } from '@commercetools/platform-sdk';
-
-// interface UserProfile {
-//     firstName: string;
-//     lastName: string;
-//     email: string;
-//     dateOfBirth: string;
-//     addresses: Address[];
-// }
+import apiRoot from '../../utils/sdkClient';
+import {
+    CustomerUpdateAction,
+    CustomerChangeEmailAction,
+    CustomerSetFirstNameAction,
+    CustomerSetLastNameAction,
+    CustomerSetDateOfBirthAction,
+} from '@commercetools/platform-sdk';
 
 const profileSchema = z.object({
     firstName: z.string().min(1, 'First name is required'),
@@ -54,7 +54,6 @@ export function UserProfilePage() {
     const [editingAddress, setEditingAddress] = useState<string | null>(null);
     const [showAddAddress, setShowAddAddress] = useState(false);
 
-    // const userProfile = useState<UserProfile>();
     const userProfile = gameStore.customer;
 
     const profileForm = useForm<ProfileFormData>({
@@ -97,18 +96,69 @@ export function UserProfilePage() {
         });
     }, [userProfile, profileForm]);
 
-    const onSubmitProfile = (data: ProfileFormData) => {
-        gameStore.setCustomer((prev) => ({
-            ...prev!,
-            ...data,
-        }));
-        setIsEditing(false);
-        // setSuccessMessage(
-        //     'Your profile information has been successfully updated.'
-        // );
-        // setTimeout(() => {
-        //     setSuccessMessage('');
-        // }, 1000);
+    const updateCustomerProfile = async (
+        customerId: string,
+        version: number,
+        data: ProfileFormData
+    ) => {
+        const actions: CustomerUpdateAction[] = [];
+
+        if (data.email) {
+            actions.push({
+                action: 'changeEmail',
+                email: data.email,
+            } as CustomerChangeEmailAction);
+        }
+
+        if (data.firstName) {
+            actions.push({
+                action: 'setFirstName',
+                firstName: data.firstName,
+            } as CustomerSetFirstNameAction);
+        }
+
+        if (data.lastName) {
+            actions.push({
+                action: 'setLastName',
+                lastName: data.lastName,
+            } as CustomerSetLastNameAction);
+        }
+
+        if (data.dateOfBirth) {
+            actions.push({
+                action: 'setDateOfBirth',
+                dateOfBirth: data.dateOfBirth,
+            } as CustomerSetDateOfBirthAction);
+        }
+
+        const response = await apiRoot
+            .customers()
+            .withId({ ID: customerId })
+            .post({
+                body: {
+                    version,
+                    actions,
+                },
+            })
+            .execute();
+
+        return response.body;
+    };
+
+    const onSubmitProfile = async (data: ProfileFormData) => {
+        if (!userProfile?.id || userProfile.version === undefined) return;
+
+        try {
+            const updatedCustomer = await updateCustomerProfile(
+                userProfile.id,
+                userProfile.version,
+                data
+            );
+            gameStore.setCustomer(() => updatedCustomer);
+            setIsEditing(false);
+        } catch (error) {
+            console.error('Failed to update customer profile:', error);
+        }
     };
 
     // const onSubmitPassword = (data: PasswordFormData) => {
