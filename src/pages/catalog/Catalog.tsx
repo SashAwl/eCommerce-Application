@@ -21,21 +21,31 @@ const Catalog = () => {
         setLoadingStatus(true);
 
         try {
-            // const getCategoryId = (categoryItem: string) => {
-            //     const categoryObj = categories.find(
-            //         (category) =>
-            //             category.name['en-US'].toLowerCase() ===
-            //             categoryItem.toLowerCase()
-            //     );
-            //     return categoryObj?.id;
-            // };
+            const getCategoryId = (categoryItem: string) => {
+                const categoryObj = categories.find(
+                    (category) =>
+                        category.name['en-US'].toLowerCase() ===
+                        categoryItem.toLowerCase()
+                );
+                return categoryObj?.id;
+            };
+            console.log(getCategoryId(selectedCategory));
+
+            const queryArgs: { where?: string; staged: boolean } = {
+                staged: false,
+            };
+
+            if (selectedCategory.toLowerCase() !== 'all') {
+                const categoryId = getCategoryId(selectedCategory);
+                if (categoryId) {
+                    queryArgs.where = `categories(id = "${categoryId}")`;
+                }
+            }
 
             const response = await apiRoot
                 .productProjections()
                 .get({
-                    queryArgs: {
-                        staged: false,
-                    },
+                    queryArgs,
                 })
                 .execute();
 
