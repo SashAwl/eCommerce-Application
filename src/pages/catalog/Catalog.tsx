@@ -11,7 +11,7 @@ const Catalog = () => {
     const [selectedCategory, setSelectedCategory] = useState('all');
 
     const [searchQuery, setSearchQuery] = useState('');
-    const [sortBy, setSortBy] = useState('name');
+    const [sortBy, setSortBy] = useState('--');
     const [ageRating, setAgeRating] = useState('--');
     const [minPrice, setMinPrice] = useState(0);
     const [maxPrice, setMaxPrice] = useState(100);
@@ -72,7 +72,41 @@ const Catalog = () => {
                 })
                 .execute();
 
-            const productsResponse: ProductProjection[] = response.body.results;
+            const productsResponse: ProductProjection[] = response.body.results
+                .sort((a, b) => {
+                    if (sortBy === '--') {
+                        return 1;
+                    }
+                    if (sortBy === 'name') {
+                        return a.name['en-US'] < b.name['en-US'] ? -1 : 1;
+                    }
+                    if (sortBy === 'price-low') {
+                        const aPrice = a.masterVariant.prices
+                            ? +a.masterVariant.prices[0].value.centAmount
+                            : 1;
+                        const bPrice = b.masterVariant.prices
+                            ? +b.masterVariant.prices[0].value.centAmount
+                            : 1;
+
+                        return aPrice < bPrice ? -1 : 1;
+                    }
+                    if (sortBy === 'price-low') {
+                        const aPrice = a.masterVariant.prices
+                            ? +a.masterVariant.prices[0].value.centAmount
+                            : 1;
+                        const bPrice = b.masterVariant.prices
+                            ? +b.masterVariant.prices[0].value.centAmount
+                            : 1;
+
+                        return aPrice < bPrice ? 1 : -1;
+                    }
+                    return 1;
+                })
+                .filter((el) => {
+                    return el.name['en-US']
+                        .toLowerCase()
+                        .includes(searchQuery.toLowerCase());
+                });
             setProducts(productsResponse);
         } catch (err: unknown) {
             if (err instanceof Error) {
@@ -118,6 +152,8 @@ const Catalog = () => {
         setAgeRating('--');
         setMinPrice(0);
         setMaxPrice(100);
+        setSortBy('--');
+        setSearchQuery('');
     }
     return (
         <div className="catalog container">
@@ -147,9 +183,12 @@ const Catalog = () => {
                             <label>Sort by:</label>
                             <select
                                 value={sortBy}
-                                onChange={(e) => setSortBy(e.target.value)}
+                                onChange={(e) => {
+                                    setSortBy(e.target.value);
+                                }}
                                 className="select"
                             >
+                                <option value="--">--</option>
                                 <option value="name">Name</option>
                                 <option value="price-low">
                                     Price: Low to High
