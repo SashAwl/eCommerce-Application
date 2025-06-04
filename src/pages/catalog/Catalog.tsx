@@ -107,15 +107,6 @@ const Catalog = () => {
                 );
             }
 
-            const sortByQuery =
-                sortBy === '--'
-                    ? undefined
-                    : sortBy === 'name-asc'
-                      ? 'name.en-US asc'
-                      : sortBy === 'name-desc'
-                        ? 'name.en-US desc'
-                        : undefined;
-
             const where =
                 whereList.length > 0 ? whereList.join(' and ') : undefined;
 
@@ -125,16 +116,48 @@ const Catalog = () => {
                     queryArgs: {
                         staged: false,
                         ...(whereList.length > 0 && { where: where }),
-                        ...(searchQuery.trim() && {
-                            'text.kk': searchQuery.trim(),
-                        }),
-                        ...(sortByQuery && { sort: [sortByQuery] }),
-                        // priceCurrency: 'USD',
                     },
                 })
                 .execute();
 
-            const productsResponse: ProductProjection[] = response.body.results;
+            const productsResponse: ProductProjection[] = response.body.results
+                .sort((a, b) => {
+                    if (sortBy === '--') {
+                        return 1;
+                    }
+                    if (sortBy === 'name-asc') {
+                        return a.name['en-US'] < b.name['en-US'] ? -1 : 1;
+                    }
+                    if (sortBy === 'name-desc') {
+                        return a.name['en-US'] < b.name['en-US'] ? 1 : -1;
+                    }
+                    if (sortBy === 'price-asc') {
+                        const aPrice = a.masterVariant.prices
+                            ? +a.masterVariant.prices[0].value.centAmount
+                            : 1;
+                        const bPrice = b.masterVariant.prices
+                            ? +b.masterVariant.prices[0].value.centAmount
+                            : 1;
+
+                        return aPrice < bPrice ? -1 : 1;
+                    }
+                    if (sortBy === 'price-desc') {
+                        const aPrice = a.masterVariant.prices
+                            ? +a.masterVariant.prices[0].value.centAmount
+                            : 1;
+                        const bPrice = b.masterVariant.prices
+                            ? +b.masterVariant.prices[0].value.centAmount
+                            : 1;
+
+                        return aPrice < bPrice ? 1 : -1;
+                    }
+                    return 1;
+                })
+                .filter((el) => {
+                    return el.name['en-US']
+                        .toLowerCase()
+                        .includes(searchQuery.toLowerCase().trim());
+                });
             setProducts(productsResponse);
         } catch (err: unknown) {
             if (err instanceof Error) {
@@ -224,12 +247,12 @@ const Catalog = () => {
                                 <option value="name-desc">
                                     Name: High to Low
                                 </option>
-                                {/* <option value="price-asc">
+                                <option value="price-asc">
                                     Price: Low to High
                                 </option>
                                 <option value="price-desc">
                                     Price: High to Low
-                                </option> */}
+                                </option>
                             </select>
                         </div>
 
