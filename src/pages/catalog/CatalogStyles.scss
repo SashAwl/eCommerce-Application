@@ -42,6 +42,7 @@
             cursor: pointer;
             transition: $transition;
             font-weight: 500;
+            height: fit-content;
 
             &:hover {
                 border-color: $primary;
@@ -216,6 +217,17 @@
             color: $text-secondary;
             font-weight: 500;
         }
+    }
+
+    .checked-filter {
+        outline: 1px solid #b559a1;
+        border-radius: 10px;
+    }
+
+    .breadcrumb p {
+        color: #5865f2;
+        transition: all 0.3s ease;
+        cursor: pointer;
     }
 }
 
