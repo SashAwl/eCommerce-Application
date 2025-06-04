@@ -110,11 +110,7 @@ const Catalog = () => {
             const sortByQuery =
                 sortBy === '--'
                     ? undefined
-                    : // : sortBy === 'price-asc'
-                      //   ? 'masterVariant.prices.value.centAmount asc'
-                      //   : sortBy === 'price-desc'
-                      //     ? 'masterVariant.prices.value.centAmount desc'
-                      sortBy === 'name-asc'
+                    : sortBy === 'name-asc'
                       ? 'name.en-US asc'
                       : sortBy === 'name-desc'
                         ? 'name.en-US desc'
@@ -132,7 +128,8 @@ const Catalog = () => {
                         ...(searchQuery.trim() && {
                             'text.kk': searchQuery.trim(),
                         }),
-                        ...(sortByQuery && { sort: sortByQuery }),
+                        ...(sortByQuery && { sort: [sortByQuery] }),
+                        // priceCurrency: 'USD',
                     },
                 })
                 .execute();
@@ -160,6 +157,7 @@ const Catalog = () => {
         setLoadingStatus(false);
     }, [
         selectedCategory,
+        selectedSubCategory,
         minPrice,
         maxPrice,
         searchQuery,
@@ -181,6 +179,7 @@ const Catalog = () => {
 
     function clearFilter(): void {
         setSelectedCategory('all');
+        setSelectedSubCategory('');
         setAgeRating('--');
         setMinPrice(0);
         setMaxPrice(100);
@@ -310,7 +309,10 @@ const Catalog = () => {
                         <div className="catalog__category__list">
                             <button
                                 className={`catalog__category__item ${selectedCategory === 'all' ? 'active' : ''}`}
-                                onClick={() => setSelectedCategory('all')}
+                                onClick={() => {
+                                    setSelectedCategory('all');
+                                    clearFilter();
+                                }}
                             >
                                 <summary>All</summary>
                             </button>
