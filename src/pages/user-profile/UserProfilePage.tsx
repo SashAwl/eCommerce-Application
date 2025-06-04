@@ -26,7 +26,16 @@ const passwordSchema = z
         currentPassword: z.string().min(6, 'Current password is required'),
         newPassword: z
             .string()
-            .min(8, 'New password must be at least 8 characters'),
+            .min(8, 'Password must be at least 8 characters')
+            .regex(
+                /^(?=.*[A-Z]).+$/,
+                'Password must be at least 1 uppercase letter'
+            )
+            .regex(
+                /^(?=.*[a-z]).+$/,
+                'Password must be at least 1 lowercase  letter'
+            )
+            .regex(/^(?=.*\d).+$/, 'Password must be at least 1 number'),
         confirmPassword: z.string(),
     })
     .refine((data) => data.newPassword === data.confirmPassword, {
@@ -58,6 +67,7 @@ export function UserProfilePage() {
 
     const profileForm = useForm<ProfileFormData>({
         resolver: zodResolver(profileSchema),
+        mode: 'onChange',
         defaultValues: {
             firstName: userProfile?.firstName,
             lastName: userProfile?.lastName,
@@ -68,6 +78,7 @@ export function UserProfilePage() {
 
     const addressForm = useForm<AddressFormData>({
         resolver: zodResolver(addressSchema),
+        mode: 'onChange',
         defaultValues: {
             firstName: '',
             lastName: '',
@@ -80,6 +91,7 @@ export function UserProfilePage() {
 
     const passwordForm = useForm<PasswordFormData>({
         resolver: zodResolver(passwordSchema),
+        mode: 'onChange',
         defaultValues: {
             currentPassword: '',
             newPassword: '',
@@ -161,12 +173,41 @@ export function UserProfilePage() {
         }
     };
 
-    // const onSubmitPassword = (data: PasswordFormData) => {
-    //     setIsEditingPassword(false);
-    //     passwordForm.reset();
-    // };
-    const onSubmitPassword = () => {
-        console.log();
+    const updateCustomerPassword = async (
+        customerId: string,
+        version: number,
+        data: PasswordFormData
+    ) => {
+        const response = await apiRoot
+            .customers()
+            .password()
+            .post({
+                body: {
+                    id: customerId,
+                    version,
+                    currentPassword: data.currentPassword,
+                    newPassword: data.newPassword,
+                },
+            })
+            .execute();
+
+        return response.body;
+    };
+
+    const onSubmitPassword = async (data: PasswordFormData) => {
+        if (!userProfile?.id || userProfile.version === undefined) return;
+
+        try {
+            const updatedCustomerPassw = await updateCustomerPassword(
+                userProfile.id,
+                userProfile.version,
+                data
+            );
+            gameStore.setCustomer(() => updatedCustomerPassw);
+            setIsEditingPassword(false);
+        } catch (error) {
+            console.error('Failed to update customer password:', error);
+        }
     };
 
     const onSubmitAddress = (data: AddressFormData) => {
