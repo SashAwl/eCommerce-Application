@@ -1,36 +1,77 @@
 import { useCategoryStore, useProductsStore } from '../../store/store';
-import { useEffect, useState } from 'react';
-import { ProductProjection } from '@commercetools/platform-sdk';
+import { useEffect, useState, useMemo } from 'react';
+import { Category, ProductProjection } from '@commercetools/platform-sdk';
 
 import './CatalogStyles.scss';
 import apiRoot from '../../utils/sdkClient';
 import CardItem from '../../components/card-item/CardItem';
+import { Link } from 'react-router-dom';
 
 const Catalog = () => {
     const { categories, loading, error } = useCategoryStore();
     const [selectedCategory, setSelectedCategory] = useState('all');
+    const [selectedSubCategory, setSelectedSubCategory] = useState('');
 
     const [searchQuery, setSearchQuery] = useState('');
     const [sortBy, setSortBy] = useState('--');
     const [ageRating, setAgeRating] = useState('--');
     const [minPrice, setMinPrice] = useState(0);
     const [maxPrice, setMaxPrice] = useState(100);
+    const [openDetailsId, setOpenDetailsId] = useState<string | null>(null);
+
+    const [categoryMap, setCategoryMap] = useState<Record<string, Category[]>>(
+        {}
+    );
+
     const { products, setProducts, setLoadingStatus, setError } =
         useProductsStore();
+
+    const linkList = useMemo(() => {
+        return [
+            'Home',
+            'Catalog',
+            selectedCategory !== 'all' ? selectedCategory : '',
+            selectedCategory && selectedSubCategory ? selectedSubCategory : '',
+        ];
+    }, [selectedCategory, selectedSubCategory]);
+
+    const getCategoryId = (categoryItem: string) => {
+        const categoryObj = categories.find(
+            (category) =>
+                category.name['en-US'].toLowerCase() ===
+                categoryItem.toLowerCase()
+        );
+        return categoryObj?.id;
+    };
+
+    const getSubcategories = (categoryId: string) =>
+        categoryMap[categoryId] || [];
 
     const fetchCategories = async () => {
         setLoadingStatus(true);
 
         try {
-            const getCategoryId = (categoryItem: string) => {
-                const categoryObj = categories.find(
-                    (category) =>
-                        category.name['en-US'].toLowerCase() ===
-                        categoryItem.toLowerCase()
-                );
-                return categoryObj?.id;
-            };
-            console.log(getCategoryId(selectedCategory));
+            const responseCategorys = await apiRoot
+                .categories()
+                .get({
+                    queryArgs: {
+                        limit: 500,
+                    },
+                })
+                .execute();
+
+            const categories = responseCategorys.body.results;
+            const newCategoryMap: Record<string, Category[]> = {};
+
+            categories.forEach((category: Category) => {
+                const parentId = category.parent?.id ?? 'root';
+                if (!newCategoryMap[parentId]) {
+                    newCategoryMap[parentId] = [];
+                }
+                newCategoryMap[parentId].push(category);
+            });
+
+            setCategoryMap(newCategoryMap);
 
             const whereList: string[] = [];
 
@@ -38,6 +79,13 @@ const Catalog = () => {
                 const categoryId = getCategoryId(selectedCategory);
                 if (categoryId) {
                     whereList.push(`categories(id="${categoryId}")`);
+                }
+            }
+
+            if (selectedSubCategory.toLowerCase()) {
+                const subCategoryId = getCategoryId(selectedSubCategory);
+                if (subCategoryId) {
+                    whereList.push(`categories(id="${subCategoryId}")`);
                 }
             }
 
@@ -59,15 +107,32 @@ const Catalog = () => {
                 );
             }
 
+            const sortByQuery =
+                sortBy === '--'
+                    ? undefined
+                    : // : sortBy === 'price-asc'
+                      //   ? 'masterVariant.prices.value.centAmount asc'
+                      //   : sortBy === 'price-desc'
+                      //     ? 'masterVariant.prices.value.centAmount desc'
+                      sortBy === 'name-asc'
+                      ? 'name.en-US asc'
+                      : sortBy === 'name-desc'
+                        ? 'name.en-US desc'
+                        : undefined;
+
             const where =
                 whereList.length > 0 ? whereList.join(' and ') : undefined;
-            console.log(where);
+
             const response = await apiRoot
                 .productProjections()
                 .get({
                     queryArgs: {
                         staged: false,
-                        ...(whereList.length > 0 && { where: whereList }),
+                        ...(whereList.length > 0 && { where: where }),
+                        ...(searchQuery.trim() && {
+                            'text.kk': searchQuery.trim(),
+                        }),
+                        ...(sortByQuery && { sort: sortByQuery }),
                     },
                 })
                 .execute();
@@ -101,6 +166,7 @@ const Catalog = () => {
         sortBy,
         categories,
         ageRating,
+        searchQuery,
     ]);
 
     const validProducts = products.filter((product) => {
@@ -153,13 +219,18 @@ const Catalog = () => {
                                 className={`select ${sortBy !== '--' ? 'checked-filter' : ''}`}
                             >
                                 <option value="--">--</option>
-                                <option value="name">Name</option>
-                                <option value="price-low">
+                                <option value="name-asc">
+                                    Name: Low to High
+                                </option>
+                                <option value="name-desc">
+                                    Name: High to Low
+                                </option>
+                                {/* <option value="price-asc">
                                     Price: Low to High
                                 </option>
-                                <option value="price-high">
+                                <option value="price-desc">
                                     Price: High to Low
-                                </option>
+                                </option> */}
                             </select>
                         </div>
 
@@ -215,35 +286,98 @@ const Catalog = () => {
                         Clear
                     </button>
                 </div>
+                <div className="breadcrumb">
+                    <Link to="/home">{linkList[0]}</Link> /{' '}
+                    <p onClick={() => setSelectedCategory('all')}>
+                        {linkList[1]}
+                    </p>{' '}
+                    /
+                    {linkList[2] && (
+                        <p
+                            onClick={() =>
+                                setSelectedCategory(String(linkList[2]))
+                            }
+                        >
+                            {linkList[2]} /
+                        </p>
+                    )}
+                    {linkList[2] && linkList[3] && <p>{linkList[3]}</p>}
+                </div>
                 <div className="catalog__category">
                     <h2 className="catalog__category__heading">Categories</h2>
                     {error && <p>Error: {error}</p>}
                     {!loading && !error && (
-                        <ul className="catalog__category__list">
-                            <li
+                        <div className="catalog__category__list">
+                            <button
                                 className={`catalog__category__item ${selectedCategory === 'all' ? 'active' : ''}`}
                                 onClick={() => setSelectedCategory('all')}
                             >
-                                All
-                            </li>
+                                <summary>All</summary>
+                            </button>
                             {categories.map((category) => {
+                                const isOpen = openDetailsId === category.id;
+
                                 if (!category.parent) {
                                     return (
-                                        <li
+                                        <details
                                             className={`catalog__category__item ${selectedCategory === category.name['en-US'] ? 'active' : ''}`}
                                             key={category.id}
-                                            onClick={() =>
-                                                setSelectedCategory(
-                                                    category.name['en-US']
-                                                )
-                                            }
+                                            open={isOpen}
+                                            onClick={(e) => {
+                                                e.preventDefault();
+                                                setOpenDetailsId(
+                                                    isOpen ? null : category.id
+                                                );
+                                            }}
                                         >
-                                            {category.name['en-US']}
-                                        </li>
+                                            <summary
+                                                onClick={() => {
+                                                    setSelectedCategory(
+                                                        category.name['en-US']
+                                                    );
+                                                    setSelectedSubCategory('');
+                                                }}
+                                            >
+                                                {category.name['en-US']}
+                                            </summary>
+                                            <ul key={category.id}>
+                                                {(() => {
+                                                    if (!category.id)
+                                                        return null;
+
+                                                    const subcategories =
+                                                        getSubcategories(
+                                                            category.id
+                                                        );
+
+                                                    return subcategories.map(
+                                                        (item) => (
+                                                            <li
+                                                                key={`${category.id}-${item.id}}}`}
+                                                                onClick={() => {
+                                                                    setSelectedSubCategory(
+                                                                        item
+                                                                            .name[
+                                                                            'en-US'
+                                                                        ]
+                                                                    );
+                                                                }}
+                                                            >
+                                                                {
+                                                                    item.name[
+                                                                        'en-US'
+                                                                    ]
+                                                                }
+                                                            </li>
+                                                        )
+                                                    );
+                                                })()}
+                                            </ul>
+                                        </details>
                                     );
                                 }
                             })}
-                        </ul>
+                        </div>
                     )}
                 </div>
                 {loading ? (
