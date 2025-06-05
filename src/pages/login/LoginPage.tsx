@@ -93,7 +93,6 @@ export function LoginPage() {
             setTimeout(() => {
                 gameStore.clearSuccessMessage();
             }, 2000);
-            console.log('response.body: ', response.body);
 
             const tokenAccess = await fetch(CT_AUTH_URL_TOKEN, {
                 method: 'POST',
