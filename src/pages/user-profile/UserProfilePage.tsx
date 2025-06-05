@@ -13,6 +13,7 @@ import {
     CustomerSetLastNameAction,
     CustomerSetDateOfBirthAction,
 } from '@commercetools/platform-sdk';
+import { Link } from 'react-router-dom';
 
 const profileSchema = z.object({
     firstName: z.string().min(1, 'First name is required'),
@@ -279,7 +280,7 @@ export function UserProfilePage() {
         }));
     };
 
-    return (
+    return gameStore.isLogin ? (
         <div className="user-profile-page">
             <div className="container">
                 <h1 className="title">My Profile</h1>
@@ -531,9 +532,9 @@ export function UserProfilePage() {
                                                 : 'Default Billing'}
                                         </span>
                                     )}
-                                    <h3>
+                                    {/* <h3>
                                         {address.firstName} {address.lastName}
-                                    </h3>
+                                    </h3> */}
                                     <p>{address.streetName}</p>
                                     <p>
                                         {address.city}, {address.postalCode}
@@ -605,7 +606,7 @@ export function UserProfilePage() {
                                 }
                                 className="form"
                             >
-                                <div className="form-row">
+                                {/* <div className="form-row">
                                     <div className="form-group">
                                         <label>First Name</label>
                                         <input
@@ -642,7 +643,7 @@ export function UserProfilePage() {
                                             </span>
                                         )}
                                     </div>
-                                </div>
+                                </div> */}
 
                                 <div className="form-group">
                                     <label>Street Address</label>
@@ -739,6 +740,14 @@ export function UserProfilePage() {
                     )}
                 </div>
             </div>
+        </div>
+    ) : (
+        <div className="navigation-prompt">
+            <span>Already have an account?</span>
+
+            <Link to="/login" className="item-link">
+                Sign In
+            </Link>
         </div>
     );
 }
