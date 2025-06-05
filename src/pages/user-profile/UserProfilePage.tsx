@@ -13,6 +13,7 @@ import {
     CustomerSetLastNameAction,
     CustomerSetDateOfBirthAction,
 } from '@commercetools/platform-sdk';
+import { Link } from 'react-router-dom';
 
 const profileSchema = z.object({
     firstName: z.string().min(1, 'First name is required'),
@@ -230,27 +231,47 @@ export function UserProfilePage() {
         }
     };
 
-    const onSubmitAddress = (data: AddressFormData) => {
-        if (editingAddress) {
-            gameStore.setCustomer((prev) => ({
-                ...prev!,
-                addresses: prev!.addresses.map((addr) =>
-                    addr.id === editingAddress ? { ...addr, ...data } : addr
-                ),
-            }));
-            setEditingAddress(null);
-        } else {
-            const newAddress: Address = {
-                ...data,
-                id: Date.now().toString(),
-            };
-            gameStore.setCustomer((prev) => ({
-                ...prev!,
-                addresses: [...prev!.addresses, newAddress],
-            }));
+    const addCustomerAddress = async (
+        customerId: string,
+        version: number,
+        data: AddressFormData
+    ) => {
+        const actions: CustomerUpdateAction[] = [
+            {
+                action: 'addAddress',
+                address: data,
+            },
+        ];
+
+        const response = await apiRoot
+            .customers()
+            .withId({ ID: customerId })
+            .post({
+                body: {
+                    version,
+                    actions,
+                },
+            })
+            .execute();
+
+        return response.body;
+    };
+
+    const onSubmitAddress = async (data: AddressFormData) => {
+        if (!userProfile?.version) return;
+
+        try {
+            const addCustomerAddr = await addCustomerAddress(
+                userProfile.id,
+                userProfile.version,
+                data
+            );
+            gameStore.setCustomer(() => addCustomerAddr);
             setShowAddAddress(false);
+            addressForm.reset();
+        } catch (error) {
+            console.error('Failed to add address:', error);
         }
-        addressForm.reset();
     };
 
     const handleEditAddress = (address: Address) => {
@@ -258,11 +279,45 @@ export function UserProfilePage() {
         setEditingAddress(address.id ?? null);
     };
 
-    const handleDeleteAddress = (addressId: string) => {
-        gameStore.setCustomer((prev) => ({
-            ...prev!,
-            addresses: prev!.addresses.filter((addr) => addr.id !== addressId),
-        }));
+    const removeCustomerAddress = async (
+        customerId: string,
+        version: number,
+        addressId: string
+    ) => {
+        const actions: CustomerUpdateAction[] = [
+            {
+                action: 'removeAddress',
+                addressId,
+            },
+        ];
+
+        const response = await apiRoot
+            .customers()
+            .withId({ ID: customerId })
+            .post({
+                body: {
+                    version,
+                    actions,
+                },
+            })
+            .execute();
+
+        return response.body;
+    };
+
+    const handleDeleteAddress = async (addressId: string) => {
+        if (!userProfile?.version) return;
+
+        try {
+            const updatedCustomer = await removeCustomerAddress(
+                userProfile.id,
+                userProfile.version,
+                addressId
+            );
+            gameStore.setCustomer(() => updatedCustomer);
+        } catch (error) {
+            console.error('Failed to delete address:', error);
+        }
     };
 
     const handleSetDefaultAddress = (addressId: string) => {
@@ -279,7 +334,7 @@ export function UserProfilePage() {
         }));
     };
 
-    return (
+    return gameStore.isLogin ? (
         <div className="user-profile-page">
             <div className="container">
                 <h1 className="title">My Profile</h1>
@@ -505,13 +560,26 @@ export function UserProfilePage() {
                 <div className="section addresses-field">
                     <div className="section-header">
                         <h2>Addresses</h2>
-                        <button
-                            onClick={() => setShowAddAddress(true)}
-                            className="add-button"
-                        >
-                            <i className="fas fa-plus"></i>
-                            Add Address
-                        </button>
+                        {!showAddAddress && !editingAddress && (
+                            <button
+                                onClick={() => {
+                                    setEditingAddress(null);
+                                    setShowAddAddress(true);
+                                    addressForm.reset({
+                                        firstName: userProfile?.firstName ?? '',
+                                        lastName: userProfile?.lastName ?? '',
+                                        streetName: '',
+                                        city: '',
+                                        postalCode: '',
+                                        country: '',
+                                    });
+                                }}
+                                className="add-button"
+                            >
+                                <i className="fas fa-plus"></i>
+                                Add Address
+                            </button>
+                        )}
                     </div>
                     <div className="addresses-list">
                         {userProfile?.addresses.map((address) => (
@@ -531,9 +599,9 @@ export function UserProfilePage() {
                                                 : 'Default Billing'}
                                         </span>
                                     )}
-                                    <h3>
+                                    {/* <h3>
                                         {address.firstName} {address.lastName}
-                                    </h3>
+                                    </h3> */}
                                     <p>{address.streetName}</p>
                                     <p>
                                         {address.city}, {address.postalCode}
@@ -579,7 +647,9 @@ export function UserProfilePage() {
                                     )}
                                     <button
                                         onClick={() =>
-                                            handleDeleteAddress(address.id!)
+                                            void handleDeleteAddress(
+                                                address.id!
+                                            )
                                         }
                                         className="action-button"
                                     >
@@ -605,7 +675,7 @@ export function UserProfilePage() {
                                 }
                                 className="form"
                             >
-                                <div className="form-row">
+                                {/* <div className="form-row">
                                     <div className="form-group">
                                         <label>First Name</label>
                                         <input
@@ -642,7 +712,7 @@ export function UserProfilePage() {
                                             </span>
                                         )}
                                     </div>
-                                </div>
+                                </div> */}
 
                                 <div className="form-group">
                                     <label>Street Address</label>
@@ -739,6 +809,14 @@ export function UserProfilePage() {
                     )}
                 </div>
             </div>
+        </div>
+    ) : (
+        <div className="navigation-prompt">
+            <span>Already have an account?</span>
+
+            <Link to="/login" className="item-link">
+                Sign In
+            </Link>
         </div>
     );
 }
