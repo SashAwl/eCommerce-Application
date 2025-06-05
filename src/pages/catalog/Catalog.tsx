@@ -316,10 +316,12 @@ const Catalog = () => {
                     /
                     {linkList[2] && (
                         <p
-                            onClick={() =>
-                                setSelectedCategory(String(linkList[2]))
-                            }
+                            onClick={() => {
+                                setSelectedCategory(String(linkList[2]));
+                                setSelectedSubCategory('');
+                            }}
                         >
+                            {' '}
                             {linkList[2]} /
                         </p>
                     )}
@@ -418,6 +420,9 @@ const Catalog = () => {
                                     id={game.id}
                                     title={
                                         game.name['en-US'] || 'Untitled Game'
+                                    }
+                                    description={
+                                        game.description?.['en-US'] ?? ''
                                     }
                                     category={
                                         game.masterVariant.attributes?.[2] &&

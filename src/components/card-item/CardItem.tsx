@@ -4,6 +4,7 @@ import './CardItemStyles.scss';
 export interface CardProps {
     id: string;
     title: string;
+    description: string;
     category: string;
     price: number;
     discountPrice: number;
@@ -13,6 +14,7 @@ export interface CardProps {
 const CardItem = ({
     id,
     title,
+    description,
     category,
     price,
     discountPrice,
@@ -35,6 +37,9 @@ const CardItem = ({
                 <Link to={`/game/${id}`}>
                     <h3 className="card-item__title">{title}</h3>
                 </Link>
+                <div className="card-item__description">
+                    {description.slice(0, Math.min(100, description.length))}...
+                </div>
                 <div className="card-item__category">{category}</div>
                 <div className="card-item__price-box">
                     <div
