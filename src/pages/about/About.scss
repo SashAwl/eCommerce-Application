@@ -1,0 +1,32 @@
+.about {
+    min-height: 100vh;
+
+    &__inner {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 2rem 1rem;
+
+        @media (min-width: 768px) {
+            padding: 3rem 1rem;
+        }
+    }
+
+    &__heading {
+        text-align: center;
+        margin-bottom: 3rem;
+
+        @media (min-width: 1024px) {
+            margin-bottom: 4rem;
+        }
+    }
+
+    &__description {
+        text-align: center;
+        margin-bottom: 3rem;
+        font-size: 18px;
+
+        @media (min-width: 1024px) {
+            margin-bottom: 4rem;
+        }
+    }
+}
