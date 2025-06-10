@@ -1,9 +1,12 @@
 import './Game.scss';
 import { useEffect, useState } from 'react';
-import { Product } from '@commercetools/platform-sdk';
+import { Cart, Product } from '@commercetools/platform-sdk';
 import apiRoot from '../../utils/sdkClient';
 import { useParams } from 'react-router-dom';
 import { Link } from 'react-router-dom';
+import { useGameStore } from '../../store/store';
+import { ctpClient } from '../../utils/BuildClient';
+import isProductInCart from '../../utils/cart/isProductInCart';
 
 interface IGameData {
     name: string;
@@ -20,6 +23,7 @@ interface attributes {
 function Game() {
     const [game, setGame] = useState<Product | null>(null);
     const [loading, setLoading] = useState(true);
+
     const { gameId } = useParams();
     const [gameData, setGameData] = useState<IGameData>({
         name: 'Untitled Game',
@@ -33,6 +37,9 @@ function Game() {
     const [showImageModal, setShowImageModal] = useState(false);
     const [modalImageIndex, setModalImageIndex] = useState(0);
     const [gameCategories, setCategories] = useState<string[]>([]);
+    const { cartId, cartVersion, setCardVersion } = useGameStore();
+    const [isGameInCart, setGameInCart] = useState(true);
+
     useEffect(() => {
         window.scrollTo(0, 0);
         if (!gameId) return;
@@ -157,7 +164,13 @@ function Game() {
                                     });
                             }
                         );
-
+                        isProductInCart(cartId ?? '', body.id)
+                            .then((data) => {
+                                setGameInCart(data);
+                            })
+                            .catch((err) => {
+                                console.log(err);
+                            });
                         setLoading(false);
                     });
             } catch (error) {
@@ -198,8 +211,50 @@ function Game() {
         setShowImageModal(true);
     };
 
+    const addItemToCart = async (id: string): Promise<Cart | void> => {
+        try {
+            const response = await ctpClient.execute({
+                uri: `/mergemates/carts/${cartId}`,
+                method: 'POST',
+                body: {
+                    version: cartVersion,
+                    actions: [
+                        {
+                            action: 'addLineItem',
+                            productId: id,
+                            quantity: 1,
+                        },
+                    ],
+                },
+            });
+
+            const cartData = response.body as Cart;
+            console.log('Cart data:', cartData);
+            return cartData;
+        } catch (error) {
+            console.error('Error fetching cart data:', error);
+        }
+    };
     const closeImageModal = () => {
         setShowImageModal(false);
+    };
+    const handleAddToCart = () => {
+        if (game?.id) {
+            addItemToCart(game.id)
+                .then((data) => {
+                    setGameInCart(true);
+                    if (data) {
+                        setCardVersion(data.version);
+                    }
+
+                    console.log(data);
+                })
+                .catch((err) => {
+                    console.log(err);
+                });
+        }
+
+        console.log('Cart add');
     };
 
     if (loading) {
@@ -331,6 +386,17 @@ function Game() {
                                 <p>{gameData.description}</p>
                             </div>
                         }
+                        {!isGameInCart && (
+                            <div className={'gameActions'}>
+                                <button
+                                    onClick={handleAddToCart}
+                                    className={'addToCartButton'}
+                                >
+                                    <i className="fas fa-shopping-cart"></i>
+                                    Add to Cart
+                                </button>
+                            </div>
+                        )}
                     </div>
                 </div>
 
