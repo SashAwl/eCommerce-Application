@@ -2,15 +2,17 @@ import { useEffect, useState } from 'react';
 
 import './Cart.scss';
 import { Link } from 'react-router-dom';
-import { ShoppingCart } from 'lucide-react';
+import { Minus, Plus, ShoppingCart, Trash2 } from 'lucide-react';
 import { useGameStore } from '../../store/store';
 import createCart from '../../utils/cart/createCart';
 import getCart from '../../utils/cart/getCart';
 import { LineItem } from '@commercetools/platform-sdk';
-import CardItem from '../../components/card-item/CardItem';
+import { CartItem } from '../../components/basket/card';
+import updateItemQuantity from '../../utils/cart/updateItemQuantity';
+import removeItemFromCart from '../../utils/cart/removeItemFromCart';
 
 export default function CartPage() {
-    const { cartId, setCardId, setCardVersion } = useGameStore();
+    const { cartId, cartVersion, setCardId, setCardVersion } = useGameStore();
     const [cartItems, setCartItems] = useState<LineItem[]>([]);
     // const [cartItems] = useState<LineItem[]>([]);
     useEffect(() => {
@@ -39,7 +41,7 @@ export default function CartPage() {
                     console.log(err);
                 });
         }
-    }, []);
+    }, [cartVersion]);
 
     if (cartItems.length === 0) {
         return (
@@ -60,6 +62,34 @@ export default function CartPage() {
         );
     }
 
+    function removeItem(id: string): void {
+        removeItemFromCart(id, cartId!, cartVersion!)
+            .then((data) => {
+                if (data) {
+                    setCardVersion(data.version);
+                }
+
+                console.log(data);
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+    }
+
+    function updateQuantity(id: string, quantity: number): void {
+        updateItemQuantity(id, cartId!, cartVersion!, quantity)
+            .then((data) => {
+                if (data) {
+                    setCardVersion(data.version);
+                }
+
+                console.log(data);
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+    }
+
     return (
         <div className={'cartContainer'}>
             <div className={'innerContainer'}>
@@ -77,18 +107,116 @@ export default function CartPage() {
                 <div className={'cartLayout'}>
                     <div className={'cartItemsSection'}>
                         {cartItems.map((game) => (
-                            <CardItem
-                                key={game.id}
-                                id={game.id}
-                                title={game.name['en-US'] || 'Untitled Game'}
-                                description={''}
-                                category={'game'}
-                                price={game.price.value.centAmount ?? 0}
-                                discountPrice={
-                                    game.price.discounted?.value.centAmount ?? 0
-                                }
-                                imageUrl={'not image'}
-                            />
+                            <CartItem key={game.id} className={'cartItem'}>
+                                <div className={'itemContent'}>
+                                    {/* {game.imageUrl && (
+                                        <img
+                                            src={game.imageUrl}
+                                            alt={game.title}
+                                            className={'itemImage'}
+                                        />
+                                    )} */}
+
+                                    <div className={'itemDetails'}>
+                                        <h3 className={'itemTitle'}>
+                                            {game.name['en-US']}
+                                        </h3>
+                                        <div className={'itemPricing'}>
+                                            {game.price.discounted?.value
+                                                .centAmount ? (
+                                                <>
+                                                    <span
+                                                        className={
+                                                            'currentPrice'
+                                                        }
+                                                    >
+                                                        $
+                                                        {(
+                                                            Number(
+                                                                game.price
+                                                                    .discounted
+                                                                    ?.value
+                                                                    .centAmount
+                                                            ) / 100
+                                                        ).toFixed(2)}
+                                                    </span>
+                                                    <span
+                                                        className={
+                                                            'originalPrice'
+                                                        }
+                                                    >
+                                                        $
+                                                        {Number(
+                                                            game.price.value
+                                                                .centAmount
+                                                        ) / 100}
+                                                    </span>
+                                                </>
+                                            ) : (
+                                                <span
+                                                    className={'currentPrice'}
+                                                >
+                                                    $
+                                                    {(
+                                                        Number(
+                                                            game.price.value
+                                                                .centAmount
+                                                        ) / 100
+                                                    ).toFixed(2)}
+                                                </span>
+                                            )}
+                                        </div>
+
+                                        <div className={'itemActions'}>
+                                            <div className={'quantityControls'}>
+                                                <button
+                                                    onClick={() =>
+                                                        updateQuantity(
+                                                            game.id,
+                                                            game.quantity - 1
+                                                        )
+                                                    }
+                                                    className={'quantityButton'}
+                                                    disabled={
+                                                        game.quantity <= 1
+                                                    }
+                                                >
+                                                    <Minus />
+                                                </button>
+
+                                                <span
+                                                    className={
+                                                        'quantityDisplay'
+                                                    }
+                                                >
+                                                    {game.quantity}
+                                                </span>
+
+                                                <button
+                                                    onClick={() =>
+                                                        updateQuantity(
+                                                            game.id,
+                                                            game.quantity + 1
+                                                        )
+                                                    }
+                                                    className={'quantityButton'}
+                                                >
+                                                    <Plus />
+                                                </button>
+                                            </div>
+
+                                            <button
+                                                onClick={() =>
+                                                    removeItem(game.id)
+                                                }
+                                                className={'removeButton'}
+                                            >
+                                                <Trash2 />
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </CartItem>
                         ))}
                     </div>
 

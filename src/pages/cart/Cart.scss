@@ -1,668 +1,669 @@
 .cartContainer {
-  min-height: 100vh;
-  background-color: #F9FAFB;
-  
-  :global(.dark) & {
-    background-color: #111827;
-  }
+    min-height: 100vh;
+    background-color: #f9fafb;
+
+    :global(.dark) & {
+        background-color: #111827;
+    }
 }
 
 .innerContainer {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 2rem 1rem;
-  
-  @media (min-width: 768px) {
-    padding: 3rem 1rem;
-  }
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem 1rem;
+
+    @media (min-width: 768px) {
+        padding: 3rem 1rem;
+    }
 }
 
 .headerSection {
-  text-align: center;
-  margin-bottom: 2rem;
-  
-  @media (min-width: 1024px) {
-    margin-bottom: 3rem;
-  }
+    text-align: center;
+    margin-bottom: 2rem;
+
+    @media (min-width: 1024px) {
+        margin-bottom: 3rem;
+    }
 }
 
 .mainTitle {
-  font-size: 1.875rem;
-  font-weight: 700;
-  margin-bottom: 0.5rem;
-  color: #111827;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.75rem;
-  
-  @media (min-width: 768px) {
-    font-size: 2.25rem;
-    margin-bottom: 1rem;
-  }
-  
-  :global(.dark) & {
-    color: #FFFFFF;
-  }
-  
-  svg {
-    width: 1.75rem;
-    height: 1.75rem;
-    
+    font-size: 1.875rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    color: #111827;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+
     @media (min-width: 768px) {
-      width: 2rem;
-      height: 2rem;
+        font-size: 2.25rem;
+        margin-bottom: 1rem;
     }
-  }
+
+    :global(.dark) & {
+        color: #ffffff;
+    }
+
+    svg {
+        width: 1.75rem;
+        height: 1.75rem;
+
+        @media (min-width: 768px) {
+            width: 2rem;
+            height: 2rem;
+        }
+    }
 }
 
 .itemCount {
-  color: #6B7280;
-  font-size: 1rem;
-  
-  :global(.dark) & {
-    color: #D1D5DB;
-  }
+    color: #6b7280;
+    font-size: 1rem;
+
+    :global(.dark) & {
+        color: #d1d5db;
+    }
 }
 
 .cartLayout {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 2rem;
-  
-  @media (min-width: 1024px) {
-    grid-template-columns: 2fr 1fr;
-    gap: 3rem;
-  }
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+
+    @media (min-width: 1024px) {
+        grid-template-columns: 2fr 1fr;
+        gap: 3rem;
+    }
 }
 
 .cartItemsSection {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
 }
 
 .cartItem {
-  background-color: #FFFFFF;
-  border-radius: 0.5rem;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-  transition: box-shadow 0.2s;
-  
-  &:hover {
-    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-  }
-  
-  :global(.dark) & {
-    background-color: #1F2937;
-  }
+    background-color: #ffffff;
+    border-radius: 0.5rem;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    transition: box-shadow 0.2s;
+
+    &:hover {
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    }
+
+    :global(.dark) & {
+        background-color: #1f2937;
+    }
 }
 
 .itemContent {
-  padding: 1.5rem;
-  display: flex;
-  gap: 1rem;
-  
-  @media (min-width: 768px) {
-    gap: 1.5rem;
-  }
+    padding: 1.5rem;
+    display: flex;
+    gap: 1rem;
+
+    @media (min-width: 768px) {
+        gap: 1.5rem;
+    }
 }
 
 .itemImage {
-  width: 4rem;
-  height: 4rem;
-  border-radius: 0.375rem;
-  object-fit: cover;
-  flex-shrink: 0;
-  
-  @media (min-width: 768px) {
-    width: 5rem;
-    height: 5rem;
-  }
+    width: 4rem;
+    height: 4rem;
+    border-radius: 0.375rem;
+    object-fit: cover;
+    flex-shrink: 0;
+
+    @media (min-width: 768px) {
+        width: 5rem;
+        height: 5rem;
+    }
 }
 
 .itemDetails {
-  flex: 1;
-  min-width: 0;
+    flex: 1;
+    min-width: 0;
 }
 
 .itemTitle {
-  font-size: 1rem;
-  font-weight: 600;
-  color: #111827;
-  margin-bottom: 0.5rem;
-  
-  @media (min-width: 768px) {
-    font-size: 1.125rem;
-  }
-  
-  :global(.dark) & {
-    color: #FFFFFF;
-  }
+    font-size: 1rem;
+    font-weight: 600;
+    color: #111827;
+    margin-bottom: 0.5rem;
+
+    @media (min-width: 768px) {
+        font-size: 1.125rem;
+    }
+
+    :global(.dark) & {
+        color: #ffffff;
+    }
 }
 
 .itemPricing {
-  display: flex;
-  flex-direction: column;
-  gap: 0.25rem;
-  margin-bottom: 1rem;
-  
-  @media (min-width: 640px) {
-    flex-direction: row;
-    align-items: center;
-    gap: 0.75rem;
-  }
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    margin-bottom: 1rem;
+
+    @media (min-width: 640px) {
+        flex-direction: row;
+        align-items: center;
+        gap: 0.75rem;
+    }
 }
 
 .currentPrice {
-  font-size: 1.125rem;
-  font-weight: 600;
-  color: #059669;
-  
-  :global(.dark) & {
-    color: #10B981;
-  }
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: #059669;
+
+    :global(.dark) & {
+        color: #10b981;
+    }
 }
 
 .originalPrice {
-  font-size: 0.875rem;
-  color: #9CA3AF;
-  text-decoration: line-through;
-  
-  :global(.dark) & {
-    color: #6B7280;
-  }
+    font-size: 0.875rem;
+    color: #9ca3af;
+    text-decoration: line-through;
+
+    :global(.dark) & {
+        color: #6b7280;
+    }
 }
 
 .itemActions {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
 }
 
 .quantityControls {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
 }
 
 .quantityButton {
-  width: 2rem;
-  height: 2rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border: 1px solid #E5E7EB;
-  background-color: #FFFFFF;
-  border-radius: 0.25rem;
-  cursor: pointer;
-  transition: all 0.2s;
-  
-  &:hover {
-    background-color: #F3F4F6;
-    border-color: #D1D5DB;
-  }
-  
-  &:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-    
+    width: 2rem;
+    height: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #e5e7eb;
+    background-color: #ffffff;
+    border-radius: 0.25rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    padding: 0;
+
     &:hover {
-      background-color: #FFFFFF;
-      border-color: #E5E7EB;
+        background-color: #f3f4f6;
+        border-color: #d1d5db;
     }
-  }
-  
-  :global(.dark) & {
-    border-color: #374151;
-    background-color: #1F2937;
-    color: #FFFFFF;
-    
-    &:hover {
-      background-color: #374151;
-      border-color: #4B5563;
+
+    &:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+
+        &:hover {
+            background-color: #ffffff;
+            border-color: #e5e7eb;
+        }
     }
-    
-    &:disabled:hover {
-      background-color: #1F2937;
-      border-color: #374151;
+
+    :global(.dark) & {
+        border-color: #374151;
+        background-color: #1f2937;
+        color: #ffffff;
+
+        &:hover {
+            background-color: #374151;
+            border-color: #4b5563;
+        }
+
+        &:disabled:hover {
+            background-color: #1f2937;
+            border-color: #374151;
+        }
     }
-  }
-  
-  svg {
-    width: 0.875rem;
-    height: 0.875rem;
-  }
+
+    svg {
+        width: 0.875rem;
+        height: 0.875rem;
+    }
 }
 
 .quantityDisplay {
-  min-width: 2rem;
-  text-align: center;
-  font-weight: 500;
-  color: #111827;
-  
-  :global(.dark) & {
-    color: #FFFFFF;
-  }
+    min-width: 2rem;
+    text-align: center;
+    font-weight: 500;
+    color: #111827;
+
+    :global(.dark) & {
+        color: #ffffff;
+    }
 }
 
 .removeButton {
-  padding: 0.5rem;
-  color: #EF4444;
-  background-color: transparent;
-  border: none;
-  border-radius: 0.25rem;
-  cursor: pointer;
-  transition: background-color 0.2s;
-  
-  &:hover {
-    background-color: #FEE2E2;
-  }
-  
-  :global(.dark) & {
-    color: #F87171;
-    
+    padding: 0.5rem;
+    color: #ef4444;
+    background-color: transparent;
+    border: none;
+    border-radius: 0.25rem;
+    cursor: pointer;
+    transition: background-color 0.2s;
+
     &:hover {
-      background-color: #7F1D1D;
+        background-color: #fee2e2;
     }
-  }
-  
-  svg {
-    width: 1rem;
-    height: 1rem;
-  }
+
+    :global(.dark) & {
+        color: #f87171;
+
+        &:hover {
+            background-color: #7f1d1d;
+        }
+    }
+
+    svg {
+        width: 1rem;
+        height: 1rem;
+    }
 }
 
 .summarySection {
-  height: fit-content;
+    height: fit-content;
 }
 
 .summaryCard {
-  background-color: #FFFFFF;
-  border-radius: 0.5rem;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-  
-  :global(.dark) & {
-    background-color: #1F2937;
-  }
+    background-color: #ffffff;
+    border-radius: 0.5rem;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+
+    :global(.dark) & {
+        background-color: #1f2937;
+    }
 }
 
 .summaryHeader {
-  padding: 1.5rem 1.5rem 1rem;
+    padding: 1.5rem 1.5rem 1rem;
 }
 
 .summaryTitle {
-  font-size: 1.25rem;
-  font-weight: 600;
-  color: #111827;
-  
-  :global(.dark) & {
-    color: #FFFFFF;
-  }
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #111827;
+
+    :global(.dark) & {
+        color: #ffffff;
+    }
 }
 
 .summaryContent {
-  padding: 0 1.5rem 1.5rem;
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
+    padding: 0 1.5rem 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
 }
 
 .promoSection {
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
 }
 
 .promoInputContainer {
-  display: flex;
-  gap: 0.5rem;
+    display: flex;
+    gap: 0.5rem;
 }
 
 .promoInput {
-  flex: 1;
-  padding: 0.5rem 0.75rem;
-  border: 1px solid #E5E7EB;
-  border-radius: 0.375rem;
-  font-size: 0.875rem;
-  
-  &:focus {
-    outline: none;
-    border-color: #3B82F6;
-    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
-  }
-  
-  :global(.dark) & {
-    background-color: #374151;
-    border-color: #4B5563;
-    color: #FFFFFF;
-    
-    &::placeholder {
-      color: #9CA3AF;
-    }
-    
+    flex: 1;
+    padding: 0.5rem 0.75rem;
+    border: 1px solid #e5e7eb;
+    border-radius: 0.375rem;
+    font-size: 0.875rem;
+
     &:focus {
-      border-color: #60A5FA;
-      box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.1);
+        outline: none;
+        border-color: #3b82f6;
+        box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
     }
-  }
+
+    :global(.dark) & {
+        background-color: #374151;
+        border-color: #4b5563;
+        color: #ffffff;
+
+        &::placeholder {
+            color: #9ca3af;
+        }
+
+        &:focus {
+            border-color: #60a5fa;
+            box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.1);
+        }
+    }
 }
 
 .promoButton {
-  padding: 0.5rem 1rem;
-  background-color: #3B82F6;
-  color: white;
-  border: none;
-  border-radius: 0.375rem;
-  font-size: 0.875rem;
-  font-weight: 500;
-  cursor: pointer;
-  transition: background-color 0.2s;
-  display: flex;
-  align-items: center;
-  gap: 0.375rem;
-  
-  &:hover {
-    background-color: #2563EB;
-  }
-  
-  &:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-    
+    padding: 0.5rem 1rem;
+    background-color: #3b82f6;
+    color: white;
+    border: none;
+    border-radius: 0.375rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 0.375rem;
+
     &:hover {
-      background-color: #3B82F6;
+        background-color: #2563eb;
     }
-  }
-  
-  svg {
-    width: 0.875rem;
-    height: 0.875rem;
-  }
+
+    &:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+
+        &:hover {
+            background-color: #3b82f6;
+        }
+    }
+
+    svg {
+        width: 0.875rem;
+        height: 0.875rem;
+    }
 }
 
 .appliedPromo {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0.75rem;
-  background-color: #ECFDF5;
-  border: 1px solid #10B981;
-  border-radius: 0.375rem;
-  
-  :global(.dark) & {
-    background-color: #064E3B;
-    border-color: #059669;
-  }
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.75rem;
+    background-color: #ecfdf5;
+    border: 1px solid #10b981;
+    border-radius: 0.375rem;
+
+    :global(.dark) & {
+        background-color: #064e3b;
+        border-color: #059669;
+    }
 }
 
 .appliedPromoText {
-  font-size: 0.875rem;
-  color: #059669;
-  font-weight: 500;
-  
-  :global(.dark) & {
-    color: #10B981;
-  }
+    font-size: 0.875rem;
+    color: #059669;
+    font-weight: 500;
+
+    :global(.dark) & {
+        color: #10b981;
+    }
 }
 
 .removePromoButton {
-  background: none;
-  border: none;
-  color: #059669;
-  cursor: pointer;
-  padding: 0.25rem;
-  border-radius: 0.25rem;
-  transition: background-color 0.2s;
-  
-  &:hover {
-    background-color: #D1FAE5;
-  }
-  
-  :global(.dark) & {
-    color: #10B981;
-    
+    background: none;
+    border: none;
+    color: #059669;
+    cursor: pointer;
+    padding: 0.25rem;
+    border-radius: 0.25rem;
+    transition: background-color 0.2s;
+
     &:hover {
-      background-color: #065F46;
+        background-color: #d1fae5;
     }
-  }
-  
-  svg {
-    width: 0.875rem;
-    height: 0.875rem;
-  }
+
+    :global(.dark) & {
+        color: #10b981;
+
+        &:hover {
+            background-color: #065f46;
+        }
+    }
+
+    svg {
+        width: 0.875rem;
+        height: 0.875rem;
+    }
 }
 
 .summaryLine {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  font-size: 0.875rem;
-  color: #6B7280;
-  
-  :global(.dark) & {
-    color: #D1D5DB;
-  }
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.875rem;
+    color: #6b7280;
+
+    :global(.dark) & {
+        color: #d1d5db;
+    }
 }
 
 .summaryLineValue {
-  font-weight: 500;
-  color: #111827;
-  
-  :global(.dark) & {
-    color: #FFFFFF;
-  }
+    font-weight: 500;
+    color: #111827;
+
+    :global(.dark) & {
+        color: #ffffff;
+    }
 }
 
 .summaryLineDiscount {
-  color: #059669;
-  
-  :global(.dark) & {
-    color: #10B981;
-  }
+    color: #059669;
+
+    :global(.dark) & {
+        color: #10b981;
+    }
 }
 
 .summaryDivider {
-  border-color: #E5E7EB;
-  
-  :global(.dark) & {
-    border-color: #374151;
-  }
+    border-color: #e5e7eb;
+
+    :global(.dark) & {
+        border-color: #374151;
+    }
 }
 
 .totalLine {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  font-size: 1.125rem;
-  font-weight: 600;
-  color: #111827;
-  
-  :global(.dark) & {
-    color: #FFFFFF;
-  }
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: #111827;
+
+    :global(.dark) & {
+        color: #ffffff;
+    }
 }
 
 .summaryFooter {
-  padding: 1rem 1.5rem 1.5rem;
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
+    padding: 1rem 1.5rem 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
 }
 
 .checkoutButton {
-  width: 100%;
-  padding: 0.75rem 1rem;
-  background-color: #059669;
-  color: white;
-  border: none;
-  border-radius: 0.375rem;
-  font-size: 1rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background-color 0.2s;
-  
-  &:hover {
-    background-color: #047857;
-  }
-  
-  &:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-    
+    width: 100%;
+    padding: 0.75rem 1rem;
+    background-color: #059669;
+    color: white;
+    border: none;
+    border-radius: 0.375rem;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s;
+
     &:hover {
-      background-color: #059669;
+        background-color: #047857;
     }
-  }
+
+    &:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+
+        &:hover {
+            background-color: #059669;
+        }
+    }
 }
 
 .continueShoppingButton {
-  width: 100%;
-  padding: 0.75rem 1rem;
-  background-color: transparent;
-  color: #6B7280;
-  border: 1px solid #E5E7EB;
-  border-radius: 0.375rem;
-  font-size: 0.875rem;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.2s;
-  text-decoration: none;
-  text-align: center;
-  
-  &:hover {
-    background-color: #F3F4F6;
-    color: #374151;
+    width: 100%;
+    padding: 0.75rem 1rem;
+    background-color: transparent;
+    color: #6b7280;
+    border: 1px solid #e5e7eb;
+    border-radius: 0.375rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
     text-decoration: none;
-  }
-  
-  :global(.dark) & {
-    border-color: #374151;
-    color: #D1D5DB;
-    
+    text-align: center;
+
     &:hover {
-      background-color: #374151;
-      color: #FFFFFF;
+        background-color: #f3f4f6;
+        color: #374151;
+        text-decoration: none;
     }
-  }
+
+    :global(.dark) & {
+        border-color: #374151;
+        color: #d1d5db;
+
+        &:hover {
+            background-color: #374151;
+            color: #ffffff;
+        }
+    }
 }
 
 .clearCartButton {
-  width: 100%;
-  padding: 0.5rem 1rem;
-  background-color: transparent;
-  color: #EF4444;
-  border: 1px solid #EF4444;
-  border-radius: 0.375rem;
-  font-size: 0.875rem;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.2s;
-  
-  &:hover {
-    background-color: #EF4444;
-    color: white;
-  }
-  
-  :global(.dark) & {
-    color: #F87171;
-    border-color: #F87171;
-    
+    width: 100%;
+    padding: 0.5rem 1rem;
+    background-color: transparent;
+    color: #ef4444;
+    border: 1px solid #ef4444;
+    border-radius: 0.375rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+
     &:hover {
-      background-color: #F87171;
-      color: #111827;
+        background-color: #ef4444;
+        color: white;
     }
-  }
+
+    :global(.dark) & {
+        color: #f87171;
+        border-color: #f87171;
+
+        &:hover {
+            background-color: #f87171;
+            color: #111827;
+        }
+    }
 }
 
 .emptyCart {
-  text-align: center;
-  padding: 3rem 1rem;
-  
-  @media (min-width: 768px) {
-    padding: 4rem 2rem;
-  }
+    text-align: center;
+    padding: 3rem 1rem;
+
+    @media (min-width: 768px) {
+        padding: 4rem 2rem;
+    }
 }
 
 .emptyCartIcon {
-  width: 4rem;
-  height: 4rem;
-  margin: 0 auto 1.5rem;
-  color: #9CA3AF;
-  
-  :global(.dark) & {
-    color: #6B7280;
-  }
+    width: 4rem;
+    height: 4rem;
+    margin: 0 auto 1.5rem;
+    color: #9ca3af;
+
+    :global(.dark) & {
+        color: #6b7280;
+    }
 }
 
 .emptyCartTitle {
-  font-size: 1.5rem;
-  font-weight: 600;
-  color: #111827;
-  margin-bottom: 0.5rem;
-  
-  :global(.dark) & {
-    color: #FFFFFF;
-  }
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #111827;
+    margin-bottom: 0.5rem;
+
+    :global(.dark) & {
+        color: #ffffff;
+    }
 }
 
 .emptyCartDescription {
-  color: #6B7280;
-  margin-bottom: 2rem;
-  
-  :global(.dark) & {
-    color: #D1D5DB;
-  }
+    color: #6b7280;
+    margin-bottom: 2rem;
+
+    :global(.dark) & {
+        color: #d1d5db;
+    }
 }
 
 .loginPrompt {
-  text-align: center;
-  padding: 2rem 1rem;
-  background-color: #FFFFFF;
-  border-radius: 0.5rem;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-  margin-bottom: 2rem;
-  
-  :global(.dark) & {
-    background-color: #1F2937;
-  }
+    text-align: center;
+    padding: 2rem 1rem;
+    background-color: #ffffff;
+    border-radius: 0.5rem;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    margin-bottom: 2rem;
+
+    :global(.dark) & {
+        background-color: #1f2937;
+    }
 }
 
 .loginPromptTitle {
-  font-size: 1.25rem;
-  font-weight: 600;
-  color: #111827;
-  margin-bottom: 0.5rem;
-  
-  :global(.dark) & {
-    color: #FFFFFF;
-  }
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #111827;
+    margin-bottom: 0.5rem;
+
+    :global(.dark) & {
+        color: #ffffff;
+    }
 }
 
 .loginPromptDescription {
-  color: #6B7280;
-  margin-bottom: 1.5rem;
-  
-  :global(.dark) & {
-    color: #D1D5DB;
-  }
+    color: #6b7280;
+    margin-bottom: 1.5rem;
+
+    :global(.dark) & {
+        color: #d1d5db;
+    }
 }
 
 .loginButton {
-  padding: 0.75rem 1.5rem;
-  background-color: #3B82F6;
-  color: white;
-  border: none;
-  border-radius: 0.375rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background-color 0.2s;
-  text-decoration: none;
-  display: inline-block;
-  
-  &:hover {
-    background-color: #2563EB;
-    text-decoration: none;
+    padding: 0.75rem 1.5rem;
+    background-color: #3b82f6;
     color: white;
-  }
+    border: none;
+    border-radius: 0.375rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    text-decoration: none;
+    display: inline-block;
+
+    &:hover {
+        background-color: #2563eb;
+        text-decoration: none;
+        color: white;
+    }
 }
