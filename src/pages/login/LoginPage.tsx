@@ -88,12 +88,11 @@ export function LoginPage() {
                 })
                 .execute();
             await navigate('/');
-            gameStore.login();
+            gameStore.login(response.body.customer);
             gameStore.setSuccessMessage('User successfully logged in');
             setTimeout(() => {
                 gameStore.clearSuccessMessage();
             }, 2000);
-            console.log('response.body: ', response.body);
 
             const tokenAccess = await fetch(CT_AUTH_URL_TOKEN, {
                 method: 'POST',

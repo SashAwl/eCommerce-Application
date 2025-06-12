@@ -6,6 +6,7 @@ import { useGameStore } from '../../store/store';
 const Header = () => {
     const [menuOpen, setMenuOpen] = useState(false);
     const isLogin = useGameStore((state) => state.isLogin);
+    const user = useGameStore((state) => state.customer);
     const logOut = useGameStore((state) => state.logout);
 
     const logoutHandler = () => {
@@ -57,13 +58,8 @@ const Header = () => {
                                 </Link>
                             </li>
                             <li className="nav__list__item">
-                                <Link to="/games" className="item-link">
-                                    Games
-                                </Link>
-                            </li>
-                            <li className="nav__list__item">
-                                <Link to="/not-found" className="item-link">
-                                    Categories
+                                <Link to="/catalog" className="item-link">
+                                    Catalog
                                 </Link>
                             </li>
                             <li className="nav__list__item">
@@ -114,9 +110,19 @@ const Header = () => {
                             </div>
                         )}
                         {isLogin && (
+                            <div className="btn-auth">
+                                <Link
+                                    to="/profile"
+                                    className="item-link item-btn"
+                                >
+                                    {user?.firstName ?? 'Profile'}
+                                </Link>
+                            </div>
+                        )}
+                        {isLogin && (
                             <div className="btn-auth" onClick={logoutHandler}>
                                 <Link to="/" className="item-link item-btn">
-                                    Logout
+                                    Log out
                                 </Link>
                             </div>
                         )}

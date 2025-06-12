@@ -1,11 +1,21 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
+import {
+    Category,
+    ProductProjection,
+    Customer,
+} from '@commercetools/platform-sdk';
 
 interface IGameStore {
     isLogin: boolean;
     customerId: string;
     token: string;
-    login: () => void;
+    userName: string;
+
+    customer: Customer | null;
+    setCustomer: (change: (customer: Customer | null) => Customer) => void;
+
+    login: (customer?: Customer) => void;
     logout: () => void;
     successMessage: string;
     setSuccessMessage: (message: string) => void;
@@ -17,14 +27,40 @@ interface IGameStore {
     changeAddressStatus: () => void;
 }
 
+interface CategoryState {
+    categories: Category[];
+    loading: boolean;
+    error: string | null;
+    setCategories: (categorList: Category[]) => void;
+    setLoadingStatus: (loadingStatus: boolean) => void;
+    setError: (errorMessage: string) => void;
+}
+
+interface ProductsState {
+    products: ProductProjection[];
+    loading: boolean;
+    error: string | null;
+    setProducts: (productsList: ProductProjection[]) => void;
+    setLoadingStatus: (loadingStatus: boolean) => void;
+    setError: (errorMessage: string) => void;
+}
+
 export const useGameStore = create<IGameStore>()(
     persist(
         (set) => ({
             isLogin: false,
             customerId: '',
             token: '',
-            login: () => set(() => ({ isLogin: true })),
-            logout: () => set(() => ({ isLogin: false })),
+            userName: '',
+
+            customer: null,
+            setCustomer: (change) =>
+                set((store) => ({
+                    customer: change(store.customer),
+                })),
+
+            login: (customer) => set(() => ({ isLogin: true, customer })),
+            logout: () => set(() => ({ isLogin: false, customer: null })),
 
             successMessage: '',
             setSuccessMessage: (message) => set({ successMessage: message }),
@@ -44,3 +80,21 @@ export const useGameStore = create<IGameStore>()(
         }
     )
 );
+
+export const useCategoryStore = create<CategoryState>((set) => ({
+    categories: [],
+    loading: false,
+    error: null,
+    setCategories: (categoryList) => set({ categories: categoryList }),
+    setLoadingStatus: (loadingStatus) => set({ loading: loadingStatus }),
+    setError: (errorMessage) => set({ error: errorMessage }),
+}));
+
+export const useProductsStore = create<ProductsState>((set) => ({
+    products: [],
+    loading: false,
+    error: null,
+    setProducts: (productsList) => set({ products: productsList }),
+    setLoadingStatus: (loadingStatus) => set({ loading: loadingStatus }),
+    setError: (errorMessage) => set({ error: errorMessage }),
+}));

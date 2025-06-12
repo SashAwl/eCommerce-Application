@@ -1,0 +1,342 @@
+@use '../../styles/variables.scss';
+@use 'sass:color';
+
+.user-profile-page {
+    min-height: 100vh;
+    padding: variables.$spacing-lg 0;
+    background-color: var(--background);
+}
+
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 0 variables.$spacing-md;
+}
+
+.title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: variables.$text-primary;
+    text-align: center;
+    margin-bottom: variables.$spacing-xl;
+    font-family: 'Poppins', sans-serif;
+}
+
+.section {
+    background-color: variables.$surface;
+    border-radius: variables.$border-radius-lg;
+    padding: variables.$spacing-lg;
+    margin-bottom: variables.$spacing-lg;
+    box-shadow: variables.$shadow;
+}
+
+.edit-button,
+.add-button {
+    display: flex;
+    align-items: center;
+    gap: variables.$spacing-sm;
+    padding: 8px 16px;
+    background-color: variables.$primary;
+    color: white;
+    border: none;
+    border-radius: variables.$border-radius-md;
+    cursor: pointer;
+    transition: variables.$transition;
+    font-weight: 500;
+
+    &:hover {
+        background-color: variables.$primary-dark;
+    }
+
+    i {
+        font-size: 14px;
+    }
+}
+
+.add-button {
+    background-color: variables.$success;
+
+    &:hover {
+        background-color: color.adjust(variables.$success, $lightness: -10%);
+    }
+}
+
+.profile-info {
+    display: grid;
+    gap: variables.$spacing-md;
+}
+
+.info-item {
+    display: flex;
+    align-items: center;
+    gap: variables.$spacing-md;
+    padding: variables.$spacing-sm 0;
+
+    label {
+        font-weight: 600;
+        color: variables.$text-secondary;
+        min-width: 120px;
+    }
+
+    span {
+        color: variables.$text-primary;
+        font-size: 16px;
+    }
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+    gap: variables.$spacing-md;
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: variables.$spacing-md;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: variables.$spacing-sm;
+
+    label {
+        font-weight: 500;
+        color: variables.$text-secondary;
+        font-size: 14px;
+    }
+}
+
+.input {
+    padding: 12px 16px;
+    border: 2px solid variables.$border;
+    border-radius: variables.$border-radius-md;
+    background-color: variables.$background;
+    color: variables.$text-primary;
+    font-size: 16px;
+    transition: variables.$transition;
+
+    &:focus {
+        outline: none;
+        border-color: variables.$primary;
+    }
+
+    &::placeholder {
+        color: variables.$text-tertiary;
+    }
+}
+
+.error {
+    color: variables.$error;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.form-actions {
+    display: flex;
+    gap: variables.$spacing-md;
+    margin-top: variables.$spacing-md;
+}
+
+.save-button {
+    padding: 12px 24px;
+    background-color: variables.$primary;
+    color: white;
+    border: none;
+    border-radius: variables.$border-radius-md;
+    cursor: pointer;
+    transition: variables.$transition;
+    font-weight: 500;
+
+    &:hover {
+        background-color: variables.$primary-dark;
+    }
+}
+
+.cancel-button {
+    padding: 12px 24px;
+    background-color: transparent;
+    color: variables.$text-secondary;
+    border: 2px solid variables.$border;
+    border-radius: variables.$border-radius-md;
+    cursor: pointer;
+    transition: variables.$transition;
+    font-weight: 500;
+
+    &:hover {
+        border-color: variables.$text-secondary;
+        color: variables.$text-primary;
+    }
+}
+
+.addresses-list {
+    display: flex;
+    flex-direction: column;
+    gap: variables.$spacing-md;
+    margin-bottom: variables.$spacing-lg;
+}
+
+.address-card {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: variables.$spacing-md;
+    background-color: variables.$background;
+    border: 2px solid variables.$border;
+    border-radius: variables.$border-radius-md;
+    transition: variables.$transition;
+
+    &:hover {
+        border-color: variables.$primary;
+    }
+}
+
+.address-info {
+    flex: 1;
+    position: relative;
+
+    h3 {
+        font-size: 1.1rem;
+        font-weight: 600;
+        color: variables.$text-primary;
+        margin-bottom: variables.$spacing-sm;
+    }
+
+    p {
+        color: variables.$text-secondary;
+        margin-bottom: 4px;
+
+        &:last-child {
+            margin-bottom: 0;
+        }
+    }
+}
+
+.default-badge {
+    position: absolute;
+    top: 0;
+    right: 8px;
+    background-color: variables.$success;
+    color: white;
+    padding: 4px 8px;
+    border-radius: variables.$border-radius-sm;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.address-actions {
+    display: flex;
+    gap: variables.$spacing-sm;
+}
+
+.action-button {
+    padding: 8px 10px;
+    background-color: transparent;
+    color: variables.$text-secondary;
+    border: 2px solid variables.$border;
+    border-radius: variables.$border-radius-sm;
+    cursor: pointer;
+    transition: variables.$transition;
+
+    &:hover {
+        border-color: variables.$primary;
+        color: variables.$primary;
+    }
+
+    &:last-child:hover {
+        border-color: variables.$error;
+        color: variables.$error;
+    }
+
+    i {
+        font-size: 14px;
+    }
+}
+
+.address-form {
+    background-color: variables.$background;
+    border: 2px solid variables.$border;
+    border-radius: variables.$border-radius-md;
+    padding: variables.$spacing-lg;
+
+    h3 {
+        font-size: 1.2rem;
+        font-weight: 600;
+        color: variables.$text-primary;
+        margin-bottom: variables.$spacing-md;
+    }
+}
+
+.navigation-prompt {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: variables.$spacing-xs;
+    margin-top: variables.$spacing-md;
+    text-align: center;
+    width: 100%;
+
+    span {
+        color: variables.$text-secondary;
+        font-size: 0.9rem;
+    }
+
+    a.item-link {
+        color: variables.$primary;
+        text-decoration: none;
+        font-weight: 500;
+        font-size: 0.9rem;
+
+        &:hover {
+            text-decoration: underline;
+        }
+    }
+}
+
+@media (max-width: 768px) {
+    .container {
+        padding: 0 variables.$spacing-sm;
+    }
+
+    .title {
+        font-size: 2rem;
+    }
+
+    .section-header {
+        flex-direction: column;
+        gap: variables.$spacing-md;
+        align-items: stretch;
+
+        h2 {
+            text-align: center;
+        }
+    }
+
+    .form-row {
+        grid-template-columns: 1fr;
+    }
+
+    .address-card {
+        flex-direction: column;
+        gap: variables.$spacing-md;
+    }
+
+    .address-actions {
+        justify-content: flex-end;
+    }
+
+    .form-actions {
+        flex-direction: column;
+    }
+
+    .info-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: variables.$spacing-sm;
+
+        label {
+            min-width: auto;
+        }
+    }
+}
