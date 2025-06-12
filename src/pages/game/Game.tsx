@@ -8,6 +8,8 @@ import { useGameStore } from '../../store/store';
 
 import isProductInCart from '../../utils/cart/isProductInCart';
 import addItemToCart from '../../utils/cart/addItemToCart';
+import removeItemFromCart from '../../utils/cart/removeItemFromCart';
+import getLineItemId from '../../utils/cart/getLineItemId';
 
 interface IGameData {
     name: string;
@@ -38,7 +40,13 @@ function Game() {
     const [showImageModal, setShowImageModal] = useState(false);
     const [modalImageIndex, setModalImageIndex] = useState(0);
     const [gameCategories, setCategories] = useState<string[]>([]);
-    const { cartId, cartVersion, setCardVersion } = useGameStore();
+    const {
+        cartId,
+        cartVersion,
+        setCardVersion,
+        setSuccessMessage,
+        setErrorMessage,
+    } = useGameStore();
     const [isGameInCart, setGameInCart] = useState(true);
 
     useEffect(() => {
@@ -222,16 +230,59 @@ function Game() {
                     setGameInCart(true);
                     if (data) {
                         setCardVersion(data.version);
+                        setSuccessMessage(
+                            'The game has been added to your cart.'
+                        );
+                        setTimeout(() => {
+                            setSuccessMessage('');
+                        }, 1500);
                     }
 
                     console.log(data);
                 })
                 .catch((err) => {
                     console.log(err);
+                    setErrorMessage('Something went wrong... Try again later');
+                    setTimeout(() => {
+                        setErrorMessage('');
+                    }, 1500);
                 });
         }
+    };
 
-        console.log('Cart add');
+    const handleDeleteGameFromCart = () => {
+        if (game?.id) {
+            getLineItemId(cartId!, game.id)
+                .then((data) => {
+                    removeItemFromCart(data, cartId!, cartVersion!)
+                        .then((data) => {
+                            setGameInCart(false);
+                            if (data) {
+                                setCardVersion(data.version);
+                                setSuccessMessage(
+                                    'The game has been successfully removed from the cart.'
+                                );
+                                setTimeout(() => {
+                                    setSuccessMessage('');
+                                }, 1500);
+                            }
+
+                            console.log(data);
+                        })
+                        .catch((err) => {
+                            console.log(err);
+                            setErrorMessage(
+                                'Something went wrong... Try again later'
+                            );
+                            setTimeout(() => {
+                                setErrorMessage('');
+                            }, 1500);
+                        });
+                })
+                .catch((err) => {
+                    console.log(err);
+                });
+        }
     };
 
     if (loading) {
@@ -371,6 +422,20 @@ function Game() {
                                 >
                                     <i className="fas fa-shopping-cart"></i>
                                     Add to Cart
+                                </button>
+                            </div>
+                        )}
+                        {isGameInCart && (
+                            <div className={'gameActions'}>
+                                <button
+                                    onClick={handleDeleteGameFromCart}
+                                    className={'addToCartButton'}
+                                >
+                                    <i
+                                        className="fas fa-trash"
+                                        style={{ color: '#A52A2A' }}
+                                    ></i>
+                                    Delete game
                                 </button>
                             </div>
                         )}

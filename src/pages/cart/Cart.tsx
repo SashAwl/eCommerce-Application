@@ -12,7 +12,14 @@ import updateItemQuantity from '../../utils/cart/updateItemQuantity';
 import removeItemFromCart from '../../utils/cart/removeItemFromCart';
 
 export default function CartPage() {
-    const { cartId, cartVersion, setCardId, setCardVersion } = useGameStore();
+    const {
+        cartId,
+        cartVersion,
+        setCardId,
+        setCardVersion,
+        setSuccessMessage,
+        setErrorMessage,
+    } = useGameStore();
     const [cartItems, setCartItems] = useState<LineItem[]>([]);
     // const [cartItems] = useState<LineItem[]>([]);
     useEffect(() => {
@@ -67,12 +74,22 @@ export default function CartPage() {
             .then((data) => {
                 if (data) {
                     setCardVersion(data.version);
+                    setSuccessMessage(
+                        'The game has been successfully removed from the cart.'
+                    );
+                    setTimeout(() => {
+                        setSuccessMessage('');
+                    }, 1500);
                 }
 
                 console.log(data);
             })
             .catch((err) => {
                 console.log(err);
+                setErrorMessage('Something went wrong... Try again later');
+                setTimeout(() => {
+                    setErrorMessage('');
+                }, 1500);
             });
     }
 
@@ -109,13 +126,13 @@ export default function CartPage() {
                         {cartItems.map((game) => (
                             <CartItem key={game.id} className={'cartItem'}>
                                 <div className={'itemContent'}>
-                                    {/* {game.imageUrl && (
+                                    {game.variant.images && (
                                         <img
-                                            src={game.imageUrl}
-                                            alt={game.title}
+                                            src={game.variant.images[0].url}
+                                            alt={game.name['en-US']}
                                             className={'itemImage'}
                                         />
-                                    )} */}
+                                    )}
 
                                     <div className={'itemDetails'}>
                                         <h3 className={'itemTitle'}>
