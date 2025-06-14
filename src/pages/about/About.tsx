@@ -6,6 +6,7 @@ interface TeamMember {
     name: string;
     role: string;
     bio: string;
+    photo: string;
     githubUrl: string;
     contributions: string[];
 }
@@ -16,6 +17,7 @@ const About = () => {
             name: 'Alexandra',
             role: 'Frontend Developer',
             bio: '',
+            photo: alex1,
             githubUrl: 'https://github.com/SashAwl',
             contributions: [
                 'Frontend Architecture',
@@ -28,6 +30,7 @@ const About = () => {
             name: 'Alexandr',
             role: 'Frontend Developer',
             bio: '',
+            photo: alex1,
             githubUrl: 'https://github.com/alexpodelinskii',
             contributions: [
                 'Frontend Architecture',
@@ -40,6 +43,7 @@ const About = () => {
             name: 'Alina',
             role: 'Frontend Developer',
             bio: '',
+            photo: '',
             githubUrl: 'https://github.com/crlinm',
             contributions: [
                 'Frontend Architecture',
@@ -113,7 +117,7 @@ const About = () => {
                             <div className="about__team-content">
                                 <img
                                     className="about__team-photo"
-                                    src={alex1}
+                                    src={teamMembers[0].photo}
                                     alt={teamMembers[0].name}
                                 />
                                 <div className="about__team-name">
@@ -128,7 +132,16 @@ const About = () => {
                                 <div className="about__team-contributions-card">
                                     <h4>Key Contributions:</h4>
                                     <div className="about__team-contributions">
-                                        {teamMembers[0].contributions}
+                                        {teamMembers[0].contributions.map(
+                                            (contribution, idx) => (
+                                                <div
+                                                    key={idx}
+                                                    className="about__team-contribution-tag"
+                                                >
+                                                    {contribution}
+                                                </div>
+                                            )
+                                        )}
                                     </div>
                                 </div>
                                 <a
