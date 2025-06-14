@@ -174,7 +174,7 @@
         margin-top: 8px;
         padding: 4px 12px;
         background-color: $border-team;
-        color: #d1d5db;
+        color: $text-about;
         border-radius: 9999px;
         font-size: 14px;
     }
@@ -185,6 +185,34 @@
             margin-bottom: 8px;
             font-size: 14px;
             color: $text-primary;
+        }
+    }
+
+    &-github {
+        width: 100%;
+        margin-top: 16px;
+        border: 1px solid $border-team;
+        color: $text-primary;
+        background-color: transparent;
+        padding: 8px 16px;
+        border-radius: 6px;
+        font-size: 14px;
+        transition: all 0.2s;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        text-decoration: none;
+
+        &:hover {
+            background-color: $background-team-hover;
+            text-decoration: none;
+            color: $text-primary;
+        }
+
+        svg {
+            margin-right: 8px;
+            width: 16px;
+            height: 16px;
         }
     }
 }

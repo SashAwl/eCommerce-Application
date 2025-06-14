@@ -1,5 +1,6 @@
 import './About.scss';
 import rsLogo from '../../assets/images/rss-logo.svg';
+import alex1 from '../../assets/images/alexandra.jpeg';
 
 interface TeamMember {
     name: string;
@@ -112,7 +113,7 @@ const About = () => {
                             <div className="about__team-content">
                                 <img
                                     className="about__team-photo"
-                                    src=""
+                                    src={alex1}
                                     alt={teamMembers[0].name}
                                 />
                                 <div className="about__team-name">
