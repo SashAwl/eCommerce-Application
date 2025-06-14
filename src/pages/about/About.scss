@@ -6,11 +6,11 @@
     &__inner {
         max-width: 1200px;
         margin: 0 auto;
-        padding: 32px 16px;
+        padding: 0 16px;
 
-        @media (min-width: 768px) {
-            padding: 32px 16px;
-        }
+        // @media (min-width: 768px) {
+        //     padding: 32px 16px;
+        // }
     }
 
     &__heading {
@@ -32,14 +32,6 @@
         }
     }
 }
-
-// .section {
-//     margin-bottom: 48px;
-
-//     @media (min-width: 1024px) {
-//         margin-bottom: 64px;
-//     }
-// }
 
 .about__rsschool {
     &-card {
@@ -138,6 +130,61 @@
 
         @media (min-width: 1024px) {
             grid-template-columns: repeat(3, 1fr);
+        }
+    }
+
+    &-card {
+        background-color: $background-about-card;
+        box-shadow: $shadow-about;
+        border-radius: 8px;
+        transition: box-shadow 0.2s;
+        overflow: hidden;
+
+        &:hover {
+            box-shadow: $shadow-about-hover;
+        }
+    }
+
+    &-photo {
+        width: 96px;
+        height: 96px;
+        border-radius: 50%;
+        margin: 0 auto 16px;
+        object-fit: cover;
+        border: 4px solid $border-team;
+
+        @media (min-width: 768px) {
+            width: 128px;
+            height: 128px;
+        }
+    }
+
+    &-name {
+        font-size: 18px;
+        font-weight: 600;
+        color: $text-primary;
+
+        @media (min-width: 768px) {
+            font-size: 20px;
+        }
+    }
+
+    &-role {
+        display: inline-block;
+        margin-top: 8px;
+        padding: 4px 12px;
+        background-color: $border-team;
+        color: #d1d5db;
+        border-radius: 9999px;
+        font-size: 14px;
+    }
+
+    &-contributions-card {
+        h4 {
+            font-weight: 600;
+            margin-bottom: 8px;
+            font-size: 14px;
+            color: $text-primary;
         }
     }
 }

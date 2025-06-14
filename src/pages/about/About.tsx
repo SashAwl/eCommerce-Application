@@ -95,7 +95,7 @@ const About = () => {
                 </div>
 
                 <div className="about__project section">
-                    <h1>Project Highlights</h1>
+                    <h2>Project Highlights</h2>
                     <div className="about__project-grid">
                         <div>Modern Tech Stack</div>
                         <div>Collaborative Development</div>
@@ -105,12 +105,16 @@ const About = () => {
 
                 <div className="about__team section">
                     <div>
-                        <h1 className="about__team-heading">About the team</h1>
+                        <h2 className="about__team-heading">About the team</h2>
                     </div>
                     <div className="about__team-grid">
                         <div className="about__team-card">
                             <div className="about__team-content">
-                                <img src="" alt="" />
+                                <img
+                                    className="about__team-photo"
+                                    src=""
+                                    alt={teamMembers[0].name}
+                                />
                                 <div className="about__team-name">
                                     {teamMembers[0].name}
                                 </div>
@@ -120,7 +124,7 @@ const About = () => {
                                 <div className="about__team-bio">
                                     {teamMembers[0].bio}
                                 </div>
-                                <div>
+                                <div className="about__team-contributions-card">
                                     <h4>Key Contributions:</h4>
                                     <div className="about__team-contributions">
                                         {teamMembers[0].contributions}
