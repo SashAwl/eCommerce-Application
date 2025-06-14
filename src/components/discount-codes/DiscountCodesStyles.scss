@@ -1,0 +1,74 @@
+@use '../../styles/variables.scss' as *;
+
+.discount {
+    margin-top: 20px;
+    width: 100%;
+
+    &__heading {
+        font-size: 24px;
+        font-family: 'Poppins', sans-serif;
+        font-weight: 600;
+    }
+
+    &__promo {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 15px;
+        margin-top: 30px;
+    }
+
+    &__item {
+        display: flex;
+        gap: 15px;
+        width: 379px;
+        border: 1px solid #615461;
+        border-radius: 20px;
+        background-color: $surface-hover;
+        padding: 15px;
+
+        @media (max-width: 576px) {
+            width: 100%;
+        }
+
+        &__img {
+            width: 127px;
+            border-radius: 10px;
+            height: fit-content;
+            display: inline-block;
+            align-self: center;
+        }
+
+        &__name {
+            margin-bottom: 7px;
+        }
+
+        &__description {
+            font-style: italic;
+            font-size: 12px;
+            margin-bottom: 7px;
+        }
+    }
+}
+
+.copy {
+    display: flex;
+    align-items: center;
+
+    &__text {
+        padding: 4px 6px;
+        border-radius: 5px;
+        margin-right: 5px;
+        width: 100%;
+        background-color: #4a4a51;
+        color: white;
+    }
+
+    &__button {
+        cursor: pointer;
+    }
+
+    &__button.copied {
+        opacity: 40%;
+    }
+}
