@@ -11,6 +11,9 @@ const Catalog = () => {
     const { categories, loading, error } = useCategoryStore();
     const [selectedCategory, setSelectedCategory] = useState('all');
     const [selectedSubCategory, setSelectedSubCategory] = useState('');
+    const [offset, setOffset] = useState(0);
+    const [totalProducts, setTotalProducts] = useState(0);
+    // const [isLoadMore, setIsLoadMore] = useState(false);
 
     const [searchQuery, setSearchQuery] = useState('');
     const [sortBy, setSortBy] = useState('--');
@@ -25,6 +28,14 @@ const Catalog = () => {
 
     const { products, setProducts, setLoadingStatus, setError } =
         useProductsStore();
+
+    const handleLoadMore = async () => {
+        const newOffset = offset + 6;
+        console.log(newOffset);
+        // setIsLoadMore(true);
+        await fetchCategories(newOffset, true);
+        setOffset(newOffset);
+    };
 
     const linkList = useMemo(() => {
         return [
@@ -47,7 +58,10 @@ const Catalog = () => {
     const getSubcategories = (categoryId: string) =>
         categoryMap[categoryId] || [];
 
-    const fetchCategories = async () => {
+    const fetchCategories = async (
+        currentOffset: number,
+        isLoadingMore: boolean
+    ) => {
         setLoadingStatus(true);
 
         try {
@@ -55,7 +69,7 @@ const Catalog = () => {
                 .categories()
                 .get({
                     queryArgs: {
-                        limit: 500,
+                        limit: 10,
                     },
                 })
                 .execute();
@@ -109,56 +123,64 @@ const Catalog = () => {
 
             const where =
                 whereList.length > 0 ? whereList.join(' and ') : undefined;
-
+            console.log(currentOffset);
             const response = await apiRoot
                 .productProjections()
                 .get({
                     queryArgs: {
+                        limit: 6,
+                        offset: currentOffset,
                         staged: false,
                         ...(whereList.length > 0 && { where: where }),
                     },
                 })
                 .execute();
 
-            const productsResponse: ProductProjection[] = response.body.results
-                .sort((a, b) => {
-                    if (sortBy === '--') {
-                        return 1;
-                    }
-                    if (sortBy === 'name-asc') {
-                        return a.name['en-US'] < b.name['en-US'] ? -1 : 1;
-                    }
-                    if (sortBy === 'name-desc') {
-                        return a.name['en-US'] < b.name['en-US'] ? 1 : -1;
-                    }
-                    if (sortBy === 'price-asc') {
-                        const aPrice = a.masterVariant.prices
-                            ? +a.masterVariant.prices[0].value.centAmount
-                            : 1;
-                        const bPrice = b.masterVariant.prices
-                            ? +b.masterVariant.prices[0].value.centAmount
-                            : 1;
+            setTotalProducts(response.body.total ?? 0);
+            console.log(response.body.total);
 
-                        return aPrice < bPrice ? -1 : 1;
-                    }
-                    if (sortBy === 'price-desc') {
-                        const aPrice = a.masterVariant.prices
-                            ? +a.masterVariant.prices[0].value.centAmount
-                            : 1;
-                        const bPrice = b.masterVariant.prices
-                            ? +b.masterVariant.prices[0].value.centAmount
-                            : 1;
+            const productsResponse: ProductProjection[] = isLoadingMore
+                ? [...products, ...response.body.results]
+                : response.body.results
+                      .sort((a, b) => {
+                          if (sortBy === '--') {
+                              return 1;
+                          }
+                          if (sortBy === 'name-asc') {
+                              return a.name['en-US'] < b.name['en-US'] ? -1 : 1;
+                          }
+                          if (sortBy === 'name-desc') {
+                              return a.name['en-US'] < b.name['en-US'] ? 1 : -1;
+                          }
+                          if (sortBy === 'price-asc') {
+                              const aPrice = a.masterVariant.prices
+                                  ? +a.masterVariant.prices[0].value.centAmount
+                                  : 1;
+                              const bPrice = b.masterVariant.prices
+                                  ? +b.masterVariant.prices[0].value.centAmount
+                                  : 1;
 
-                        return aPrice < bPrice ? 1 : -1;
-                    }
-                    return 1;
-                })
-                .filter((el) => {
-                    return el.name['en-US']
-                        .toLowerCase()
-                        .includes(searchQuery.toLowerCase().trim());
-                });
+                              return aPrice < bPrice ? -1 : 1;
+                          }
+                          if (sortBy === 'price-desc') {
+                              const aPrice = a.masterVariant.prices
+                                  ? +a.masterVariant.prices[0].value.centAmount
+                                  : 1;
+                              const bPrice = b.masterVariant.prices
+                                  ? +b.masterVariant.prices[0].value.centAmount
+                                  : 1;
+
+                              return aPrice < bPrice ? 1 : -1;
+                          }
+                          return 1;
+                      })
+                      .filter((el) => {
+                          return el.name['en-US']
+                              .toLowerCase()
+                              .includes(searchQuery.toLowerCase().trim());
+                      });
             setProducts(productsResponse);
+            console.log(productsResponse);
         } catch (err: unknown) {
             if (err instanceof Error) {
                 setError(err.message);
@@ -167,17 +189,18 @@ const Catalog = () => {
             }
         } finally {
             setLoadingStatus(false);
+            // setIsLoadMore(false);
         }
     };
 
     useEffect(() => {
         window.scrollTo(0, 0);
         setLoadingStatus(true);
+        setOffset(0);
 
         if (categories.length > 0) {
-            fetchCategories().catch((error) => console.log(error));
+            fetchCategories(0, false).catch((error) => console.log(error));
         }
-        setLoadingStatus(false);
     }, [
         selectedCategory,
         selectedSubCategory,
@@ -224,7 +247,7 @@ const Catalog = () => {
                         />
                         <button
                             onClick={() => {
-                                void fetchCategories();
+                                void fetchCategories(offset, false);
                             }}
                             className="catalog__search__button"
                         >
@@ -465,6 +488,14 @@ const Catalog = () => {
                             </div>
                         )}
                     </div>
+                )}
+                {offset + 6 < totalProducts && (
+                    <button
+                        className="catalog__products__more"
+                        onClick={() => void handleLoadMore()}
+                    >
+                        Load more
+                    </button>
                 )}
             </div>
         </div>

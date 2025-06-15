@@ -66,6 +66,25 @@
             text-decoration: none;
             color: inherit;
         }
+
+        &__more {
+            padding: 10px 20px;
+            border: 2px solid $border;
+            border-radius: $border-radius-md;
+            background-color: $surface;
+            color: $text-secondary;
+            cursor: pointer;
+            transition: $transition;
+            font-weight: 500;
+            height: fit-content;
+            margin: 41px 50% 50px;
+            width: max-content;
+
+            &:hover {
+                border-color: $primary;
+                color: $text-primary;
+            }
+        }
     }
 
     .no-results {

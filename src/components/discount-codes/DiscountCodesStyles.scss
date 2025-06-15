@@ -66,6 +66,10 @@
 
     &__button {
         cursor: pointer;
+
+        &:hover path {
+            fill: $primary-dark;
+        }
     }
 
     &__button.copied {
