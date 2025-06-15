@@ -26,6 +26,7 @@ const removeItemFromCart = async (
         return cartData;
     } catch (error) {
         console.error('Error fetching cart data:', error);
+        throw error;
     }
 };
 export default removeItemFromCart;

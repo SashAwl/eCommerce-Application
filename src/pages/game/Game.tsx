@@ -39,6 +39,8 @@ function Game() {
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
     const [showImageModal, setShowImageModal] = useState(false);
     const [modalImageIndex, setModalImageIndex] = useState(0);
+    const [isBtnBuyDisabled, setBtnBuyDisabled] = useState(false);
+    const [isBtnRemoveDisabled, setBtnRemoveDisabled] = useState(false);
     const [gameCategories, setCategories] = useState<string[]>([]);
     const {
         cartId,
@@ -224,6 +226,7 @@ function Game() {
         setShowImageModal(false);
     };
     const handleAddToCart = () => {
+        setBtnBuyDisabled(true);
         if (game?.id) {
             addItemToCart(game.id, cartId!, cartVersion!)
                 .then((data) => {
@@ -235,6 +238,7 @@ function Game() {
                         );
                         setTimeout(() => {
                             setSuccessMessage('');
+                            setBtnBuyDisabled(false);
                         }, 1500);
                     }
 
@@ -246,11 +250,13 @@ function Game() {
                     setTimeout(() => {
                         setErrorMessage('');
                     }, 1500);
+                    setBtnBuyDisabled(false);
                 });
         }
     };
 
     const handleDeleteGameFromCart = () => {
+        setBtnRemoveDisabled(true);
         if (game?.id) {
             getLineItemId(cartId!, game.id)
                 .then((data) => {
@@ -264,6 +270,7 @@ function Game() {
                                 );
                                 setTimeout(() => {
                                     setSuccessMessage('');
+                                    setBtnRemoveDisabled(false);
                                 }, 1500);
                             }
 
@@ -277,6 +284,7 @@ function Game() {
                             setTimeout(() => {
                                 setErrorMessage('');
                             }, 1500);
+                            setBtnRemoveDisabled(false);
                         });
                 })
                 .catch((err) => {
@@ -419,6 +427,7 @@ function Game() {
                                 <button
                                     onClick={handleAddToCart}
                                     className={'addToCartButton'}
+                                    disabled={isBtnBuyDisabled}
                                 >
                                     <i className="fas fa-shopping-cart"></i>
                                     Add to Cart
@@ -430,6 +439,7 @@ function Game() {
                                 <button
                                     onClick={handleDeleteGameFromCart}
                                     className={'addToCartButton'}
+                                    disabled={isBtnRemoveDisabled}
                                 >
                                     <i
                                         className="fas fa-trash"
