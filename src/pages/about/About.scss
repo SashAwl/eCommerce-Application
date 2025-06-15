@@ -139,10 +139,17 @@
         border-radius: 8px;
         transition: box-shadow 0.2s;
         overflow: hidden;
+        padding: 20px;
 
         &:hover {
             box-shadow: $shadow-about-hover;
         }
+    }
+
+    &-content {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
     }
 
     &-photo {
@@ -163,6 +170,7 @@
         font-size: 18px;
         font-weight: 600;
         color: $text-primary;
+        margin: auto;
 
         @media (min-width: 768px) {
             font-size: 20px;
@@ -172,6 +180,7 @@
     &-role {
         display: inline-block;
         margin-top: 8px;
+        margin: auto;
         padding: 4px 12px;
         background-color: $border-team;
         color: $text-about;
@@ -182,7 +191,7 @@
     &-contributions-card {
         h4 {
             font-weight: 600;
-            margin-bottom: 8px;
+            margin-bottom: 15px;
             font-size: 14px;
             color: $text-primary;
         }

@@ -18,7 +18,7 @@ const About = () => {
         {
             name: 'Alexandra',
             role: 'Frontend Developer',
-            bio: '',
+            bio: 'Our coordinator and frontend developer. She united the team, built the project infrastructure, and kept everyone energized and on track.',
             photo: alexandra,
             githubUrl: 'https://github.com/SashAwl',
             contributions: [
@@ -31,7 +31,7 @@ const About = () => {
         {
             name: 'Alexandr',
             role: 'Frontend Developer',
-            bio: '',
+            bio: 'The technical backbone of the project. Reliable, precise, always on time. He implemented most of the business logic and stepped in to help others when things went wrong.',
             photo: alexandr,
             githubUrl: 'https://github.com/alexpodelinskii',
             contributions: [
@@ -45,7 +45,7 @@ const About = () => {
         {
             name: 'Alina',
             role: 'Frontend Developer',
-            bio: '',
+            bio: 'The creative engine of the team. She searched for inspiring design, shaped the visual style, curated the team page, and actively managed the task board.',
             photo: alina,
             githubUrl: 'https://github.com/crlinm',
             contributions: [
@@ -103,14 +103,14 @@ const About = () => {
                     </div>
                 </div>
 
-                <div className="about__project section">
+                {/* <div className="about__project section">
                     <h2>Project Highlights</h2>
                     <div className="about__project-grid">
                         <div>Modern Tech Stack</div>
                         <div>Collaborative Development</div>
                         <div>User-Centric Design</div>
                     </div>
-                </div>
+                </div> */}
 
                 <div className="about__team section">
                     <div>
