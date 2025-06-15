@@ -21,6 +21,7 @@ const CardItem = ({
     imageUrl,
 }: CardProps) => {
     const formattedPrice = (price: number): string => (price / 100).toFixed(2);
+
     return (
         <div className="card-item">
             <Link to={`/game/${id}`}>

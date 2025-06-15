@@ -7,6 +7,7 @@ import { DiscountCode } from '@commercetools/platform-sdk';
 
 const DiscountCodes = () => {
     const [discountList, setDiscountList] = useState<DiscountCode[]>([]);
+    const [loading, setLoadingStatus] = useState(false);
     const [copied, setCopied] = useState(false);
 
     const handleCopy = async (code: string) => {
@@ -27,52 +28,61 @@ const DiscountCodes = () => {
             );
         } catch (error) {
             console.log(error);
+        } finally {
+            setLoadingStatus(false);
         }
     };
 
     useEffect(() => {
+        setLoadingStatus(true);
         fetchDiscountCodes().catch((error) => console.log(error));
     }, []);
 
     return (
         <div className="discount container">
             <h2 className="discount__heading">Promo codes</h2>
-            <div className="discount__promo">
-                {discountList.map((code) => {
-                    return (
-                        <div className="discount__item" key={code.id}>
-                            <img
-                                className="discount__item__img"
-                                src="src\assets\sale.jpg"
-                                alt="sale"
-                            />
-                            <div className="discount__text">
-                                <h3 className="discount__item__name">
-                                    {code.name?.['en-US']}
-                                </h3>
-                                <p className="discount__item__description">
-                                    {code.description?.['en-US']}
-                                </p>
-                                <div className="copy">
-                                    <input
-                                        type="text"
-                                        value={code.code}
-                                        readOnly
-                                        className="copy__text"
-                                    />
-                                    <FontAwesomeIcon
-                                        icon={faCopy}
-                                        onClick={() =>
-                                            void handleCopy(code.code)
-                                        }
-                                        className={`copy__button ${copied ? 'copied' : ''}`}
-                                    />
+            {loading ? (
+                <div className="loading">
+                    <p>Loading promo codes...</p>
+                </div>
+            ) : (
+                <div className="discount__promo">
+                    {discountList.map((code) => {
+                        return (
+                            <div className="discount__item" key={code.id}>
+                                <img
+                                    className="discount__item__img"
+                                    src="src\assets\sale.jpg"
+                                    alt="sale"
+                                />
+                                <div className="discount__text">
+                                    <h3 className="discount__item__name">
+                                        {code.name?.['en-US']}
+                                    </h3>
+                                    <p className="discount__item__description">
+                                        {code.description?.['en-US']}
+                                    </p>
+                                    <div className="copy">
+                                        <input
+                                            type="text"
+                                            value={code.code}
+                                            readOnly
+                                            className="copy__text"
+                                        />
+                                        <FontAwesomeIcon
+                                            icon={faCopy}
+                                            onClick={() =>
+                                                void handleCopy(code.code)
+                                            }
+                                            className={`copy__button ${copied ? 'copied' : ''}`}
+                                        />
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    );
-                })}
-            </div>
+                        );
+                    })}
+                </div>
+            )}
         </div>
     );
 };

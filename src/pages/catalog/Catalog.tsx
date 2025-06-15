@@ -31,7 +31,6 @@ const Catalog = () => {
 
     const handleLoadMore = async () => {
         const newOffset = offset + 6;
-        console.log(newOffset);
         // setIsLoadMore(true);
         await fetchCategories(newOffset, true);
         setOffset(newOffset);
@@ -123,7 +122,6 @@ const Catalog = () => {
 
             const where =
                 whereList.length > 0 ? whereList.join(' and ') : undefined;
-            console.log(currentOffset);
             const response = await apiRoot
                 .productProjections()
                 .get({
@@ -137,7 +135,6 @@ const Catalog = () => {
                 .execute();
 
             setTotalProducts(response.body.total ?? 0);
-            console.log(response.body.total);
 
             const productsResponse: ProductProjection[] = isLoadingMore
                 ? [...products, ...response.body.results]
@@ -180,7 +177,6 @@ const Catalog = () => {
                               .includes(searchQuery.toLowerCase().trim());
                       });
             setProducts(productsResponse);
-            console.log(productsResponse);
         } catch (err: unknown) {
             if (err instanceof Error) {
                 setError(err.message);
