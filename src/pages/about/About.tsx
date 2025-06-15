@@ -1,6 +1,8 @@
 import './About.scss';
 import rsLogo from '../../assets/images/rss-logo.svg';
-import alex1 from '../../assets/images/alexandra.jpeg';
+import alexandra from '../../assets/images/alexandra.jpeg';
+import alexandr from '../../assets/images/alexandr.jpeg';
+import alina from '../../assets/images/alina.jpeg';
 
 interface TeamMember {
     name: string;
@@ -17,25 +19,26 @@ const About = () => {
             name: 'Alexandra',
             role: 'Frontend Developer',
             bio: '',
-            photo: alex1,
+            photo: alexandra,
             githubUrl: 'https://github.com/SashAwl',
             contributions: [
                 'Frontend Architecture',
                 'API Integration',
+                'Main Page',
                 'Catalog Page',
-                'Card page',
             ],
         },
         {
             name: 'Alexandr',
             role: 'Frontend Developer',
             bio: '',
-            photo: alex1,
+            photo: alexandr,
             githubUrl: 'https://github.com/alexpodelinskii',
             contributions: [
                 'Frontend Architecture',
                 'API Integration',
                 'User Registration',
+                'Card page',
                 'Cart page',
             ],
         },
@@ -43,12 +46,13 @@ const About = () => {
             name: 'Alina',
             role: 'Frontend Developer',
             bio: '',
-            photo: '',
+            photo: alina,
             githubUrl: 'https://github.com/crlinm',
             contributions: [
                 'Frontend Architecture',
                 'API Integration',
                 'User Authentication',
+                'User Profile Page',
                 'About Page',
             ],
         },
@@ -113,49 +117,49 @@ const About = () => {
                         <h2 className="about__team-heading">About the team</h2>
                     </div>
                     <div className="about__team-grid">
-                        <div className="about__team-card">
-                            <div className="about__team-content">
-                                <img
-                                    className="about__team-photo"
-                                    src={teamMembers[0].photo}
-                                    alt={teamMembers[0].name}
-                                />
-                                <div className="about__team-name">
-                                    {teamMembers[0].name}
-                                </div>
-                                <div className="about__team-role">
-                                    {teamMembers[0].role}
-                                </div>
-                                <div className="about__team-bio">
-                                    {teamMembers[0].bio}
-                                </div>
-                                <div className="about__team-contributions-card">
-                                    <h4>Key Contributions:</h4>
-                                    <div className="about__team-contributions">
-                                        {teamMembers[0].contributions.map(
-                                            (contribution, idx) => (
-                                                <div
-                                                    key={idx}
-                                                    className="about__team-contribution-tag"
-                                                >
-                                                    {contribution}
-                                                </div>
-                                            )
-                                        )}
+                        {teamMembers.map((member, ind) => (
+                            <div key={ind} className="about__team-card">
+                                <div className="about__team-content">
+                                    <img
+                                        className="about__team-photo"
+                                        src={member.photo}
+                                        alt={member.name}
+                                    />
+                                    <div className="about__team-name">
+                                        {member.name}
                                     </div>
+                                    <div className="about__team-role">
+                                        {member.role}
+                                    </div>
+                                    <div className="about__team-bio">
+                                        {member.bio}
+                                    </div>
+                                    <div className="about__team-contributions-card">
+                                        <h4>Key Contributions:</h4>
+                                        <div className="about__team-contributions">
+                                            {member.contributions.map(
+                                                (contribution, idx) => (
+                                                    <div
+                                                        key={idx}
+                                                        className="about__team-contribution-tag"
+                                                    >
+                                                        {contribution}
+                                                    </div>
+                                                )
+                                            )}
+                                        </div>
+                                    </div>
+                                    <a
+                                        href={member.githubUrl}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="about__team-github"
+                                    >
+                                        View Github Profile
+                                    </a>
                                 </div>
-                                <a
-                                    href={teamMembers[0].githubUrl}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className="about__team-github"
-                                >
-                                    View Github Profile
-                                </a>
                             </div>
-                        </div>
-                        <div>Alexandr</div>
-                        <div>Alina</div>
+                        ))}
                     </div>
                 </div>
             </div>
