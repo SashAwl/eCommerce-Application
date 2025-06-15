@@ -17,7 +17,7 @@ const HeroSection = () => {
                     cybernetic upgrades await.
                 </p>
                 <div className="hero__actions">
-                    <Link to="/not-found">
+                    <Link to="/catalog">
                         <button className="btn-buy">Buy Now</button>
                     </Link>
                 </div>
