@@ -4,6 +4,12 @@ import { Product } from '@commercetools/platform-sdk';
 import apiRoot from '../../utils/sdkClient';
 import { useParams } from 'react-router-dom';
 import { Link } from 'react-router-dom';
+import { useGameStore } from '../../store/store';
+
+import isProductInCart from '../../utils/cart/isProductInCart';
+import addItemToCart from '../../utils/cart/addItemToCart';
+import removeItemFromCart from '../../utils/cart/removeItemFromCart';
+import getLineItemId from '../../utils/cart/getLineItemId';
 
 interface IGameData {
     name: string;
@@ -20,6 +26,7 @@ interface attributes {
 function Game() {
     const [game, setGame] = useState<Product | null>(null);
     const [loading, setLoading] = useState(true);
+
     const { gameId } = useParams();
     const [gameData, setGameData] = useState<IGameData>({
         name: 'Untitled Game',
@@ -33,6 +40,15 @@ function Game() {
     const [showImageModal, setShowImageModal] = useState(false);
     const [modalImageIndex, setModalImageIndex] = useState(0);
     const [gameCategories, setCategories] = useState<string[]>([]);
+    const {
+        cartId,
+        cartVersion,
+        setCardVersion,
+        setSuccessMessage,
+        setErrorMessage,
+    } = useGameStore();
+    const [isGameInCart, setGameInCart] = useState(true);
+
     useEffect(() => {
         window.scrollTo(0, 0);
         if (!gameId) return;
@@ -157,7 +173,13 @@ function Game() {
                                     });
                             }
                         );
-
+                        isProductInCart(cartId ?? '', body.id)
+                            .then((data) => {
+                                setGameInCart(data);
+                            })
+                            .catch((err) => {
+                                console.log(err);
+                            });
                         setLoading(false);
                     });
             } catch (error) {
@@ -200,6 +222,67 @@ function Game() {
 
     const closeImageModal = () => {
         setShowImageModal(false);
+    };
+    const handleAddToCart = () => {
+        if (game?.id) {
+            addItemToCart(game.id, cartId!, cartVersion!)
+                .then((data) => {
+                    setGameInCart(true);
+                    if (data) {
+                        setCardVersion(data.version);
+                        setSuccessMessage(
+                            'The game has been added to your cart.'
+                        );
+                        setTimeout(() => {
+                            setSuccessMessage('');
+                        }, 1500);
+                    }
+
+                    console.log(data);
+                })
+                .catch((err) => {
+                    console.log(err);
+                    setErrorMessage('Something went wrong... Try again later');
+                    setTimeout(() => {
+                        setErrorMessage('');
+                    }, 1500);
+                });
+        }
+    };
+
+    const handleDeleteGameFromCart = () => {
+        if (game?.id) {
+            getLineItemId(cartId!, game.id)
+                .then((data) => {
+                    removeItemFromCart(data, cartId!, cartVersion!)
+                        .then((data) => {
+                            setGameInCart(false);
+                            if (data) {
+                                setCardVersion(data.version);
+                                setSuccessMessage(
+                                    'The game has been successfully removed from the cart.'
+                                );
+                                setTimeout(() => {
+                                    setSuccessMessage('');
+                                }, 1500);
+                            }
+
+                            console.log(data);
+                        })
+                        .catch((err) => {
+                            console.log(err);
+                            setErrorMessage(
+                                'Something went wrong... Try again later'
+                            );
+                            setTimeout(() => {
+                                setErrorMessage('');
+                            }, 1500);
+                        });
+                })
+                .catch((err) => {
+                    console.log(err);
+                });
+        }
     };
 
     if (loading) {
@@ -331,6 +414,31 @@ function Game() {
                                 <p>{gameData.description}</p>
                             </div>
                         }
+                        {!isGameInCart && (
+                            <div className={'gameActions'}>
+                                <button
+                                    onClick={handleAddToCart}
+                                    className={'addToCartButton'}
+                                >
+                                    <i className="fas fa-shopping-cart"></i>
+                                    Add to Cart
+                                </button>
+                            </div>
+                        )}
+                        {isGameInCart && (
+                            <div className={'gameActions'}>
+                                <button
+                                    onClick={handleDeleteGameFromCart}
+                                    className={'addToCartButton'}
+                                >
+                                    <i
+                                        className="fas fa-trash"
+                                        style={{ color: '#A52A2A' }}
+                                    ></i>
+                                    Delete game
+                                </button>
+                            </div>
+                        )}
                     </div>
                 </div>
 
