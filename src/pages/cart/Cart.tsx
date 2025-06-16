@@ -52,7 +52,7 @@ export default function CartPage() {
                             return [...data.lineItems];
                         });
                         setCardVersion(data.version);
-                        cahngeTotalPrice(
+                        changeTotalPrice(
                             data.totalPrice.centAmount,
                             data.lineItems.reduce((acc, curr) => {
                                 const price =
@@ -103,7 +103,7 @@ export default function CartPage() {
             </div>
         );
     }
-    function cahngeTotalPrice(totalPrise = 0, subtotal = 0) {
+    function changeTotalPrice(totalPrise = 0, subtotal = 0) {
         setDiscount(subtotal - totalPrise);
         setTotal(totalPrise);
         setSubtotal(subtotal);
