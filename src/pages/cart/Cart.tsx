@@ -6,7 +6,7 @@ import { Minus, Plus, ShoppingCart, Tag, Trash2 } from 'lucide-react';
 import { useGameStore } from '../../store/store';
 import createCart from '../../utils/cart/createCart';
 import getCart from '../../utils/cart/getCart';
-import { LineItem } from '@commercetools/platform-sdk';
+import { Cart, ErrorObject, LineItem } from '@commercetools/platform-sdk';
 import {
     CardContent,
     CardFooter,
@@ -31,9 +31,13 @@ export default function CartPage() {
     } = useGameStore();
     const [cartItems, setCartItems] = useState<LineItem[]>([]);
     const [isDeleteButtonDisabled, setDeleteButtonDisabled] = useState(false);
+    const [isCountButtonsDisabled, setCountButtonsDisabled] = useState(false);
+    const [subtotal, setSubtotal] = useState(0);
+    const [discount, setDiscount] = useState(0);
+    const [total, setTotal] = useState(0);
     const [promoCode, setPromoCode] = useState('');
-    const [appliedPromoCode] = useState('');
-    // const [cartItems] = useState<LineItem[]>([]);
+    const [appliedPromoCode, setAppliedPromoCode] = useState('');
+
     useEffect(() => {
         if (!cartId) {
             createCart()
@@ -54,6 +58,32 @@ export default function CartPage() {
                         setCartItems(() => {
                             return [...data.lineItems];
                         });
+                        setCardVersion(data.version);
+                        cahngeTotalPrice(
+                            data.totalPrice.centAmount,
+                            data.lineItems.reduce((acc, curr) => {
+                                const price =
+                                    curr.price.discounted?.value.centAmount ??
+                                    curr.price.value.centAmount;
+                                return acc + price * curr.quantity;
+                            }, 0)
+                        );
+                        if (data.discountCodes.length) {
+                            apiRoot
+                                .discountCodes()
+                                .withId({
+                                    ID: data.discountCodes[0].discountCode.id,
+                                })
+                                .get()
+                                .execute()
+                                .then((data) => {
+                                    setAppliedPromoCode(data.body.code);
+                                    setPromoCode(data.body.code);
+                                })
+                                .catch((err) => {
+                                    console.log(err);
+                                });
+                        }
                     }
                 })
                 .catch((err) => {
@@ -80,33 +110,49 @@ export default function CartPage() {
             </div>
         );
     }
-
+    function cahngeTotalPrice(totalPrise = 0, subtotal = 0) {
+        setDiscount(subtotal - totalPrise);
+        setTotal(totalPrise);
+        setSubtotal(subtotal);
+    }
+    function showTempMessage(
+        isSuccess: boolean,
+        message: string,
+        delay = 1500
+    ) {
+        const clb = isSuccess ? setSuccessMessage : setErrorMessage;
+        clb(message);
+        setTimeout(() => {
+            clb('');
+        }, delay);
+    }
     function removeItem(id: string): void {
         setDeleteButtonDisabled(true);
         removeItemFromCart(id, cartId!, cartVersion!)
             .then((data) => {
                 if (data) {
                     setCardVersion(data.version);
-                    setSuccessMessage(
+                    showTempMessage(
+                        true,
                         'The game has been successfully removed from the cart.'
                     );
-                    setTimeout(() => {
-                        setSuccessMessage('');
-                    }, 1500);
                 }
                 console.log(data);
             })
             .catch((err) => {
                 console.log(err);
-                setErrorMessage('Something went wrong... Try again later');
-                setTimeout(() => {
-                    setErrorMessage('');
-                }, 1500);
+                showTempMessage(
+                    false,
+                    'Something went wrong... Try again later'
+                );
+            })
+            .finally(() => {
                 setDeleteButtonDisabled(false);
             });
     }
 
     function updateQuantity(id: string, quantity: number): void {
+        setCountButtonsDisabled(true);
         updateItemQuantity(id, cartId!, cartVersion!, quantity)
             .then((data) => {
                 if (data) {
@@ -117,6 +163,9 @@ export default function CartPage() {
             })
             .catch((err) => {
                 console.log(err);
+            })
+            .finally(() => {
+                setCountButtonsDisabled(false);
             });
     }
 
@@ -136,10 +185,7 @@ export default function CartPage() {
                 console.log(data);
                 setCardId(null);
                 setCardVersion(null);
-                setSuccessMessage('Cart delete');
-                setTimeout(() => {
-                    setSuccessMessage('');
-                }, 1500);
+                showTempMessage(true, 'Cart delete');
             })
             .catch((err) => {
                 console.log(err);
@@ -162,16 +208,35 @@ export default function CartPage() {
                     ],
                 },
             })
-
             .then((data) => {
+                const result = data.body as Cart;
                 console.log(data);
-                if (data) {
-                    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-                    setCardVersion(data.body.version as number);
+
+                if (result.version) {
+                    setCardVersion(result.version);
                 }
+
+                showTempMessage(
+                    true,
+                    `Promo code '${promoCode}' successfully applied`
+                );
+
+                setAppliedPromoCode(promoCode);
             })
-            .catch((err) => {
-                console.log(err);
+            .catch((err: ErrorObject) => {
+                console.error(err);
+                const code = err.code;
+                if (code && code === 'DiscountCodeNonApplicable') {
+                    showTempMessage(
+                        false,
+                        `Promo code '${promoCode}'is not used or has expired`
+                    );
+                } else {
+                    showTempMessage(
+                        false,
+                        `Something went wrong... Try again later`
+                    );
+                }
             });
     }
     return (
@@ -262,7 +327,8 @@ export default function CartPage() {
                                                     }
                                                     className={'quantityButton'}
                                                     disabled={
-                                                        game.quantity <= 1
+                                                        game.quantity <= 1 ||
+                                                        isCountButtonsDisabled
                                                     }
                                                 >
                                                     <Minus />
@@ -284,6 +350,9 @@ export default function CartPage() {
                                                         )
                                                     }
                                                     className={'quantityButton'}
+                                                    disabled={
+                                                        isCountButtonsDisabled
+                                                    }
                                                 >
                                                     <Plus />
                                                 </button>
@@ -348,7 +417,7 @@ export default function CartPage() {
                                             <span
                                                 className={'appliedPromoText'}
                                             >
-                                                Code:
+                                                Code: {appliedPromoCode}
                                             </span>
                                         </div>
                                     )}
@@ -357,7 +426,7 @@ export default function CartPage() {
                                 <div className={'summaryLine'}>
                                     <span>Subtotal:</span>
                                     <span className={'summaryLineValue'}>
-                                        ${222}
+                                        ${(subtotal / 100).toFixed(2)}
                                     </span>
                                 </div>
 
@@ -365,14 +434,14 @@ export default function CartPage() {
                                     <div className={'summaryLine'}>
                                         <span>Discount:</span>
                                         <span className={'summaryLineDiscount'}>
-                                            -${7777}
+                                            -${(discount / 100).toFixed(2)}
                                         </span>
                                     </div>
                                 }
                                 <hr className="separator" />
                                 <div className={'totalLine'}>
                                     <span>Total:</span>
-                                    <span>${9999}</span>
+                                    <span>${(total / 100).toFixed(2)}</span>
                                 </div>
                             </CardContent>
 

@@ -17,9 +17,6 @@ const isProductInCart = async (
         const productInCart = lineItems.some(
             (item) => item.productId === productId
         );
-        const idLLL = lineItems.map((item) => item.productId);
-        console.log(idLLL, productId);
-
         return productInCart;
     } catch (error) {
         console.error('Error fetching cart data:', error);
