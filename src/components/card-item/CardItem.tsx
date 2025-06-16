@@ -1,5 +1,11 @@
 import { Link } from 'react-router-dom';
 import './CardItemStyles.scss';
+import { useEffect, useState } from 'react';
+import { useGameStore } from '../../store/store';
+import addItemToCart from '../../utils/cart/addItemToCart';
+import removeItemFromCart from '../../utils/cart/removeItemFromCart';
+import getLineItemId from '../../utils/cart/getLineItemId';
+import isProductInCart from '../../utils/cart/isProductInCart';
 
 export interface CardProps {
     id: string;
@@ -20,7 +26,92 @@ const CardItem = ({
     discountPrice,
     imageUrl,
 }: CardProps) => {
+    const {
+        cartId,
+        cartVersion,
+        setCardVersion,
+        setSuccessMessage,
+        setErrorMessage,
+    } = useGameStore();
+    const [isGameInCart, setGameInCart] = useState(false);
+
     const formattedPrice = (price: number): string => (price / 100).toFixed(2);
+
+    const handleAddToCart = () => {
+        if (id) {
+            addItemToCart(id, cartId!, cartVersion!)
+                .then((data) => {
+                    if (data) {
+                        setCardVersion(data.version);
+                        setSuccessMessage(
+                            'The game has been added to your cart.'
+                        );
+                        setTimeout(() => {
+                            setSuccessMessage('');
+                        }, 1500);
+                    }
+
+                    setGameInCart(true);
+
+                    // console.log('added data', data);
+                })
+                .catch((err) => {
+                    console.log(err);
+                    setErrorMessage('Something went wrong... Try again later');
+                    setTimeout(() => {
+                        setErrorMessage('');
+                    }, 1500);
+                });
+        }
+    };
+
+    const handleDeleteGameFromCart = () => {
+        if (id) {
+            getLineItemId(cartId!, id)
+                .then((data) => {
+                    // console.log('line id', data, '----id', id);
+                    if (!data) {
+                        return;
+                    }
+                    removeItemFromCart(data, cartId!, cartVersion!)
+                        .then((data) => {
+                            // console.log('remoed', data);
+                            if (data) {
+                                setCardVersion(data.version);
+                                setSuccessMessage(
+                                    'The game has been successfully removed from the cart.'
+                                );
+                                setTimeout(() => {
+                                    setSuccessMessage('');
+                                }, 1500);
+                            }
+                            setGameInCart(false);
+                        })
+                        .catch((err) => {
+                            console.log(err);
+                            setErrorMessage(
+                                'Something went wrong... Try again later'
+                            );
+                            setTimeout(() => {
+                                setErrorMessage('');
+                            }, 1500);
+                        });
+                })
+                .catch((err) => {
+                    console.log(err);
+                });
+        }
+    };
+
+    useEffect(() => {
+        isProductInCart(cartId ?? '', id)
+            .then((flag) => {
+                setGameInCart(flag);
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    }, [id, cartId]);
 
     return (
         <div className="card-item">
@@ -55,7 +146,22 @@ const CardItem = ({
                     )}
                 </div>
                 <div className="card-item__actions">
-                    <button className="card__actions__cart">Add to Cart</button>
+                    {!isGameInCart && (
+                        <button
+                            onClick={handleAddToCart}
+                            className="card__actions__cart"
+                        >
+                            Add to Cart
+                        </button>
+                    )}
+                    {isGameInCart && (
+                        <button
+                            onClick={handleDeleteGameFromCart}
+                            className="card__actions__cart"
+                        >
+                            Delete game
+                        </button>
+                    )}
                 </div>
             </div>
         </div>

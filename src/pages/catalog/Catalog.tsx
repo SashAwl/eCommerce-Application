@@ -329,12 +329,16 @@ const Catalog = () => {
                 </div>
                 <div className="breadcrumb">
                     <Link to="/home">{linkList[0]}</Link> /{' '}
-                    <p onClick={() => setSelectedCategory('all')}>
+                    <p
+                        className="breadcrumb__item"
+                        onClick={() => setSelectedCategory('all')}
+                    >
                         {linkList[1]}
                     </p>{' '}
                     /
                     {linkList[2] && (
                         <p
+                            className="breadcrumb__item"
                             onClick={() => {
                                 setSelectedCategory(String(linkList[2]));
                                 setSelectedSubCategory('');
@@ -344,7 +348,9 @@ const Catalog = () => {
                             {linkList[2]} /
                         </p>
                     )}
-                    {linkList[2] && linkList[3] && <p>{linkList[3]}</p>}
+                    {linkList[2] && linkList[3] && (
+                        <p className="breadcrumb__item">{linkList[3]}</p>
+                    )}
                 </div>
                 <div className="catalog__category">
                     <h2 className="catalog__category__heading">Categories</h2>

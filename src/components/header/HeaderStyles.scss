@@ -38,6 +38,8 @@
     max-width: $container-width;
     margin: 0 auto;
     padding: 0 $spacing-md;
+    display: flex;
+    flex-direction: column;
 }
 
 .logo {
