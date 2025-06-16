@@ -7,13 +7,6 @@ import { useGameStore } from '../../store/store';
 import createCart from '../../utils/cart/createCart';
 import getCart from '../../utils/cart/getCart';
 import { Cart, ErrorObject, LineItem } from '@commercetools/platform-sdk';
-import {
-    CardContent,
-    CardFooter,
-    CardHeader,
-    CardTitle,
-    CartItem,
-} from '../../components/basket/card';
 import updateItemQuantity from '../../utils/cart/updateItemQuantity';
 import removeItemFromCart from '../../utils/cart/removeItemFromCart';
 
@@ -239,6 +232,50 @@ export default function CartPage() {
                 }
             });
     }
+    function removePromoCode() {
+        getCart(cartId!)
+            .then((data) => {
+                if (data) {
+                    ctpClient
+                        .execute({
+                            uri: `/mergemates/carts/${cartId}`,
+                            method: 'POST',
+                            body: {
+                                version: cartVersion,
+                                actions: [
+                                    {
+                                        action: 'removeDiscountCode',
+                                        discountCode: {
+                                            typeId: 'discount-code',
+                                            id: data.discountCodes[0]
+                                                .discountCode.id,
+                                        },
+                                    },
+                                ],
+                            },
+                        })
+                        .then((data) => {
+                            console.log(data);
+                            setPromoCode('');
+                            setAppliedPromoCode('');
+                            showTempMessage(
+                                true,
+                                'The promo code has been removed from your shopping cart.'
+                            );
+                        })
+                        .catch((err) => {
+                            console.log(err);
+                            showTempMessage(
+                                false,
+                                `Something went wrong... Try again later`
+                            );
+                        });
+                }
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+    }
     return (
         <div className={'cartContainer'}>
             <div className={'innerContainer'}>
@@ -256,7 +293,7 @@ export default function CartPage() {
                 <div className={'cartLayout'}>
                     <div className={'cartItemsSection'}>
                         {cartItems.map((game) => (
-                            <CartItem key={game.id} className={'cartItem'}>
+                            <div key={game.id} className={'cartItem'}>
                                 <div className={'itemContent'}>
                                     {game.variant.images && (
                                         <img
@@ -372,19 +409,19 @@ export default function CartPage() {
                                         </div>
                                     </div>
                                 </div>
-                            </CartItem>
+                            </div>
                         ))}
                     </div>
 
                     <div className={'summarySection'}>
-                        <CartItem className={'summaryCard'}>
-                            <CardHeader className={'summaryHeader'}>
-                                <CardTitle className={'summaryTitle'}>
+                        <div className={'summaryCard'}>
+                            <div className={'summaryHeader'}>
+                                <div className={'summaryTitle'}>
                                     Order Summary
-                                </CardTitle>
-                            </CardHeader>
+                                </div>
+                            </div>
 
-                            <CardContent className={'summaryContent'}>
+                            <div className={'summaryContent'}>
                                 <div className={'promoSection'}>
                                     {!appliedPromoCode ? (
                                         <div className={'promoInputContainer'}>
@@ -419,6 +456,12 @@ export default function CartPage() {
                                             >
                                                 Code: {appliedPromoCode}
                                             </span>
+                                            <button
+                                                onClick={removePromoCode}
+                                                className={'removePromoButton'}
+                                            >
+                                                <Trash2 />
+                                            </button>
                                         </div>
                                     )}
                                 </div>
@@ -443,17 +486,17 @@ export default function CartPage() {
                                     <span>Total:</span>
                                     <span>${(total / 100).toFixed(2)}</span>
                                 </div>
-                            </CardContent>
+                            </div>
 
-                            <CardFooter className={'summaryFooter'}>
+                            <div className={'summaryFooter'}>
                                 <button
                                     onClick={clearCart}
                                     className={'clearCartButton'}
                                 >
                                     Clear Cart
                                 </button>
-                            </CardFooter>
-                        </CartItem>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
