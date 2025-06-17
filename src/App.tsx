@@ -10,6 +10,7 @@ import Footer from './components/footer/Footer';
 import PopupSuccess from './components/popup/PopupSuccess';
 import PopupError from './components/popup/PopupError';
 import createCart from './utils/cart/createCart';
+import PopupDeleteCart from './components/popup/PopupDeleteCart';
 
 export function App() {
     const { setCategories, setLoadingStatus, setError } = useCategoryStore();
@@ -57,6 +58,7 @@ export function App() {
             <Footer />
             <PopupSuccess />
             <PopupError />
+            <PopupDeleteCart />
         </>
     );
 }

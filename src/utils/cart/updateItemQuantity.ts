@@ -24,7 +24,6 @@ const updateItemQuantity = async (
         });
 
         const cartData = response.body as Cart;
-        console.log('Cart data:', cartData);
         return cartData;
     } catch (error) {
         console.error('Error fetching cart data:', error);

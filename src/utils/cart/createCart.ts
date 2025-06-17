@@ -11,7 +11,6 @@ const createCart = async (): Promise<Cart | void> => {
                 lineItems: [],
             },
         });
-        console.log('Cart created:', response);
         return response.body as Cart;
     } catch (error) {
         console.error('Error creating cart:', error);

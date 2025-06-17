@@ -22,6 +22,8 @@ interface IGameStore {
     clearSuccessMessage: () => void;
     errorMessage: string;
     setErrorMessage: (message: string) => void;
+    isDeletePopupVisible: boolean;
+    changeDeletePopupVisible: (status: boolean) => void;
     clearErrorMessage: () => void;
     isOneAddress: boolean;
     changeAddressStatus: () => void;
@@ -89,6 +91,9 @@ export const useGameStore = create<IGameStore>()(
             setCardVersion: (id) => set({ cartVersion: id }),
             changeAddressStatus: () =>
                 set((state) => ({ isOneAddress: !state.isOneAddress })),
+            isDeletePopupVisible: false,
+            changeDeletePopupVisible: (status) =>
+                set({ isDeletePopupVisible: status }),
 
             isOneAddress: false,
         }),
