@@ -52,6 +52,7 @@ const CardItem = ({
                     }
 
                     setGameInCart(true);
+
                 })
                 .catch((err) => {
                     console.log(err);
@@ -67,11 +68,13 @@ const CardItem = ({
         if (id) {
             getLineItemId(cartId!, id)
                 .then((data) => {
+
                     if (!data) {
                         return;
                     }
                     removeItemFromCart(data, cartId!, cartVersion!)
                         .then((data) => {
+
                             if (data) {
                                 setCardVersion(data.version);
                                 setSuccessMessage(
