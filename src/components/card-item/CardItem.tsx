@@ -23,7 +23,7 @@ const CardItem = ({
     const formattedPrice = (price: number): string => (price / 100).toFixed(2);
 
     return (
-        <div className="card-item">
+        <div className="card-item card--width">
             <Link to={`/game/${id}`}>
                 <img
                     src={
