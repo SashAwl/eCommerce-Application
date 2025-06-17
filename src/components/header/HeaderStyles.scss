@@ -17,6 +17,7 @@
     &__icons {
         display: flex;
         align-items: center;
+        position: relative;
     }
 
     &__icon {
@@ -27,8 +28,23 @@
         cursor: pointer;
         transition: $transition;
 
-        &:hover {
+        & i:hover {
             color: $primary;
+        }
+
+        &__counter {
+            display: inline-block;
+            padding: 1px 9px;
+            background-color: #646cff;
+            border-radius: 50%;
+            position: absolute;
+            font-size: 13px;
+            top: -1px;
+            left: 25px;
+
+            &:hover {
+                color: white;
+            }
         }
     }
 }
@@ -38,6 +54,8 @@
     max-width: $container-width;
     margin: 0 auto;
     padding: 0 $spacing-md;
+    display: flex;
+    flex-direction: column;
 }
 
 .logo {
@@ -81,34 +99,6 @@
         &.active {
             color: $primary;
         }
-    }
-}
-
-.search {
-    display: flex;
-    align-items: center;
-    position: relative;
-
-    .search__input {
-        display: none;
-        background-color: var(--surface-hover);
-        border: 1px solid var(--border);
-        border-radius: $border-radius-md;
-        padding: 8px 16px;
-        color: $text-primary;
-        width: 0;
-        opacity: 0;
-        transition: $transition;
-        margin-right: 8px;
-
-        &:focus {
-            outline: none;
-            border-color: $primary;
-        }
-    }
-
-    &__icon:hover {
-        color: $primary;
     }
 }
 

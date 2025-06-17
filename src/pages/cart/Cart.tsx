@@ -46,13 +46,12 @@ export default function CartPage() {
         } else {
             getCart(cartId ?? '')
                 .then((data) => {
-                    console.log(data);
                     if (data) {
                         setCartItems(() => {
                             return [...data.lineItems];
                         });
                         setCardVersion(data.version);
-                        cahngeTotalPrice(
+                        changeTotalPrice(
                             data.totalPrice.centAmount,
                             data.lineItems.reduce((acc, curr) => {
                                 const price =
@@ -103,7 +102,7 @@ export default function CartPage() {
             </div>
         );
     }
-    function cahngeTotalPrice(totalPrise = 0, subtotal = 0) {
+    function changeTotalPrice(totalPrise = 0, subtotal = 0) {
         setDiscount(subtotal - totalPrise);
         setTotal(totalPrise);
         setSubtotal(subtotal);
@@ -130,7 +129,6 @@ export default function CartPage() {
                         'The game has been successfully removed from the cart.'
                     );
                 }
-                console.log(data);
             })
             .catch((err) => {
                 console.log(err);
@@ -151,8 +149,6 @@ export default function CartPage() {
                 if (data) {
                     setCardVersion(data.version);
                 }
-
-                console.log(data);
             })
             .catch((err) => {
                 console.log(err);
@@ -203,7 +199,6 @@ export default function CartPage() {
             })
             .then((data) => {
                 const result = data.body as Cart;
-                console.log(data);
 
                 if (result.version) {
                     setCardVersion(result.version);

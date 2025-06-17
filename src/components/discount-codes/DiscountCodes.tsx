@@ -3,6 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCopy } from '@fortawesome/free-solid-svg-icons';
 import { useEffect, useState } from 'react';
 import apiRoot from '../../utils/sdkClient';
+import saleImg from '../../assets/sale.jpg';
 import { DiscountCode } from '@commercetools/platform-sdk';
 
 const DiscountCodes = () => {
@@ -52,7 +53,7 @@ const DiscountCodes = () => {
                             <div className="discount__item" key={code.id}>
                                 <img
                                     className="discount__item__img"
-                                    src="src\assets\sale.jpg"
+                                    src={saleImg}
                                     alt="sale"
                                 />
                                 <div className="discount__text">

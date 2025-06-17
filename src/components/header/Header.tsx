@@ -2,12 +2,23 @@ import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import './HeaderStyles.scss';
 import { useGameStore } from '../../store/store';
+import getCart from '../../utils/cart/getCart';
 
 const Header = () => {
     const [menuOpen, setMenuOpen] = useState(false);
+    const [counter, setCounter] = useState(0);
+    const { cartId } = useGameStore();
     const isLogin = useGameStore((state) => state.isLogin);
     const user = useGameStore((state) => state.customer);
     const logOut = useGameStore((state) => state.logout);
+
+    useEffect(() => {
+        getCart(cartId!)
+            .then((data) => {
+                setCounter(data?.lineItems.length ?? 0);
+            })
+            .catch((error) => console.log(error));
+    });
 
     const logoutHandler = () => {
         try {
@@ -71,18 +82,12 @@ const Header = () => {
                     </nav>
 
                     <div className="header__icons">
-                        <div className="search">
-                            <form>
-                                <input
-                                    id="search-input"
-                                    type="text"
-                                    placeholder="Search games..."
-                                    className="search__input"
-                                />
-                            </form>
-                            <i className="search__icon fas fa-search"></i>
-                        </div>
                         <Link to="/cart" className="header__icon">
+                            {counter > 0 && (
+                                <span className="header__icon__counter">
+                                    {counter}
+                                </span>
+                            )}
                             <i className="fas fa-shopping-cart"></i>
                         </Link>
                         <Link to="/heart" className="header__icon">
