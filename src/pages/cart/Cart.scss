@@ -1,16 +1,7 @@
 @use './../../styles/variables.scss' as *;
 .cartContainer {
-<<<<<<< HEAD
-    background-color: #f9fafb;
-
-    :global(.dark) & {
-        background-color: #111827;
-    }
-=======
-    min-height: calc(100vh - 70px);
     background-color: $background;
     padding-bottom: $spacing-xxl;
->>>>>>> 89323192996ebe98643be3c5f6c0b024002dd7c5
 }
 
 .innerContainer {

@@ -23,7 +23,7 @@ const addItemToCart = async (
         });
 
         const cartData = response.body as Cart;
-        console.log('Cart data:', cartData);
+        console.log('Cart data:', response);
         return cartData;
     } catch (error) {
         console.error('Error fetching cart data:', error);
