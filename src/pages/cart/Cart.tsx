@@ -46,7 +46,6 @@ export default function CartPage() {
         } else {
             getCart(cartId ?? '')
                 .then((data) => {
-                    console.log(data);
                     if (data) {
                         setCartItems(() => {
                             return [...data.lineItems];
@@ -130,7 +129,6 @@ export default function CartPage() {
                         'The game has been successfully removed from the cart.'
                     );
                 }
-                console.log(data);
             })
             .catch((err) => {
                 console.log(err);
@@ -151,8 +149,6 @@ export default function CartPage() {
                 if (data) {
                     setCardVersion(data.version);
                 }
-
-                console.log(data);
             })
             .catch((err) => {
                 console.log(err);
@@ -203,7 +199,6 @@ export default function CartPage() {
             })
             .then((data) => {
                 const result = data.body as Cart;
-                console.log(data);
 
                 if (result.version) {
                     setCardVersion(result.version);

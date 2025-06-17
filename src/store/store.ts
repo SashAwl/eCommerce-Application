@@ -115,3 +115,12 @@ export const useProductsStore = create<ProductsState>((set) => ({
     setLoadingStatus: (loadingStatus) => set({ loading: loadingStatus }),
     setError: (errorMessage) => set({ error: errorMessage }),
 }));
+
+export const useProductsForSliderStore = create<ProductsState>((set) => ({
+    products: [],
+    loading: false,
+    error: null,
+    setProducts: (productsList) => set({ products: productsList }),
+    setLoadingStatus: (loadingStatus) => set({ loading: loadingStatus }),
+    setError: (errorMessage) => set({ error: errorMessage }),
+}));

@@ -52,8 +52,6 @@ const CardItem = ({
                     }
 
                     setGameInCart(true);
-
-                    // console.log('added data', data);
                 })
                 .catch((err) => {
                     console.log(err);
@@ -69,13 +67,11 @@ const CardItem = ({
         if (id) {
             getLineItemId(cartId!, id)
                 .then((data) => {
-                    // console.log('line id', data, '----id', id);
                     if (!data) {
                         return;
                     }
                     removeItemFromCart(data, cartId!, cartVersion!)
                         .then((data) => {
-                            // console.log('remoed', data);
                             if (data) {
                                 setCardVersion(data.version);
                                 setSuccessMessage(
