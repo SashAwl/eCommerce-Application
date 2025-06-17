@@ -19,7 +19,6 @@ const CatalogSlider = () => {
         const handleResize = () => {
             if (wrapperRef.current) {
                 const widthWrapper = wrapperRef.current.offsetWidth;
-                console.log(widthWrapper);
 
                 const currentVisibleCount =
                     widthWrapper > 965 ? 3 : widthWrapper > 650 ? 2 : 1;
