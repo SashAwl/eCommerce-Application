@@ -33,7 +33,14 @@ const CardItem = ({
         setSuccessMessage,
         setErrorMessage,
     } = useGameStore();
+
+    const [isLiked, setIsLiked] = useState(false);
     const [isGameInCart, setGameInCart] = useState(false);
+
+    if (!localStorage.getItem('likedList')) {
+        localStorage.setItem('likedList', '[]');
+    }
+    console.log('loc', localStorage.getItem('likedList'));
 
     const formattedPrice = (price: number): string => (price / 100).toFixed(2);
 
@@ -99,6 +106,42 @@ const CardItem = ({
         }
     };
 
+    const getDataStorage = () => {
+        const likedDataStorage = localStorage.getItem('likedList');
+        let likedData: string[] | null = null;
+
+        try {
+            if (likedDataStorage) {
+                likedData = JSON.parse(likedDataStorage) as string[];
+            }
+        } catch (err) {
+            console.error('Failed to parse liked data', err);
+        }
+
+        return likedData;
+    };
+
+    const handleClickToHeart = (idGame: string) => {
+        const heartState = !isLiked;
+        setIsLiked(heartState);
+
+        const likedData = getDataStorage();
+
+        const likedGameList = heartState
+            ? [...(likedData ?? []), idGame]
+            : [...(likedData?.filter((game) => game !== idGame) ?? [])];
+
+        const dataForStorage = JSON.stringify(likedGameList);
+
+        localStorage.setItem('likedList', dataForStorage);
+    };
+
+    useEffect(() => {
+        if (getDataStorage()?.includes(id)) {
+            setIsLiked(true);
+        }
+    }, []);
+
     useEffect(() => {
         isProductInCart(cartId ?? '', id)
             .then((flag) => {
@@ -145,7 +188,7 @@ const CardItem = ({
                     {!isGameInCart && (
                         <button
                             onClick={handleAddToCart}
-                            className="card__actions__cart"
+                            className="card-item__actions__cart"
                         >
                             Add to Cart
                         </button>
@@ -153,10 +196,22 @@ const CardItem = ({
                     {isGameInCart && (
                         <button
                             onClick={handleDeleteGameFromCart}
-                            className="card__actions__cart"
+                            className="card-item__actions__cart"
                         >
                             Delete game
                         </button>
+                    )}
+                    {!isLiked && (
+                        <i
+                            className="fa-regular fa-heart card-item__heart"
+                            onClick={() => handleClickToHeart(id)}
+                        ></i>
+                    )}
+                    {isLiked && (
+                        <i
+                            className="fa-solid fa-heart card-item__heart"
+                            onClick={() => handleClickToHeart(id)}
+                        ></i>
                     )}
                 </div>
             </div>

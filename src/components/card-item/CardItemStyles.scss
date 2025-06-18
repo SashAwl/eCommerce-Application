@@ -76,6 +76,7 @@
     &__actions {
         display: flex;
         margin-top: $spacing-sm;
+        justify-content: space-between;
     }
 
     &__cart {
@@ -91,6 +92,17 @@
 
         &:hover {
             background-color: $primary-dark;
+        }
+    }
+
+    &__heart {
+        display: inline-block;
+        font-size: 25px;
+        align-self: center;
+        margin-left: 15px;
+
+        &:hover {
+            color: $primary;
         }
     }
 }
