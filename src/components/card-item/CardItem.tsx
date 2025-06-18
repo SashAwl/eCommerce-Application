@@ -40,13 +40,12 @@ const CardItem = ({
     if (!localStorage.getItem('likedList')) {
         localStorage.setItem('likedList', '[]');
     }
-    console.log('loc', localStorage.getItem('likedList'));
 
     const formattedPrice = (price: number): string => (price / 100).toFixed(2);
 
     const handleAddToCart = () => {
-        if (id) {
-            addItemToCart(id, cartId!, cartVersion!)
+        if (id && cartId && cartVersion) {
+            addItemToCart(id, cartId, cartVersion)
                 .then((data) => {
                     if (data) {
                         setCardVersion(data.version);
@@ -71,13 +70,13 @@ const CardItem = ({
     };
 
     const handleDeleteGameFromCart = () => {
-        if (id) {
-            getLineItemId(cartId!, id)
+        if (id && cartId && cartVersion) {
+            getLineItemId(cartId, id)
                 .then((data) => {
                     if (!data) {
                         return;
                     }
-                    removeItemFromCart(data, cartId!, cartVersion!)
+                    removeItemFromCart(data, cartId, cartVersion)
                         .then((data) => {
                             if (data) {
                                 setCardVersion(data.version);
@@ -143,13 +142,15 @@ const CardItem = ({
     }, []);
 
     useEffect(() => {
-        isProductInCart(cartId ?? '', id)
-            .then((flag) => {
-                setGameInCart(flag);
-            })
-            .catch((error) => {
-                console.log(error);
-            });
+        if (cartId) {
+            isProductInCart(cartId, id)
+                .then((flag) => {
+                    setGameInCart(flag);
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+        }
     }, [id, cartId]);
 
     return (

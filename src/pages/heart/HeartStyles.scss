@@ -1,7 +1,6 @@
 @use '../../styles/variables.scss' as *;
 
 .heart {
-    min-height: 100vh;
     padding: $spacing-lg 0;
     width: calc(100vw - 40px);
     background-color: $background;
