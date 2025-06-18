@@ -20,7 +20,7 @@ const removeItemFromCart = async (
                 ],
             },
         });
-        console.log('resp', response.body);
+
         const cartData = response.body as Cart;
 
         return cartData;

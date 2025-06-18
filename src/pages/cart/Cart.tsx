@@ -21,6 +21,7 @@ export default function CartPage() {
         setCardVersion,
         setSuccessMessage,
         setErrorMessage,
+        changeDeletePopupVisible,
     } = useGameStore();
     const [cartItems, setCartItems] = useState<LineItem[]>([]);
     const [isDeleteButtonDisabled, setDeleteButtonDisabled] = useState(false);
@@ -41,7 +42,7 @@ export default function CartPage() {
                     }
                 })
                 .catch((err) => {
-                    console.log(err);
+                    console.error(err);
                 });
         } else {
             getCart(cartId ?? '')
@@ -73,13 +74,13 @@ export default function CartPage() {
                                     setPromoCode(data.body.code);
                                 })
                                 .catch((err) => {
-                                    console.log(err);
+                                    throw err;
                                 });
                         }
                     }
                 })
                 .catch((err) => {
-                    console.log(err);
+                    console.error(err);
                 });
         }
     }, [cartVersion, appliedPromoCode]);
@@ -130,15 +131,16 @@ export default function CartPage() {
                     );
                 }
             })
-            .catch((err) => {
-                console.log(err);
+            .catch(() => {
                 showTempMessage(
                     false,
                     'Something went wrong... Try again later'
                 );
             })
             .finally(() => {
-                setDeleteButtonDisabled(false);
+                setTimeout(() => {
+                    setDeleteButtonDisabled(false);
+                }, 1500);
             });
     }
 
@@ -150,8 +152,8 @@ export default function CartPage() {
                     setCardVersion(data.version);
                 }
             })
-            .catch((err) => {
-                console.log(err);
+            .catch(() => {
+                showTempMessage(false, '');
             })
             .finally(() => {
                 setCountButtonsDisabled(false);
@@ -159,26 +161,7 @@ export default function CartPage() {
     }
 
     function clearCart() {
-        console.log('clear start');
-
-        apiRoot
-            .carts()
-            .withId({ ID: cartId! })
-            .delete({
-                queryArgs: {
-                    version: cartVersion ?? 1,
-                },
-            })
-            .execute()
-            .then((data) => {
-                console.log(data);
-                setCardId(null);
-                setCardVersion(null);
-                showTempMessage(true, 'Cart delete');
-            })
-            .catch((err) => {
-                console.log(err);
-            });
+        changeDeletePopupVisible(true);
     }
     function applyPromoCode() {
         if (promoCode.trim() === '') return;
@@ -212,7 +195,6 @@ export default function CartPage() {
                 setAppliedPromoCode(promoCode);
             })
             .catch((err: ErrorObject) => {
-                console.error(err);
                 const code = err.code;
                 if (code && code === 'DiscountCodeNonApplicable') {
                     showTempMessage(
@@ -249,8 +231,7 @@ export default function CartPage() {
                                 ],
                             },
                         })
-                        .then((data) => {
-                            console.log(data);
+                        .then(() => {
                             setPromoCode('');
                             setAppliedPromoCode('');
                             showTempMessage(
@@ -259,16 +240,15 @@ export default function CartPage() {
                             );
                         })
                         .catch((err) => {
-                            console.log(err);
-                            showTempMessage(
-                                false,
-                                `Something went wrong... Try again later`
-                            );
+                            throw err;
                         });
                 }
             })
-            .catch((err) => {
-                console.log(err);
+            .catch(() => {
+                showTempMessage(
+                    false,
+                    `Something went wrong... Try again later`
+                );
             });
     }
     return (
@@ -388,6 +368,40 @@ export default function CartPage() {
                                                 >
                                                     <Plus />
                                                 </button>
+                                                <div className="totalGamePrice">
+                                                    <span
+                                                        className={
+                                                            'currentPrice'
+                                                        }
+                                                    >
+                                                        Total: $
+                                                        {game.price.discounted
+                                                            ?.value.centAmount
+                                                            ? (
+                                                                  (Number(
+                                                                      game.price
+                                                                          .discounted
+                                                                          ?.value
+                                                                          .centAmount
+                                                                  ) *
+                                                                      Number(
+                                                                          game.quantity
+                                                                      )) /
+                                                                  100
+                                                              ).toFixed(2)
+                                                            : (
+                                                                  (Number(
+                                                                      game.price
+                                                                          .value
+                                                                          .centAmount
+                                                                  ) *
+                                                                      Number(
+                                                                          game.quantity
+                                                                      )) /
+                                                                  100
+                                                              ).toFixed(2)}
+                                                    </span>
+                                                </div>
                                             </div>
 
                                             <button
