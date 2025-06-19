@@ -93,6 +93,11 @@
         &:hover {
             background-color: $primary-dark;
         }
+
+        &--disabled {
+            pointer-events: none;
+            opacity: 40%;
+        }
     }
 
     &__heart {

@@ -13,7 +13,7 @@ const Catalog = () => {
     const [selectedSubCategory, setSelectedSubCategory] = useState('');
     const [offset, setOffset] = useState(0);
     const [totalProducts, setTotalProducts] = useState(0);
-    // const [isLoadMore, setIsLoadMore] = useState(false);
+    const [hasTriedToLoad, setHasTriedToLoad] = useState(false);
 
     const [searchQuery, setSearchQuery] = useState('');
     const [sortBy, setSortBy] = useState('--');
@@ -31,7 +31,6 @@ const Catalog = () => {
 
     const handleLoadMore = async () => {
         const newOffset = offset + 6;
-        // setIsLoadMore(true);
         await fetchCategories(newOffset, true);
         setOffset(newOffset);
     };
@@ -185,7 +184,6 @@ const Catalog = () => {
             }
         } finally {
             setLoadingStatus(false);
-            // setIsLoadMore(false);
         }
     };
 
@@ -208,6 +206,12 @@ const Catalog = () => {
         ageRating,
         searchQuery,
     ]);
+
+    useEffect(() => {
+        if (!loading && products.length > 0) {
+            setHasTriedToLoad(true);
+        }
+    }, [loading]);
 
     const validProducts = products.filter((product) => {
         return (
@@ -438,57 +442,59 @@ const Catalog = () => {
                     </div>
                 ) : (
                     <div className="catalog__products">
-                        {validProducts.length > 0 ? (
-                            validProducts.map((game) => (
-                                <CardItem
-                                    key={game.id}
-                                    id={game.id}
-                                    title={
-                                        game.name['en-US'] || 'Untitled Game'
-                                    }
-                                    description={
-                                        game.description?.['en-US'] ?? ''
-                                    }
-                                    category={
-                                        game.masterVariant.attributes?.[2] &&
-                                        typeof game.masterVariant
-                                            .attributes?.[2].value ===
-                                            'object' &&
-                                        game.masterVariant.attributes?.[2]
-                                            .value !== null
-                                            ? (
-                                                  game.masterVariant
-                                                      .attributes?.[2]
-                                                      .value as { key: string }
-                                              ).key
-                                            : 'game'
-                                    }
-                                    price={
-                                        game.masterVariant.prices?.[0].value
-                                            .centAmount ?? 0
-                                    }
-                                    discountPrice={
-                                        game.masterVariant.prices?.[0]
-                                            .discounted?.value.centAmount ?? 0
-                                    }
-                                    imageUrl={
-                                        game.masterVariant.images?.[0].url ??
-                                        'not image'
-                                    }
-                                />
-                            ))
-                        ) : (
-                            <div className="no-results">
-                                <i className="fas fa-search no-results__icon"></i>
-                                <h3 className="no-results__heading">
-                                    No games found
-                                </h3>
-                                <p className="no-results__text">
-                                    Try adjusting your search criteria or browse
-                                    different categories.
-                                </p>
-                            </div>
-                        )}
+                        {validProducts.length > 0
+                            ? validProducts.map((game) => (
+                                  <CardItem
+                                      key={game.id}
+                                      id={game.id}
+                                      title={
+                                          game.name['en-US'] || 'Untitled Game'
+                                      }
+                                      description={
+                                          game.description?.['en-US'] ?? ''
+                                      }
+                                      category={
+                                          game.masterVariant.attributes?.[2] &&
+                                          typeof game.masterVariant
+                                              .attributes?.[2].value ===
+                                              'object' &&
+                                          game.masterVariant.attributes?.[2]
+                                              .value !== null
+                                              ? (
+                                                    game.masterVariant
+                                                        .attributes?.[2]
+                                                        .value as {
+                                                        key: string;
+                                                    }
+                                                ).key
+                                              : 'game'
+                                      }
+                                      price={
+                                          game.masterVariant.prices?.[0].value
+                                              .centAmount ?? 0
+                                      }
+                                      discountPrice={
+                                          game.masterVariant.prices?.[0]
+                                              .discounted?.value.centAmount ?? 0
+                                      }
+                                      imageUrl={
+                                          game.masterVariant.images?.[0].url ??
+                                          'not image'
+                                      }
+                                  />
+                              ))
+                            : hasTriedToLoad && (
+                                  <div className="no-results">
+                                      <i className="fas fa-search no-results__icon"></i>
+                                      <h3 className="no-results__heading">
+                                          No games found
+                                      </h3>
+                                      <p className="no-results__text">
+                                          Try adjusting your search criteria or
+                                          browse different categories.
+                                      </p>
+                                  </div>
+                              )}{' '}
                     </div>
                 )}
                 {offset + 6 < totalProducts && (
