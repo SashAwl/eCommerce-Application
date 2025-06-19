@@ -36,6 +36,7 @@ const CardItem = ({
 
     const [isLiked, setIsLiked] = useState(false);
     const [isGameInCart, setGameInCart] = useState(false);
+    const [loading, setLoading] = useState(false);
 
     if (!localStorage.getItem('likedList')) {
         localStorage.setItem('likedList', '[]');
@@ -44,6 +45,8 @@ const CardItem = ({
     const formattedPrice = (price: number): string => (price / 100).toFixed(2);
 
     const handleAddToCart = () => {
+        if (loading) return;
+        setLoading(true);
         if (id && cartId && cartVersion) {
             addItemToCart(id, cartId, cartVersion)
                 .then((data) => {
@@ -65,11 +68,14 @@ const CardItem = ({
                     setTimeout(() => {
                         setErrorMessage('');
                     }, 1500);
-                });
+                })
+                .finally(() => setLoading(false));
         }
     };
 
     const handleDeleteGameFromCart = () => {
+        if (loading) return;
+        setLoading(true);
         if (id && cartId && cartVersion) {
             getLineItemId(cartId, id)
                 .then((data) => {
@@ -97,7 +103,8 @@ const CardItem = ({
                             setTimeout(() => {
                                 setErrorMessage('');
                             }, 1500);
-                        });
+                        })
+                        .finally(() => setLoading(false));
                 })
                 .catch((err) => {
                     console.log(err);
@@ -189,7 +196,7 @@ const CardItem = ({
                     {!isGameInCart && (
                         <button
                             onClick={handleAddToCart}
-                            className="card-item__actions__cart"
+                            className={`card-item__cart ${loading ? 'card-item__cart--disabled' : ''}`}
                         >
                             Add to Cart
                         </button>
@@ -197,7 +204,7 @@ const CardItem = ({
                     {isGameInCart && (
                         <button
                             onClick={handleDeleteGameFromCart}
-                            className="card-item__actions__cart"
+                            className={`card-item__cart ${loading ? 'card-item__cart--disabled' : ''}`}
                         >
                             Delete game
                         </button>
