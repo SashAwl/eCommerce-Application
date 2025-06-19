@@ -196,7 +196,7 @@ const CardItem = ({
                     {!isGameInCart && (
                         <button
                             onClick={handleAddToCart}
-                            className={`card-item__actions__cart ${loading ? 'card-item__actions__cart--disabled' : ''}`}
+                            className={`card-item__cart ${loading ? 'card-item__cart--disabled' : ''}`}
                         >
                             Add to Cart
                         </button>
@@ -204,7 +204,7 @@ const CardItem = ({
                     {isGameInCart && (
                         <button
                             onClick={handleDeleteGameFromCart}
-                            className={`card-item__actions__cart ${loading ? 'card-item__actions__cart--disabled' : ''}`}
+                            className={`card-item__cart ${loading ? 'card-item__cart--disabled' : ''}`}
                         >
                             Delete game
                         </button>

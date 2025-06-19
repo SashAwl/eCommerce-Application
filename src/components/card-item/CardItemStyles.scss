@@ -80,12 +80,9 @@
     }
 
     &__cart {
-        background-color: $primary;
-        color: white;
         border: none;
         padding: 8px 12px;
         border-radius: $border-radius-sm;
-        font-size: 12px;
         flex: 1;
         cursor: pointer;
         transition: $transition;
