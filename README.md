@@ -62,3 +62,25 @@ To start the development server, run the following command:
 ```bash
 npm run dev
 ```
+
+## 🤝 Contributing
+
+Contributions are welcome! To help us accept your changes quickly, please follow these simple rules:
+
+1. Create Pull Requests: All changes must be submitted via a Pull Request from your own fork of this repository.
+2. Implement your changes, keeping the coding style consistent.
+4. Lint and Format: Before committing, run the linter and formatter to ensure your code adheres to the project's standards.
+
+```bash
+npm run lint
+npm run format
+```
+
+5. Commit Your Changes: Commit your work with a clear and descriptive commit message.
+```bash
+git commit -m "feat: Add new awesome feature"
+```
+
+7. Open a Pull Request from your branch to the develop branch of the main repository. Provide a clear description of the changes you've made.
+
+We appreciate your help in making this GameStore even better!
