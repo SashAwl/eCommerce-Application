@@ -22,9 +22,15 @@ interface IGameStore {
     clearSuccessMessage: () => void;
     errorMessage: string;
     setErrorMessage: (message: string) => void;
+    isDeletePopupVisible: boolean;
+    changeDeletePopupVisible: (status: boolean) => void;
     clearErrorMessage: () => void;
     isOneAddress: boolean;
     changeAddressStatus: () => void;
+    cartId: string | null;
+    setCardId: (id: string | null) => void;
+    cartVersion: number | null;
+    setCardVersion: (id: number | null) => void;
 }
 
 interface CategoryState {
@@ -54,13 +60,25 @@ export const useGameStore = create<IGameStore>()(
             userName: '',
 
             customer: null,
+            cartId: null,
+            cartVersion: null,
             setCustomer: (change) =>
                 set((store) => ({
                     customer: change(store.customer),
                 })),
 
             login: (customer) => set(() => ({ isLogin: true, customer })),
-            logout: () => set(() => ({ isLogin: false, customer: null })),
+            logout: () =>
+                set(() => ({
+                    isLogin: false,
+                    customerId: '',
+                    token: '',
+                    userName: '',
+
+                    customer: null,
+                    cartId: null,
+                    cartVersion: null,
+                })),
 
             successMessage: '',
             setSuccessMessage: (message) => set({ successMessage: message }),
@@ -69,9 +87,13 @@ export const useGameStore = create<IGameStore>()(
             errorMessage: '',
             setErrorMessage: (message) => set({ errorMessage: message }),
             clearErrorMessage: () => set(() => ({ errorMessage: '' })),
-
+            setCardId: (id) => set({ cartId: id }),
+            setCardVersion: (id) => set({ cartVersion: id }),
             changeAddressStatus: () =>
                 set((state) => ({ isOneAddress: !state.isOneAddress })),
+            isDeletePopupVisible: false,
+            changeDeletePopupVisible: (status) =>
+                set({ isDeletePopupVisible: status }),
 
             isOneAddress: false,
         }),
@@ -91,6 +113,15 @@ export const useCategoryStore = create<CategoryState>((set) => ({
 }));
 
 export const useProductsStore = create<ProductsState>((set) => ({
+    products: [],
+    loading: false,
+    error: null,
+    setProducts: (productsList) => set({ products: productsList }),
+    setLoadingStatus: (loadingStatus) => set({ loading: loadingStatus }),
+    setError: (errorMessage) => set({ error: errorMessage }),
+}));
+
+export const useProductsForSliderStore = create<ProductsState>((set) => ({
     products: [],
     loading: false,
     error: null,

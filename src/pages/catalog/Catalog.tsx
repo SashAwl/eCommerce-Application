@@ -11,6 +11,9 @@ const Catalog = () => {
     const { categories, loading, error } = useCategoryStore();
     const [selectedCategory, setSelectedCategory] = useState('all');
     const [selectedSubCategory, setSelectedSubCategory] = useState('');
+    const [offset, setOffset] = useState(0);
+    const [totalProducts, setTotalProducts] = useState(0);
+    const [hasTriedToLoad, setHasTriedToLoad] = useState(false);
 
     const [searchQuery, setSearchQuery] = useState('');
     const [sortBy, setSortBy] = useState('--');
@@ -25,6 +28,12 @@ const Catalog = () => {
 
     const { products, setProducts, setLoadingStatus, setError } =
         useProductsStore();
+
+    const handleLoadMore = async () => {
+        const newOffset = offset + 6;
+        await fetchCategories(newOffset, true);
+        setOffset(newOffset);
+    };
 
     const linkList = useMemo(() => {
         return [
@@ -47,7 +56,10 @@ const Catalog = () => {
     const getSubcategories = (categoryId: string) =>
         categoryMap[categoryId] || [];
 
-    const fetchCategories = async () => {
+    const fetchCategories = async (
+        currentOffset: number,
+        isLoadingMore: boolean
+    ) => {
         setLoadingStatus(true);
 
         try {
@@ -55,7 +67,7 @@ const Catalog = () => {
                 .categories()
                 .get({
                     queryArgs: {
-                        limit: 500,
+                        limit: 10,
                     },
                 })
                 .execute();
@@ -109,55 +121,60 @@ const Catalog = () => {
 
             const where =
                 whereList.length > 0 ? whereList.join(' and ') : undefined;
-
             const response = await apiRoot
                 .productProjections()
                 .get({
                     queryArgs: {
+                        limit: 6,
+                        offset: currentOffset,
                         staged: false,
                         ...(whereList.length > 0 && { where: where }),
                     },
                 })
                 .execute();
 
-            const productsResponse: ProductProjection[] = response.body.results
-                .sort((a, b) => {
-                    if (sortBy === '--') {
-                        return 1;
-                    }
-                    if (sortBy === 'name-asc') {
-                        return a.name['en-US'] < b.name['en-US'] ? -1 : 1;
-                    }
-                    if (sortBy === 'name-desc') {
-                        return a.name['en-US'] < b.name['en-US'] ? 1 : -1;
-                    }
-                    if (sortBy === 'price-asc') {
-                        const aPrice = a.masterVariant.prices
-                            ? +a.masterVariant.prices[0].value.centAmount
-                            : 1;
-                        const bPrice = b.masterVariant.prices
-                            ? +b.masterVariant.prices[0].value.centAmount
-                            : 1;
+            setTotalProducts(response.body.total ?? 0);
 
-                        return aPrice < bPrice ? -1 : 1;
-                    }
-                    if (sortBy === 'price-desc') {
-                        const aPrice = a.masterVariant.prices
-                            ? +a.masterVariant.prices[0].value.centAmount
-                            : 1;
-                        const bPrice = b.masterVariant.prices
-                            ? +b.masterVariant.prices[0].value.centAmount
-                            : 1;
+            const productsResponse: ProductProjection[] = isLoadingMore
+                ? [...products, ...response.body.results]
+                : response.body.results
+                      .sort((a, b) => {
+                          if (sortBy === '--') {
+                              return 1;
+                          }
+                          if (sortBy === 'name-asc') {
+                              return a.name['en-US'] < b.name['en-US'] ? -1 : 1;
+                          }
+                          if (sortBy === 'name-desc') {
+                              return a.name['en-US'] < b.name['en-US'] ? 1 : -1;
+                          }
+                          if (sortBy === 'price-asc') {
+                              const aPrice = a.masterVariant.prices
+                                  ? +a.masterVariant.prices[0].value.centAmount
+                                  : 1;
+                              const bPrice = b.masterVariant.prices
+                                  ? +b.masterVariant.prices[0].value.centAmount
+                                  : 1;
 
-                        return aPrice < bPrice ? 1 : -1;
-                    }
-                    return 1;
-                })
-                .filter((el) => {
-                    return el.name['en-US']
-                        .toLowerCase()
-                        .includes(searchQuery.toLowerCase().trim());
-                });
+                              return aPrice < bPrice ? -1 : 1;
+                          }
+                          if (sortBy === 'price-desc') {
+                              const aPrice = a.masterVariant.prices
+                                  ? +a.masterVariant.prices[0].value.centAmount
+                                  : 1;
+                              const bPrice = b.masterVariant.prices
+                                  ? +b.masterVariant.prices[0].value.centAmount
+                                  : 1;
+
+                              return aPrice < bPrice ? 1 : -1;
+                          }
+                          return 1;
+                      })
+                      .filter((el) => {
+                          return el.name['en-US']
+                              .toLowerCase()
+                              .includes(searchQuery.toLowerCase().trim());
+                      });
             setProducts(productsResponse);
         } catch (err: unknown) {
             if (err instanceof Error) {
@@ -173,11 +190,11 @@ const Catalog = () => {
     useEffect(() => {
         window.scrollTo(0, 0);
         setLoadingStatus(true);
+        setOffset(0);
 
         if (categories.length > 0) {
-            fetchCategories().catch((error) => console.log(error));
+            fetchCategories(0, false).catch((error) => console.log(error));
         }
-        setLoadingStatus(false);
     }, [
         selectedCategory,
         selectedSubCategory,
@@ -189,6 +206,12 @@ const Catalog = () => {
         ageRating,
         searchQuery,
     ]);
+
+    useEffect(() => {
+        if (!loading && products.length > 0) {
+            setHasTriedToLoad(true);
+        }
+    }, [loading]);
 
     const validProducts = products.filter((product) => {
         return (
@@ -224,7 +247,7 @@ const Catalog = () => {
                         />
                         <button
                             onClick={() => {
-                                void fetchCategories();
+                                void fetchCategories(offset, false);
                             }}
                             className="catalog__search__button"
                         >
@@ -310,12 +333,16 @@ const Catalog = () => {
                 </div>
                 <div className="breadcrumb">
                     <Link to="/home">{linkList[0]}</Link> /{' '}
-                    <p onClick={() => setSelectedCategory('all')}>
+                    <p
+                        className="breadcrumb__item"
+                        onClick={() => setSelectedCategory('all')}
+                    >
                         {linkList[1]}
                     </p>{' '}
                     /
                     {linkList[2] && (
                         <p
+                            className="breadcrumb__item"
                             onClick={() => {
                                 setSelectedCategory(String(linkList[2]));
                                 setSelectedSubCategory('');
@@ -325,7 +352,9 @@ const Catalog = () => {
                             {linkList[2]} /
                         </p>
                     )}
-                    {linkList[2] && linkList[3] && <p>{linkList[3]}</p>}
+                    {linkList[2] && linkList[3] && (
+                        <p className="breadcrumb__item">{linkList[3]}</p>
+                    )}
                 </div>
                 <div className="catalog__category">
                     <h2 className="catalog__category__heading">Categories</h2>
@@ -413,58 +442,68 @@ const Catalog = () => {
                     </div>
                 ) : (
                     <div className="catalog__products">
-                        {validProducts.length > 0 ? (
-                            validProducts.map((game) => (
-                                <CardItem
-                                    key={game.id}
-                                    id={game.id}
-                                    title={
-                                        game.name['en-US'] || 'Untitled Game'
-                                    }
-                                    description={
-                                        game.description?.['en-US'] ?? ''
-                                    }
-                                    category={
-                                        game.masterVariant.attributes?.[2] &&
-                                        typeof game.masterVariant
-                                            .attributes?.[2].value ===
-                                            'object' &&
-                                        game.masterVariant.attributes?.[2]
-                                            .value !== null
-                                            ? (
-                                                  game.masterVariant
-                                                      .attributes?.[2]
-                                                      .value as { key: string }
-                                              ).key
-                                            : 'game'
-                                    }
-                                    price={
-                                        game.masterVariant.prices?.[0].value
-                                            .centAmount ?? 0
-                                    }
-                                    discountPrice={
-                                        game.masterVariant.prices?.[0]
-                                            .discounted?.value.centAmount ?? 0
-                                    }
-                                    imageUrl={
-                                        game.masterVariant.images?.[0].url ??
-                                        'not image'
-                                    }
-                                />
-                            ))
-                        ) : (
-                            <div className="no-results">
-                                <i className="fas fa-search no-results__icon"></i>
-                                <h3 className="no-results__heading">
-                                    No games found
-                                </h3>
-                                <p className="no-results__text">
-                                    Try adjusting your search criteria or browse
-                                    different categories.
-                                </p>
-                            </div>
-                        )}
+                        {validProducts.length > 0
+                            ? validProducts.map((game) => (
+                                  <CardItem
+                                      key={game.id}
+                                      id={game.id}
+                                      title={
+                                          game.name['en-US'] || 'Untitled Game'
+                                      }
+                                      description={
+                                          game.description?.['en-US'] ?? ''
+                                      }
+                                      category={
+                                          game.masterVariant.attributes?.[2] &&
+                                          typeof game.masterVariant
+                                              .attributes?.[2].value ===
+                                              'object' &&
+                                          game.masterVariant.attributes?.[2]
+                                              .value !== null
+                                              ? (
+                                                    game.masterVariant
+                                                        .attributes?.[2]
+                                                        .value as {
+                                                        key: string;
+                                                    }
+                                                ).key
+                                              : 'game'
+                                      }
+                                      price={
+                                          game.masterVariant.prices?.[0].value
+                                              .centAmount ?? 0
+                                      }
+                                      discountPrice={
+                                          game.masterVariant.prices?.[0]
+                                              .discounted?.value.centAmount ?? 0
+                                      }
+                                      imageUrl={
+                                          game.masterVariant.images?.[0].url ??
+                                          'not image'
+                                      }
+                                  />
+                              ))
+                            : hasTriedToLoad && (
+                                  <div className="no-results">
+                                      <i className="fas fa-search no-results__icon"></i>
+                                      <h3 className="no-results__heading">
+                                          No games found
+                                      </h3>
+                                      <p className="no-results__text">
+                                          Try adjusting your search criteria or
+                                          browse different categories.
+                                      </p>
+                                  </div>
+                              )}{' '}
                     </div>
+                )}
+                {offset + 6 < totalProducts && (
+                    <button
+                        className="catalog__products__more"
+                        onClick={() => void handleLoadMore()}
+                    >
+                        Load more
+                    </button>
                 )}
             </div>
         </div>

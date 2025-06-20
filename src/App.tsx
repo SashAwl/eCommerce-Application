@@ -2,20 +2,34 @@ import './App.css';
 
 import { useEffect } from 'react';
 import apiRoot from './utils/sdkClient';
-import { useCategoryStore } from './store/store';
+import { useCategoryStore, useGameStore } from './store/store';
 
 import Header from './components/header/Header';
 import Main from './pages/main/Main';
 import Footer from './components/footer/Footer';
 import PopupSuccess from './components/popup/PopupSuccess';
 import PopupError from './components/popup/PopupError';
+import createCart from './utils/cart/createCart';
+import PopupDeleteCart from './components/popup/PopupDeleteCart';
 
 export function App() {
     const { setCategories, setLoadingStatus, setError } = useCategoryStore();
+    const { cartId, setCardId, setCardVersion } = useGameStore();
 
     useEffect(() => {
         setLoadingStatus(true);
-
+        if (!cartId) {
+            createCart()
+                .then((data) => {
+                    if (data) {
+                        setCardId(data.id);
+                        setCardVersion(data.version);
+                    }
+                })
+                .catch((err) => {
+                    console.error(err);
+                });
+        }
         const fetchCategories = async () => {
             try {
                 const response = await apiRoot.categories().get().execute();
@@ -44,6 +58,7 @@ export function App() {
             <Footer />
             <PopupSuccess />
             <PopupError />
+            <PopupDeleteCart />
         </>
     );
 }

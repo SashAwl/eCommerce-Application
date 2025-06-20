@@ -1,5 +1,11 @@
 import { Link } from 'react-router-dom';
 import './CardItemStyles.scss';
+import { useEffect, useState } from 'react';
+import { useGameStore } from '../../store/store';
+import addItemToCart from '../../utils/cart/addItemToCart';
+import removeItemFromCart from '../../utils/cart/removeItemFromCart';
+import getLineItemId from '../../utils/cart/getLineItemId';
+import isProductInCart from '../../utils/cart/isProductInCart';
 
 export interface CardProps {
     id: string;
@@ -20,7 +26,140 @@ const CardItem = ({
     discountPrice,
     imageUrl,
 }: CardProps) => {
+    const {
+        cartId,
+        cartVersion,
+        setCardVersion,
+        setSuccessMessage,
+        setErrorMessage,
+    } = useGameStore();
+
+    const [isLiked, setIsLiked] = useState(false);
+    const [isGameInCart, setGameInCart] = useState(false);
+    const [loading, setLoading] = useState(false);
+
+    if (!localStorage.getItem('likedList')) {
+        localStorage.setItem('likedList', '[]');
+    }
+
     const formattedPrice = (price: number): string => (price / 100).toFixed(2);
+
+    const handleAddToCart = () => {
+        if (loading) return;
+        setLoading(true);
+        if (id && cartId && cartVersion) {
+            addItemToCart(id, cartId, cartVersion)
+                .then((data) => {
+                    if (data) {
+                        setCardVersion(data.version);
+                        setSuccessMessage(
+                            'The game has been added to your cart.'
+                        );
+                        setTimeout(() => {
+                            setSuccessMessage('');
+                        }, 1500);
+                    }
+
+                    setGameInCart(true);
+                })
+                .catch((err) => {
+                    console.log(err);
+                    setErrorMessage('Something went wrong... Try again later');
+                    setTimeout(() => {
+                        setErrorMessage('');
+                    }, 1500);
+                })
+                .finally(() => setLoading(false));
+        }
+    };
+
+    const handleDeleteGameFromCart = () => {
+        if (loading) return;
+        setLoading(true);
+        if (id && cartId && cartVersion) {
+            getLineItemId(cartId, id)
+                .then((data) => {
+                    if (!data) {
+                        return;
+                    }
+                    removeItemFromCart(data, cartId, cartVersion)
+                        .then((data) => {
+                            if (data) {
+                                setCardVersion(data.version);
+                                setSuccessMessage(
+                                    'The game has been successfully removed from the cart.'
+                                );
+                                setTimeout(() => {
+                                    setSuccessMessage('');
+                                }, 1500);
+                            }
+                            setGameInCart(false);
+                        })
+                        .catch((err) => {
+                            console.log(err);
+                            setErrorMessage(
+                                'Something went wrong... Try again later'
+                            );
+                            setTimeout(() => {
+                                setErrorMessage('');
+                            }, 1500);
+                        })
+                        .finally(() => setLoading(false));
+                })
+                .catch((err) => {
+                    console.log(err);
+                });
+        }
+    };
+
+    const getDataStorage = () => {
+        const likedDataStorage = localStorage.getItem('likedList');
+        let likedData: string[] | null = null;
+
+        try {
+            if (likedDataStorage) {
+                likedData = JSON.parse(likedDataStorage) as string[];
+            }
+        } catch (err) {
+            console.error('Failed to parse liked data', err);
+        }
+
+        return likedData;
+    };
+
+    const handleClickToHeart = (idGame: string) => {
+        const heartState = !isLiked;
+        setIsLiked(heartState);
+
+        const likedData = getDataStorage();
+
+        const likedGameList = heartState
+            ? [...(likedData ?? []), idGame]
+            : [...(likedData?.filter((game) => game !== idGame) ?? [])];
+
+        const dataForStorage = JSON.stringify(likedGameList);
+
+        localStorage.setItem('likedList', dataForStorage);
+    };
+
+    useEffect(() => {
+        if (getDataStorage()?.includes(id)) {
+            setIsLiked(true);
+        }
+    }, []);
+
+    useEffect(() => {
+        if (cartId) {
+            isProductInCart(cartId, id)
+                .then((flag) => {
+                    setGameInCart(flag);
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+        }
+    }, [id, cartId]);
+
     return (
         <div className="card-item">
             <Link to={`/game/${id}`}>
@@ -54,7 +193,34 @@ const CardItem = ({
                     )}
                 </div>
                 <div className="card-item__actions">
-                    <button className="card__actions__cart">Add to Cart</button>
+                    {!isGameInCart && (
+                        <button
+                            onClick={handleAddToCart}
+                            className={`card-item__cart ${loading ? 'card-item__cart--disabled' : ''}`}
+                        >
+                            Add to Cart
+                        </button>
+                    )}
+                    {isGameInCart && (
+                        <button
+                            onClick={handleDeleteGameFromCart}
+                            className={`card-item__cart ${loading ? 'card-item__cart--disabled' : ''}`}
+                        >
+                            Delete game
+                        </button>
+                    )}
+                    {!isLiked && (
+                        <i
+                            className="fa-regular fa-heart card-item__heart"
+                            onClick={() => handleClickToHeart(id)}
+                        ></i>
+                    )}
+                    {isLiked && (
+                        <i
+                            className="fa-solid fa-heart card-item__heart"
+                            onClick={() => handleClickToHeart(id)}
+                        ></i>
+                    )}
                 </div>
             </div>
         </div>

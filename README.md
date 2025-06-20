@@ -1,6 +1,6 @@
 # eCommerce-Application
 
-[![Link](https://img.shields.io/badge/View%20Demo-Online-brightgreen?logo=netlify)](https://sprint3--commercetools-gamestore.netlify.app/)
+[![Link](https://img.shields.io/badge/View%20Demo-Online-brightgreen?logo=netlify)](https://commercetools-gamestore.netlify.app/)
 
 ## 🎮 Description
 
