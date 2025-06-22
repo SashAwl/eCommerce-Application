@@ -89,10 +89,7 @@ export function LoginPage() {
                 .execute();
             await navigate('/');
             gameStore.login(response.body.customer);
-            gameStore.setSuccessMessage('User successfully logged in');
-            setTimeout(() => {
-                gameStore.clearSuccessMessage();
-            }, 2000);
+            gameStore.showSuccessMessage('User successfully logged in', 2000);
 
             const tokenAccess = await fetch(CT_AUTH_URL_TOKEN, {
                 method: 'POST',
@@ -154,10 +151,7 @@ export function LoginPage() {
                 message = 'Invalid email or password provided.';
             }
 
-            gameStore.setErrorMessage(message);
-            setTimeout(() => {
-                gameStore.clearErrorMessage();
-            }, 2000);
+            gameStore.showErrorMessage(message, 2000);
         }
     };
 

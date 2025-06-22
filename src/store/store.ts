@@ -14,17 +14,16 @@ interface IGameStore {
 
     customer: Customer | null;
     setCustomer: (change: (customer: Customer | null) => Customer) => void;
-
     login: (customer?: Customer) => void;
     logout: () => void;
     successMessage: string;
-    setSuccessMessage: (message: string) => void;
-    clearSuccessMessage: () => void;
+    showSuccessMessage: (message: string, delay?: number) => void;
     errorMessage: string;
-    setErrorMessage: (message: string) => void;
+    showErrorMessage: (message: string, delay?: number) => void;
+    showStandardErrorMessage: (delay?: number) => void;
     isDeletePopupVisible: boolean;
     changeDeletePopupVisible: (status: boolean) => void;
-    clearErrorMessage: () => void;
+
     isOneAddress: boolean;
     changeAddressStatus: () => void;
     cartId: string | null;
@@ -81,12 +80,28 @@ export const useGameStore = create<IGameStore>()(
                 })),
 
             successMessage: '',
-            setSuccessMessage: (message) => set({ successMessage: message }),
-            clearSuccessMessage: () => set(() => ({ successMessage: '' })),
+            showSuccessMessage: (message, delay = 1500) => {
+                set({ successMessage: message });
+                setTimeout(() => {
+                    set({ successMessage: '' });
+                }, delay);
+            },
 
             errorMessage: '',
-            setErrorMessage: (message) => set({ errorMessage: message }),
-            clearErrorMessage: () => set(() => ({ errorMessage: '' })),
+            showErrorMessage: (message, delay = 1500) => {
+                set({ errorMessage: message });
+                setTimeout(() => {
+                    set({ errorMessage: '' });
+                }, delay);
+            },
+            showStandardErrorMessage: (delay = 1500) => {
+                set({
+                    errorMessage: 'Something went wrong... Try again later',
+                });
+                setTimeout(() => {
+                    set({ errorMessage: '' });
+                }, delay);
+            },
             setCardId: (id) => set({ cartId: id }),
             setCardVersion: (id) => set({ cartVersion: id }),
             changeAddressStatus: () =>

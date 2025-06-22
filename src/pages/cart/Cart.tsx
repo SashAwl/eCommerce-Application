@@ -19,9 +19,10 @@ export default function CartPage() {
         cartVersion,
         setCardId,
         setCardVersion,
-        setSuccessMessage,
-        setErrorMessage,
+        showSuccessMessage,
+        showErrorMessage,
         changeDeletePopupVisible,
+        showStandardErrorMessage,
     } = useGameStore();
     const [cartItems, setCartItems] = useState<LineItem[]>([]);
     const [isDeleteButtonDisabled, setDeleteButtonDisabled] = useState(false);
@@ -108,34 +109,20 @@ export default function CartPage() {
         setTotal(totalPrise);
         setSubtotal(subtotal);
     }
-    function showTempMessage(
-        isSuccess: boolean,
-        message: string,
-        delay = 1500
-    ) {
-        const clb = isSuccess ? setSuccessMessage : setErrorMessage;
-        clb(message);
-        setTimeout(() => {
-            clb('');
-        }, delay);
-    }
+
     function removeItem(id: string): void {
         setDeleteButtonDisabled(true);
         removeItemFromCart(id, cartId!, cartVersion!)
             .then((data) => {
                 if (data) {
                     setCardVersion(data.version);
-                    showTempMessage(
-                        true,
+                    showSuccessMessage(
                         'The game has been successfully removed from the cart.'
                     );
                 }
             })
             .catch(() => {
-                showTempMessage(
-                    false,
-                    'Something went wrong... Try again later'
-                );
+                showStandardErrorMessage();
             })
             .finally(() => {
                 setTimeout(() => {
@@ -153,7 +140,7 @@ export default function CartPage() {
                 }
             })
             .catch(() => {
-                showTempMessage(false, '');
+                showStandardErrorMessage();
             })
             .finally(() => {
                 setCountButtonsDisabled(false);
@@ -186,9 +173,7 @@ export default function CartPage() {
                 if (result.version) {
                     setCardVersion(result.version);
                 }
-
-                showTempMessage(
-                    true,
+                showSuccessMessage(
                     `Promo code '${promoCode}' successfully applied`
                 );
 
@@ -197,15 +182,11 @@ export default function CartPage() {
             .catch((err: ErrorObject) => {
                 const code = err.code;
                 if (code && code === 'DiscountCodeNonApplicable') {
-                    showTempMessage(
-                        false,
-                        `Promo code '${promoCode}'is not used or has expired`
+                    showErrorMessage(
+                        `Promo code '${promoCode}' is not used or has expired`
                     );
                 } else {
-                    showTempMessage(
-                        false,
-                        `Something went wrong... Try again later`
-                    );
+                    showStandardErrorMessage();
                 }
             });
     }
@@ -234,8 +215,7 @@ export default function CartPage() {
                         .then(() => {
                             setPromoCode('');
                             setAppliedPromoCode('');
-                            showTempMessage(
-                                true,
+                            showSuccessMessage(
                                 'The promo code has been removed from your shopping cart.'
                             );
                         })
@@ -245,10 +225,7 @@ export default function CartPage() {
                 }
             })
             .catch(() => {
-                showTempMessage(
-                    false,
-                    `Something went wrong... Try again later`
-                );
+                showStandardErrorMessage();
             });
     }
     return (

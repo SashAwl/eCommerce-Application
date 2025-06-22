@@ -27,12 +27,8 @@ function Registration() {
 
     const loginStore = useGameStore((state) => state.login);
 
-    const setSuccessMessage = useGameStore((state) => state.setSuccessMessage);
-    const clearSuccessMessage = useGameStore(
-        (state) => state.clearSuccessMessage
-    );
-    const setErrorMessage = useGameStore((state) => state.setErrorMessage);
-    const clearErrorMessage = useGameStore((state) => state.clearErrorMessage);
+    const { showErrorMessage, showSuccessMessage, showStandardErrorMessage } =
+        useGameStore();
 
     const {
         register,
@@ -93,29 +89,23 @@ function Registration() {
                 if (statusCode === 201) {
                     await navigate('/home');
                     loginStore();
-                    setSuccessMessage('User successfully registered');
-                    setTimeout(() => {
-                        clearSuccessMessage();
-                    }, 2000);
+                    showSuccessMessage('User successfully registered');
                 }
             })
 
             .catch((error: ErrorObject) => {
                 if (error.code === 'DuplicateField') {
-                    setErrorMessage(
+                    showErrorMessage(
                         `${error.message} Please sign in or use a different email address.`
                     );
                 }
                 if (error.statusCode === 400 || error.statusCode === 404) {
-                    setErrorMessage(
+                    showErrorMessage(
                         `${error.message} Please change your details and try again.`
                     );
                 } else {
-                    setErrorMessage(`Something went wrong, please try again`);
+                    showStandardErrorMessage();
                 }
-                setTimeout(() => {
-                    clearErrorMessage();
-                }, 3000);
             });
     };
 
