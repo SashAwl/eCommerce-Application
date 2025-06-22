@@ -27,6 +27,10 @@ export default function CartPage() {
     const [cartItems, setCartItems] = useState<LineItem[]>([]);
     const [isDeleteButtonDisabled, setDeleteButtonDisabled] = useState(false);
     const [isCountButtonsDisabled, setCountButtonsDisabled] = useState(false);
+    const [isRemovePromoButtonDisabled, setRemovePromoButtonDisabled] =
+        useState(false);
+    const [isApplyPromoButtonDisabled, setApplyPromoButtonDisabled] =
+        useState(false);
     const [subtotal, setSubtotal] = useState(0);
     const [discount, setDiscount] = useState(0);
     const [total, setTotal] = useState(0);
@@ -151,6 +155,7 @@ export default function CartPage() {
         changeDeletePopupVisible(true);
     }
     function applyPromoCode() {
+        setApplyPromoButtonDisabled(true);
         if (promoCode.trim() === '') return;
 
         ctpClient
@@ -185,12 +190,19 @@ export default function CartPage() {
                     showErrorMessage(
                         `Promo code '${promoCode}' is not used or has expired`
                     );
+                    setApplyPromoButtonDisabled(false);
                 } else {
                     showStandardErrorMessage();
                 }
+            })
+            .finally(() => {
+                setTimeout(() => {
+                    setApplyPromoButtonDisabled(false);
+                }, 1500);
             });
     }
     function removePromoCode() {
+        setRemovePromoButtonDisabled(true);
         getCart(cartId!)
             .then((data) => {
                 if (data) {
@@ -226,6 +238,11 @@ export default function CartPage() {
             })
             .catch(() => {
                 showStandardErrorMessage();
+            })
+            .finally(() => {
+                setTimeout(() => {
+                    setRemovePromoButtonDisabled(false);
+                }, 1500);
             });
     }
     return (
@@ -428,7 +445,10 @@ export default function CartPage() {
                                             />
                                             <button
                                                 onClick={applyPromoCode}
-                                                disabled={!promoCode.trim()}
+                                                disabled={
+                                                    !promoCode.trim() ||
+                                                    isApplyPromoButtonDisabled
+                                                }
                                                 className={'promoButton'}
                                             >
                                                 <Tag />
@@ -445,6 +465,9 @@ export default function CartPage() {
                                             <button
                                                 onClick={removePromoCode}
                                                 className={'removePromoButton'}
+                                                disabled={
+                                                    isRemovePromoButtonDisabled
+                                                }
                                             >
                                                 <Trash2 />
                                             </button>
