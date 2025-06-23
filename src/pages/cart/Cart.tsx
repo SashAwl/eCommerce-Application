@@ -1,16 +1,14 @@
 import { useEffect, useState } from 'react';
-
 import './Cart.scss';
-import { Link } from 'react-router-dom';
-import { ShoppingCart, Tag, Trash2 } from 'lucide-react';
-import { useGameStore } from '../../store/store';
+import { ShoppingCart } from 'lucide-react';
+import { useBasketPromoState, useGameStore } from '../../store/store';
 import createCart from '../../utils/cart/createCart';
 import getCart from '../../utils/cart/getCart';
-import { Cart, ErrorObject, LineItem } from '@commercetools/platform-sdk';
-
+import { LineItem } from '@commercetools/platform-sdk';
 import apiRoot from '../../utils/sdkClient';
-import { ctpClient } from '../../utils/BuildClient';
 import { CartItem } from '../../components/basket/CartItem';
+import { EmptyBasket } from '../../components/basket/';
+import { PromoSection } from '../../components/basket/PromoSection';
 
 export default function CartPage() {
     const {
@@ -18,22 +16,15 @@ export default function CartPage() {
         cartVersion,
         setCardId,
         setCardVersion,
-        showSuccessMessage,
-        showErrorMessage,
         changeDeletePopupVisible,
-        showStandardErrorMessage,
     } = useGameStore();
+
+    const { setAppliedPromoCode, setPromoCode } = useBasketPromoState();
     const [cartItems, setCartItems] = useState<LineItem[]>([]);
 
-    const [isRemovePromoButtonDisabled, setRemovePromoButtonDisabled] =
-        useState(false);
-    const [isApplyPromoButtonDisabled, setApplyPromoButtonDisabled] =
-        useState(false);
     const [subtotal, setSubtotal] = useState(0);
     const [discount, setDiscount] = useState(0);
     const [total, setTotal] = useState(0);
-    const [promoCode, setPromoCode] = useState('');
-    const [appliedPromoCode, setAppliedPromoCode] = useState('');
 
     useEffect(() => {
         if (!cartId) {
@@ -86,25 +77,10 @@ export default function CartPage() {
                     console.error(err);
                 });
         }
-    }, [cartVersion, appliedPromoCode]);
+    }, [cartVersion]);
 
     if (cartItems.length === 0) {
-        return (
-            <div className={'cartContainer'}>
-                <div className={'innerContainer'}>
-                    <div className={'emptyCart'}>
-                        <ShoppingCart className={'emptyCartIcon'} />
-                        <h1 className={'emptyCartTitle'}>Your cart is empty</h1>
-                        <p className={'emptyCartDescription'}>
-                            Add some games to get started!
-                        </p>
-                        <Link to="/catalog" className={'loginButton'}>
-                            Browse Games
-                        </Link>
-                    </div>
-                </div>
-            </div>
-        );
+        return <EmptyBasket />;
     }
     function changeTotalPrice(totalPrise = 0, subtotal = 0) {
         setDiscount(subtotal - totalPrise);
@@ -115,97 +91,7 @@ export default function CartPage() {
     function clearCart() {
         changeDeletePopupVisible(true);
     }
-    function applyPromoCode() {
-        setApplyPromoButtonDisabled(true);
-        if (promoCode.trim() === '') return;
 
-        ctpClient
-            .execute({
-                uri: `/mergemates/carts/${cartId}`,
-                method: 'POST',
-                body: {
-                    version: cartVersion,
-                    actions: [
-                        {
-                            action: 'addDiscountCode',
-                            code: promoCode,
-                        },
-                    ],
-                },
-            })
-            .then((data) => {
-                const result = data.body as Cart;
-
-                if (result.version) {
-                    setCardVersion(result.version);
-                }
-                showSuccessMessage(
-                    `Promo code '${promoCode}' successfully applied`
-                );
-
-                setAppliedPromoCode(promoCode);
-            })
-            .catch((err: ErrorObject) => {
-                const code = err.code;
-                if (code && code === 'DiscountCodeNonApplicable') {
-                    showErrorMessage(
-                        `Promo code '${promoCode}' is not used or has expired`
-                    );
-                    setApplyPromoButtonDisabled(false);
-                } else {
-                    showStandardErrorMessage();
-                }
-            })
-            .finally(() => {
-                setTimeout(() => {
-                    setApplyPromoButtonDisabled(false);
-                }, 1500);
-            });
-    }
-    function removePromoCode() {
-        setRemovePromoButtonDisabled(true);
-        getCart(cartId!)
-            .then((data) => {
-                if (data) {
-                    ctpClient
-                        .execute({
-                            uri: `/mergemates/carts/${cartId}`,
-                            method: 'POST',
-                            body: {
-                                version: cartVersion,
-                                actions: [
-                                    {
-                                        action: 'removeDiscountCode',
-                                        discountCode: {
-                                            typeId: 'discount-code',
-                                            id: data.discountCodes[0]
-                                                .discountCode.id,
-                                        },
-                                    },
-                                ],
-                            },
-                        })
-                        .then(() => {
-                            setPromoCode('');
-                            setAppliedPromoCode('');
-                            showSuccessMessage(
-                                'The promo code has been removed from your shopping cart.'
-                            );
-                        })
-                        .catch((err) => {
-                            throw err;
-                        });
-                }
-            })
-            .catch(() => {
-                showStandardErrorMessage();
-            })
-            .finally(() => {
-                setTimeout(() => {
-                    setRemovePromoButtonDisabled(false);
-                }, 1500);
-            });
-    }
     return (
         <div className={'cartContainer'}>
             <div className={'innerContainer'}>
@@ -236,56 +122,7 @@ export default function CartPage() {
                             </div>
 
                             <div className={'summaryContent'}>
-                                <div className={'promoSection'}>
-                                    {!appliedPromoCode ? (
-                                        <div className={'promoInputContainer'}>
-                                            <input
-                                                type="text"
-                                                placeholder="Enter promo code"
-                                                value={promoCode}
-                                                onChange={(
-                                                    e: React.ChangeEvent<HTMLInputElement>
-                                                ) => {
-                                                    if (e.target.value) {
-                                                        setPromoCode(
-                                                            e.target.value
-                                                        );
-                                                    }
-                                                }}
-                                                className={'promoInput'}
-                                            />
-                                            <button
-                                                onClick={applyPromoCode}
-                                                disabled={
-                                                    !promoCode.trim() ||
-                                                    isApplyPromoButtonDisabled
-                                                }
-                                                className={'promoButton'}
-                                            >
-                                                <Tag />
-                                                Apply
-                                            </button>
-                                        </div>
-                                    ) : (
-                                        <div className={'appliedPromo'}>
-                                            <span
-                                                className={'appliedPromoText'}
-                                            >
-                                                Code: {appliedPromoCode}
-                                            </span>
-                                            <button
-                                                onClick={removePromoCode}
-                                                className={'removePromoButton'}
-                                                disabled={
-                                                    isRemovePromoButtonDisabled
-                                                }
-                                            >
-                                                <Trash2 />
-                                            </button>
-                                        </div>
-                                    )}
-                                </div>
-
+                                <PromoSection />
                                 <div className={'summaryLine'}>
                                     <span>Subtotal:</span>
                                     <span className={'summaryLineValue'}>

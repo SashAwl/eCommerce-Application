@@ -6,7 +6,7 @@ import {
     Customer,
 } from '@commercetools/platform-sdk';
 
-interface IGameStore {
+export interface IGameStore {
     isLogin: boolean;
     customerId: string;
     token: string;
@@ -143,4 +143,27 @@ export const useProductsForSliderStore = create<ProductsState>((set) => ({
     setProducts: (productsList) => set({ products: productsList }),
     setLoadingStatus: (loadingStatus) => set({ loading: loadingStatus }),
     setError: (errorMessage) => set({ error: errorMessage }),
+}));
+
+export interface BasketPromoState {
+    appliedPromoCode: string;
+    setAppliedPromoCode: (code: string) => void;
+    promoCode: string;
+    setPromoCode: (code: string) => void;
+    isRemovePromoButtonDisabled: boolean;
+    setRemovePromoButtonDisabled: (status: boolean) => void;
+    isApplyPromoButtonDisabled: boolean;
+    setApplyPromoButtonDisabled: (status: boolean) => void;
+}
+export const useBasketPromoState = create<BasketPromoState>((set) => ({
+    appliedPromoCode: '',
+    setAppliedPromoCode: (code) => set({ appliedPromoCode: code }),
+    promoCode: '',
+    setPromoCode: (code) => set({ promoCode: code }),
+    isRemovePromoButtonDisabled: false,
+    setRemovePromoButtonDisabled: (status) =>
+        set({ isRemovePromoButtonDisabled: status }),
+    isApplyPromoButtonDisabled: false,
+    setApplyPromoButtonDisabled: (status) =>
+        set({ isApplyPromoButtonDisabled: status }),
 }));
