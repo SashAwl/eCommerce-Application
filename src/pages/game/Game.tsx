@@ -46,8 +46,8 @@ function Game() {
         cartId,
         cartVersion,
         setCardVersion,
-        setSuccessMessage,
-        setErrorMessage,
+        showSuccessMessage,
+        showStandardErrorMessage,
     } = useGameStore();
     const [isGameInCart, setGameInCart] = useState(true);
 
@@ -233,24 +233,19 @@ function Game() {
                     setGameInCart(true);
                     if (data) {
                         setCardVersion(data.version);
-                        setSuccessMessage(
+                        showSuccessMessage(
                             'The game has been added to your cart.'
                         );
-                        setTimeout(() => {
-                            setSuccessMessage('');
-                            setBtnBuyDisabled(false);
-                        }, 1500);
                     }
-
-                    console.log(data);
                 })
                 .catch((err) => {
                     console.log(err);
-                    setErrorMessage('Something went wrong... Try again later');
+                    showStandardErrorMessage();
+                })
+                .finally(() => {
                     setTimeout(() => {
-                        setErrorMessage('');
+                        setBtnBuyDisabled(false);
                     }, 1500);
-                    setBtnBuyDisabled(false);
                 });
         }
     };
@@ -265,26 +260,19 @@ function Game() {
                             setGameInCart(false);
                             if (data) {
                                 setCardVersion(data.version);
-                                setSuccessMessage(
+                                showSuccessMessage(
                                     'The game has been successfully removed from the cart.'
                                 );
-                                setTimeout(() => {
-                                    setSuccessMessage('');
-                                    setBtnRemoveDisabled(false);
-                                }, 1500);
                             }
-
-                            console.log(data);
                         })
                         .catch((err) => {
                             console.log(err);
-                            setErrorMessage(
-                                'Something went wrong... Try again later'
-                            );
+                            showStandardErrorMessage();
+                        })
+                        .finally(() => {
                             setTimeout(() => {
-                                setErrorMessage('');
-                            }, 1500);
-                            setBtnRemoveDisabled(false);
+                                setBtnRemoveDisabled(false);
+                            }, 1000);
                         });
                 })
                 .catch((err) => {

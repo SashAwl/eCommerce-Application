@@ -2,16 +2,15 @@ import { useEffect, useState } from 'react';
 
 import './Cart.scss';
 import { Link } from 'react-router-dom';
-import { Minus, Plus, ShoppingCart, Tag, Trash2 } from 'lucide-react';
+import { ShoppingCart, Tag, Trash2 } from 'lucide-react';
 import { useGameStore } from '../../store/store';
 import createCart from '../../utils/cart/createCart';
 import getCart from '../../utils/cart/getCart';
 import { Cart, ErrorObject, LineItem } from '@commercetools/platform-sdk';
-import updateItemQuantity from '../../utils/cart/updateItemQuantity';
-import removeItemFromCart from '../../utils/cart/removeItemFromCart';
 
 import apiRoot from '../../utils/sdkClient';
 import { ctpClient } from '../../utils/BuildClient';
+import { CartItem } from '../../components/basket/CartItem';
 
 export default function CartPage() {
     const {
@@ -19,13 +18,17 @@ export default function CartPage() {
         cartVersion,
         setCardId,
         setCardVersion,
-        setSuccessMessage,
-        setErrorMessage,
+        showSuccessMessage,
+        showErrorMessage,
         changeDeletePopupVisible,
+        showStandardErrorMessage,
     } = useGameStore();
     const [cartItems, setCartItems] = useState<LineItem[]>([]);
-    const [isDeleteButtonDisabled, setDeleteButtonDisabled] = useState(false);
-    const [isCountButtonsDisabled, setCountButtonsDisabled] = useState(false);
+
+    const [isRemovePromoButtonDisabled, setRemovePromoButtonDisabled] =
+        useState(false);
+    const [isApplyPromoButtonDisabled, setApplyPromoButtonDisabled] =
+        useState(false);
     const [subtotal, setSubtotal] = useState(0);
     const [discount, setDiscount] = useState(0);
     const [total, setTotal] = useState(0);
@@ -108,62 +111,12 @@ export default function CartPage() {
         setTotal(totalPrise);
         setSubtotal(subtotal);
     }
-    function showTempMessage(
-        isSuccess: boolean,
-        message: string,
-        delay = 1500
-    ) {
-        const clb = isSuccess ? setSuccessMessage : setErrorMessage;
-        clb(message);
-        setTimeout(() => {
-            clb('');
-        }, delay);
-    }
-    function removeItem(id: string): void {
-        setDeleteButtonDisabled(true);
-        removeItemFromCart(id, cartId!, cartVersion!)
-            .then((data) => {
-                if (data) {
-                    setCardVersion(data.version);
-                    showTempMessage(
-                        true,
-                        'The game has been successfully removed from the cart.'
-                    );
-                }
-            })
-            .catch(() => {
-                showTempMessage(
-                    false,
-                    'Something went wrong... Try again later'
-                );
-            })
-            .finally(() => {
-                setTimeout(() => {
-                    setDeleteButtonDisabled(false);
-                }, 1500);
-            });
-    }
-
-    function updateQuantity(id: string, quantity: number): void {
-        setCountButtonsDisabled(true);
-        updateItemQuantity(id, cartId!, cartVersion!, quantity)
-            .then((data) => {
-                if (data) {
-                    setCardVersion(data.version);
-                }
-            })
-            .catch(() => {
-                showTempMessage(false, '');
-            })
-            .finally(() => {
-                setCountButtonsDisabled(false);
-            });
-    }
 
     function clearCart() {
         changeDeletePopupVisible(true);
     }
     function applyPromoCode() {
+        setApplyPromoButtonDisabled(true);
         if (promoCode.trim() === '') return;
 
         ctpClient
@@ -186,9 +139,7 @@ export default function CartPage() {
                 if (result.version) {
                     setCardVersion(result.version);
                 }
-
-                showTempMessage(
-                    true,
+                showSuccessMessage(
                     `Promo code '${promoCode}' successfully applied`
                 );
 
@@ -197,19 +148,22 @@ export default function CartPage() {
             .catch((err: ErrorObject) => {
                 const code = err.code;
                 if (code && code === 'DiscountCodeNonApplicable') {
-                    showTempMessage(
-                        false,
-                        `Promo code '${promoCode}'is not used or has expired`
+                    showErrorMessage(
+                        `Promo code '${promoCode}' is not used or has expired`
                     );
+                    setApplyPromoButtonDisabled(false);
                 } else {
-                    showTempMessage(
-                        false,
-                        `Something went wrong... Try again later`
-                    );
+                    showStandardErrorMessage();
                 }
+            })
+            .finally(() => {
+                setTimeout(() => {
+                    setApplyPromoButtonDisabled(false);
+                }, 1500);
             });
     }
     function removePromoCode() {
+        setRemovePromoButtonDisabled(true);
         getCart(cartId!)
             .then((data) => {
                 if (data) {
@@ -234,8 +188,7 @@ export default function CartPage() {
                         .then(() => {
                             setPromoCode('');
                             setAppliedPromoCode('');
-                            showTempMessage(
-                                true,
+                            showSuccessMessage(
                                 'The promo code has been removed from your shopping cart.'
                             );
                         })
@@ -245,10 +198,12 @@ export default function CartPage() {
                 }
             })
             .catch(() => {
-                showTempMessage(
-                    false,
-                    `Something went wrong... Try again later`
-                );
+                showStandardErrorMessage();
+            })
+            .finally(() => {
+                setTimeout(() => {
+                    setRemovePromoButtonDisabled(false);
+                }, 1500);
             });
     }
     return (
@@ -268,157 +223,7 @@ export default function CartPage() {
                 <div className={'cartLayout'}>
                     <div className={'cartItemsSection'}>
                         {cartItems.map((game) => (
-                            <div key={game.id} className={'cartItem'}>
-                                <div className={'itemContent'}>
-                                    {game.variant.images && (
-                                        <img
-                                            src={game.variant.images[0].url}
-                                            alt={game.name['en-US']}
-                                            className={'itemImage'}
-                                        />
-                                    )}
-
-                                    <div className={'itemDetails'}>
-                                        <h3 className={'itemTitle'}>
-                                            {game.name['en-US']}
-                                        </h3>
-                                        <div className={'itemPricing'}>
-                                            {game.price.discounted?.value
-                                                .centAmount ? (
-                                                <>
-                                                    <span
-                                                        className={
-                                                            'currentPrice'
-                                                        }
-                                                    >
-                                                        $
-                                                        {(
-                                                            Number(
-                                                                game.price
-                                                                    .discounted
-                                                                    ?.value
-                                                                    .centAmount
-                                                            ) / 100
-                                                        ).toFixed(2)}
-                                                    </span>
-                                                    <span
-                                                        className={
-                                                            'originalPrice'
-                                                        }
-                                                    >
-                                                        $
-                                                        {Number(
-                                                            game.price.value
-                                                                .centAmount
-                                                        ) / 100}
-                                                    </span>
-                                                </>
-                                            ) : (
-                                                <span
-                                                    className={'currentPrice'}
-                                                >
-                                                    $
-                                                    {(
-                                                        Number(
-                                                            game.price.value
-                                                                .centAmount
-                                                        ) / 100
-                                                    ).toFixed(2)}
-                                                </span>
-                                            )}
-                                        </div>
-
-                                        <div className={'itemActions'}>
-                                            <div className={'quantityControls'}>
-                                                <button
-                                                    onClick={() =>
-                                                        updateQuantity(
-                                                            game.id,
-                                                            game.quantity - 1
-                                                        )
-                                                    }
-                                                    className={'quantityButton'}
-                                                    disabled={
-                                                        game.quantity <= 1 ||
-                                                        isCountButtonsDisabled
-                                                    }
-                                                >
-                                                    <Minus />
-                                                </button>
-
-                                                <span
-                                                    className={
-                                                        'quantityDisplay'
-                                                    }
-                                                >
-                                                    {game.quantity}
-                                                </span>
-
-                                                <button
-                                                    onClick={() =>
-                                                        updateQuantity(
-                                                            game.id,
-                                                            game.quantity + 1
-                                                        )
-                                                    }
-                                                    className={'quantityButton'}
-                                                    disabled={
-                                                        isCountButtonsDisabled
-                                                    }
-                                                >
-                                                    <Plus />
-                                                </button>
-                                                <div className="totalGamePrice">
-                                                    <span
-                                                        className={
-                                                            'currentPrice'
-                                                        }
-                                                    >
-                                                        Total: $
-                                                        {game.price.discounted
-                                                            ?.value.centAmount
-                                                            ? (
-                                                                  (Number(
-                                                                      game.price
-                                                                          .discounted
-                                                                          ?.value
-                                                                          .centAmount
-                                                                  ) *
-                                                                      Number(
-                                                                          game.quantity
-                                                                      )) /
-                                                                  100
-                                                              ).toFixed(2)
-                                                            : (
-                                                                  (Number(
-                                                                      game.price
-                                                                          .value
-                                                                          .centAmount
-                                                                  ) *
-                                                                      Number(
-                                                                          game.quantity
-                                                                      )) /
-                                                                  100
-                                                              ).toFixed(2)}
-                                                    </span>
-                                                </div>
-                                            </div>
-
-                                            <button
-                                                onClick={() =>
-                                                    removeItem(game.id)
-                                                }
-                                                className={'removeButton'}
-                                                disabled={
-                                                    isDeleteButtonDisabled
-                                                }
-                                            >
-                                                <Trash2 />
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                            <CartItem key={game.id} {...game} />
                         ))}
                     </div>
 
@@ -451,7 +256,10 @@ export default function CartPage() {
                                             />
                                             <button
                                                 onClick={applyPromoCode}
-                                                disabled={!promoCode.trim()}
+                                                disabled={
+                                                    !promoCode.trim() ||
+                                                    isApplyPromoButtonDisabled
+                                                }
                                                 className={'promoButton'}
                                             >
                                                 <Tag />
@@ -468,6 +276,9 @@ export default function CartPage() {
                                             <button
                                                 onClick={removePromoCode}
                                                 className={'removePromoButton'}
+                                                disabled={
+                                                    isRemovePromoButtonDisabled
+                                                }
                                             >
                                                 <Trash2 />
                                             </button>

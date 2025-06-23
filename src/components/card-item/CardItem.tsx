@@ -35,8 +35,8 @@ const CardItem = ({
         cartId,
         cartVersion,
         setCardVersion,
-        setSuccessMessage,
-        setErrorMessage,
+        showSuccessMessage,
+        showStandardErrorMessage,
     } = useGameStore();
 
     const [isLiked, setIsLiked] = useState(false);
@@ -55,22 +55,16 @@ const CardItem = ({
                 .then((data) => {
                     if (data) {
                         setCardVersion(data.version);
-                        setSuccessMessage(
+                        showSuccessMessage(
                             'The game has been added to your cart.'
                         );
-                        setTimeout(() => {
-                            setSuccessMessage('');
-                        }, 1500);
                     }
 
                     setGameInCart(true);
                 })
                 .catch((err) => {
                     console.log(err);
-                    setErrorMessage('Something went wrong... Try again later');
-                    setTimeout(() => {
-                        setErrorMessage('');
-                    }, 1500);
+                    showStandardErrorMessage();
                 })
                 .finally(() => setLoading(false));
         }
@@ -89,23 +83,15 @@ const CardItem = ({
                         .then((data) => {
                             if (data) {
                                 setCardVersion(data.version);
-                                setSuccessMessage(
+                                showSuccessMessage(
                                     'The game has been successfully removed from the cart.'
                                 );
-                                setTimeout(() => {
-                                    setSuccessMessage('');
-                                }, 1500);
                             }
                             setGameInCart(false);
                         })
                         .catch((err) => {
                             console.log(err);
-                            setErrorMessage(
-                                'Something went wrong... Try again later'
-                            );
-                            setTimeout(() => {
-                                setErrorMessage('');
-                            }, 1500);
+                            showStandardErrorMessage();
                         })
                         .finally(() => setLoading(false));
                 })
