@@ -6,6 +6,11 @@ import addItemToCart from '../../utils/cart/addItemToCart';
 import removeItemFromCart from '../../utils/cart/removeItemFromCart';
 import getLineItemId from '../../utils/cart/getLineItemId';
 import isProductInCart from '../../utils/cart/isProductInCart';
+import {
+    getDataStorage,
+    initialLocalStorage,
+    setDataStorage,
+} from '../../utils/localStorage/localStorageFunction';
 
 export interface CardProps {
     id: string;
@@ -38,9 +43,7 @@ const CardItem = ({
     const [isGameInCart, setGameInCart] = useState(false);
     const [loading, setLoading] = useState(false);
 
-    if (!localStorage.getItem('likedList')) {
-        localStorage.setItem('likedList', '[]');
-    }
+    initialLocalStorage();
 
     const formattedPrice = (price: number): string => (price / 100).toFixed(2);
 
@@ -112,34 +115,10 @@ const CardItem = ({
         }
     };
 
-    const getDataStorage = () => {
-        const likedDataStorage = localStorage.getItem('likedList');
-        let likedData: string[] | null = null;
-
-        try {
-            if (likedDataStorage) {
-                likedData = JSON.parse(likedDataStorage) as string[];
-            }
-        } catch (err) {
-            console.error('Failed to parse liked data', err);
-        }
-
-        return likedData;
-    };
-
     const handleClickToHeart = (idGame: string) => {
         const heartState = !isLiked;
         setIsLiked(heartState);
-
-        const likedData = getDataStorage();
-
-        const likedGameList = heartState
-            ? [...(likedData ?? []), idGame]
-            : [...(likedData?.filter((game) => game !== idGame) ?? [])];
-
-        const dataForStorage = JSON.stringify(likedGameList);
-
-        localStorage.setItem('likedList', dataForStorage);
+        setDataStorage(heartState, idGame);
     };
 
     useEffect(() => {
