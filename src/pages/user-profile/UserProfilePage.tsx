@@ -168,20 +168,15 @@ export function UserProfilePage() {
                 data
             );
             gameStore.setCustomer(() => updatedCustomer);
-            gameStore.setSuccessMessage(
+            gameStore.showSuccessMessage(
                 'User successfully update d personal information'
             );
-            setTimeout(() => {
-                gameStore.clearSuccessMessage();
-            }, 1500);
+
             setIsEditing(false);
         } catch (error) {
             const message = 'Failed to update customer profile';
             console.error(message, ':', error);
-            gameStore.setErrorMessage(message);
-            setTimeout(() => {
-                gameStore.clearErrorMessage();
-            }, 1500);
+            gameStore.showErrorMessage(message);
         }
     };
 
@@ -216,18 +211,12 @@ export function UserProfilePage() {
                 data
             );
             gameStore.setCustomer(() => updatedCustomerPassw);
-            gameStore.setSuccessMessage('User successfully update d password');
-            setTimeout(() => {
-                gameStore.clearSuccessMessage();
-            }, 1500);
+            gameStore.showSuccessMessage('User successfully update d password');
             setIsEditingPassword(false);
         } catch (error) {
             const message = 'Failed to update customer password';
             console.error(message, ':', error);
-            gameStore.setErrorMessage(message);
-            setTimeout(() => {
-                gameStore.clearErrorMessage();
-            }, 1500);
+            gameStore.showErrorMessage(message);
         }
     };
 

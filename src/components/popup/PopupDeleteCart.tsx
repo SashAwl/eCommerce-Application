@@ -9,8 +9,8 @@ export default function PopupDeleteCart() {
         cartVersion,
         setCardId,
         setCardVersion,
-        setSuccessMessage,
-        setErrorMessage,
+        showSuccessMessage,
+        showStandardErrorMessage,
         isDeletePopupVisible,
         changeDeletePopupVisible,
     } = useGameStore();
@@ -24,17 +24,7 @@ export default function PopupDeleteCart() {
             changeDeletePopupVisible(false);
         }
     }
-    function showTempMessage(
-        isSuccess: boolean,
-        message: string,
-        delay = 1500
-    ) {
-        const clb = isSuccess ? setSuccessMessage : setErrorMessage;
-        clb(message);
-        setTimeout(() => {
-            clb('');
-        }, delay);
-    }
+
     function clearCart() {
         setDeleteButtonDisabled(true);
         apiRoot
@@ -49,14 +39,11 @@ export default function PopupDeleteCart() {
             .then(() => {
                 setCardId(null);
                 setCardVersion(null);
-                showTempMessage(true, 'Cart delete');
+                showSuccessMessage('Cart delete');
                 changeDeletePopupVisible(false);
             })
             .catch(() => {
-                showTempMessage(
-                    false,
-                    'Something went wrong... Try again later'
-                );
+                showStandardErrorMessage();
             })
             .finally(() => {
                 setDeleteButtonDisabled(false);
