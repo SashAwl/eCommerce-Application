@@ -8,7 +8,7 @@ const removeItemFromCart = async (
 ): Promise<Cart | void> => {
     try {
         const response = await ctpClient.execute({
-            uri: `/mergemates/carts/${cartId}`,
+            uri: `/mergemates2/carts/${cartId}`,
             method: 'POST',
             body: {
                 version: cartVersion,

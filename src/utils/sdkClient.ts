@@ -6,7 +6,7 @@ import {
 
 // Create apiRoot from the imported ClientBuilder and include your Project key
 const apiRoot = createApiBuilderFromCtpClient(ctpClient).withProjectKey({
-    projectKey: 'mergemates',
+    projectKey: 'mergemates2',
 });
 
 // Example call to return Project information

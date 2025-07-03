@@ -5,7 +5,7 @@ const getCart = async (cartId: string): Promise<Cart | void> => {
     try {
         if (cartId) {
             const response = await ctpClient.execute({
-                uri: `/mergemates/carts/${cartId}`,
+                uri: `/mergemates2/carts/${cartId}`,
                 method: 'GET',
             });
             const cartData = response.body as Cart;

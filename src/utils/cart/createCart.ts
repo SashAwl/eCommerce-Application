@@ -4,7 +4,7 @@ import { ctpClient } from '../BuildClient';
 const createCart = async (): Promise<Cart | void> => {
     try {
         const response = await ctpClient.execute({
-            uri: `/mergemates/carts`,
+            uri: `/mergemates2/carts`,
             method: 'POST',
             body: {
                 currency: 'USD',

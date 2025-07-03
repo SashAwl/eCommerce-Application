@@ -20,7 +20,7 @@ export function applyPromoCode(
     if (promoCode.trim() === '') return;
     ctpClient
         .execute({
-            uri: `/mergemates/carts/${cartId}`,
+            uri: `/mergemates2/carts/${cartId}`,
             method: 'POST',
             body: {
                 version: cartVersion,

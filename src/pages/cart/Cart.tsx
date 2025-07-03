@@ -7,7 +7,7 @@ import getCart from '../../utils/cart/getCart';
 import { LineItem } from '@commercetools/platform-sdk';
 import apiRoot from '../../utils/sdkClient';
 import { CartItem } from '../../components/basket/CartItem';
-import { EmptyBasket } from '../../components/basket/';
+import { EmptyBasket } from '../../components/basket/EmptyBasket';
 import { PromoSection } from '../../components/basket/PromoSection';
 
 export default function CartPage() {

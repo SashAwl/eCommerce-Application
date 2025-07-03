@@ -7,7 +7,7 @@ const isProductInCart = async (
 ): Promise<boolean> => {
     try {
         const response = await ctpClient.execute({
-            uri: `/mergemates/carts/${cartId}`,
+            uri: `/mergemates2/carts/${cartId}`,
             method: 'GET',
         });
 

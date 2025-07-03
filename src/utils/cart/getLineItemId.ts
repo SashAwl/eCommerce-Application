@@ -7,7 +7,7 @@ const getLineItemId = async (
 ): Promise<string> => {
     try {
         const response = await ctpClient.execute({
-            uri: `/mergemates/carts/${cartId}`,
+            uri: `/mergemates2/carts/${cartId}`,
             method: 'GET',
         });
 
