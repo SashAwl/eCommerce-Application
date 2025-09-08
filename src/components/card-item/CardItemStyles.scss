@@ -1,0 +1,110 @@
+@use '../../styles/variables.scss' as *;
+
+.card-item {
+    background-color: var(--surface);
+    border-radius: $border-radius-md;
+    overflow: hidden;
+    transition: $transition;
+    box-shadow: $shadow;
+    cursor: pointer;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+
+    &:hover {
+        transform: translateY(-5px);
+        box-shadow: $shadow-lg;
+        background-color: var(--surface-hover);
+    }
+
+    &__image {
+        width: 100%;
+        height: 180px;
+        object-fit: cover;
+    }
+
+    &__content {
+        padding: $spacing-md;
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+    }
+
+    &__title {
+        font-size: 16px;
+        margin-bottom: $spacing-xs;
+        font-weight: 600;
+        color: $text-primary;
+    }
+
+    &__description {
+        font-size: 11px;
+        margin-bottom: 10px;
+        font-style: italic;
+    }
+
+    &__category {
+        font-size: 12px;
+        color: $text-tertiary;
+        margin-bottom: $spacing-xs;
+    }
+
+    &__price {
+        font-weight: 600;
+        font-size: 16px;
+        color: $text-primary;
+        margin-top: $spacing-sm;
+        margin-bottom: auto;
+    }
+
+    .sale {
+        color: #e5bc5c;
+        font-weight: 800;
+        font-size: 21px;
+    }
+
+    .old-price {
+        opacity: 40%;
+    }
+
+    &__price-box {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+    }
+
+    &__actions {
+        display: flex;
+        margin-top: $spacing-sm;
+        justify-content: space-between;
+    }
+
+    &__cart {
+        border: none;
+        padding: 8px 12px;
+        border-radius: $border-radius-sm;
+        flex: 1;
+        cursor: pointer;
+        transition: $transition;
+
+        &:hover {
+            background-color: $primary-dark;
+        }
+
+        &--disabled {
+            pointer-events: none;
+            opacity: 40%;
+        }
+    }
+
+    &__heart {
+        display: inline-block;
+        font-size: 25px;
+        align-self: center;
+        margin-left: 15px;
+
+        &:hover {
+            color: $primary;
+        }
+    }
+}

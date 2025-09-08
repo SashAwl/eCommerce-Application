@@ -1,0 +1,127 @@
+@use './../../styles/variables.scss';
+
+.popup__show {
+    top: 20px;
+    width: 250px;
+    height: 100px;
+    opacity: 95%;
+}
+.popup__hide {
+    top: -300px;
+    opacity: 0;
+}
+.popup {
+    position: fixed;
+    left: calc(50% - 125px);
+    color: variables.$text-primary;
+    border-radius: variables.$border-radius-sm;
+    z-index: 1000;
+    line-height: 100px;
+    transition: opacity 0.5s ease;
+    margin: 0 auto;
+}
+
+.popup_background__success {
+    background-color: variables.$success;
+}
+
+.popup_text {
+    width: 100%;
+    padding: 20px;
+    display: inline-block;
+    vertical-align: middle;
+    line-height: 1.25;
+    text-align: center;
+    opacity: 70%;
+}
+
+.popup_background__error {
+    background-color: variables.$error;
+}
+
+.cartPopUpContainer {
+    position: fixed;
+    top: -100vh;
+    width: 0;
+    height: 0;
+    background-color: variables.$background-semi;
+
+    z-index: -777;
+}
+.cartPopUpContainerVisible {
+    z-index: 777;
+    top: 0;
+    width: 100vw;
+    height: 100vh;
+}
+.cartPopupWrapper {
+    position: relative;
+    top: calc(50vh - 60px);
+    left: calc(50vw - 130px);
+    height: 150px;
+    width: 280px;
+    background-color: #fff;
+    padding-bottom: variables.$spacing-xxl;
+    background-color: variables.$surface;
+    border-radius: variables.$border-radius-md;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    transition: box-shadow 0.2s;
+    padding: 20px;
+
+    &:hover {
+        box-shadow: variables.$shadow-lg;
+        background-color: variables.$surface-hover;
+    }
+}
+.cartPopUpTitle {
+    font-size: 1em;
+    margin-bottom: variables.$spacing-xs;
+    font-weight: 600;
+    color: variables.$text-primary;
+    margin-bottom: 15px;
+    text-align: center;
+
+    @media (min-width: 768px) {
+        font-size: 1.125em;
+    }
+}
+
+.cartPopUpButtons {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 15px;
+}
+.cartPopUpButtonYes {
+    padding: 0.5rem 1rem;
+    background-color: transparent;
+    color: #ef4444;
+    border: 1px solid #ef4444;
+    border-radius: 0.375rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+
+    &:hover {
+        background-color: #ef4444;
+        color: white;
+    }
+}
+.cartPopUpButtonNo {
+    padding: 0.5rem 1rem;
+    background-color: variables.$primary;
+    color: variables.$text-primary;
+    border: none;
+    border-radius: 0.375rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 0.375rem;
+
+    &:hover {
+        background-color: variables.$primary-dark;
+    }
+}

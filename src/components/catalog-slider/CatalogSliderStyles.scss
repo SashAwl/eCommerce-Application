@@ -1,0 +1,66 @@
+@use '../../styles/variables.scss' as *;
+
+.catalog-slider {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    position: relative;
+
+    &__heading {
+        font-size: 24px;
+        font-family: 'Poppins', sans-serif;
+        font-weight: 600;
+        margin-bottom: 10px;
+    }
+
+    &__box {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-top: 30px;
+
+        @media (max-width: 682px) {
+            flex-wrap: wrap;
+        }
+    }
+
+    &__wrapper {
+        overflow: hidden;
+        flex-grow: 1;
+
+        @media (max-width: 682px) {
+            order: 1;
+        }
+    }
+
+    &__track {
+        display: flex;
+        transition: transform 0.3s ease-in-out;
+        gap: 20px;
+    }
+
+    .arrow-icon {
+        padding: 10px;
+        font-size: 32px;
+        cursor: pointer;
+        // color: $text-color;
+
+        &:hover {
+            color: $primary;
+        }
+
+        &--disabled {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        @media (max-width: 682px) {
+            order: 2;
+        }
+    }
+
+    .card-item {
+        width: 300px;
+        flex-shrink: 0;
+    }
+}

@@ -1,0 +1,12 @@
+.home {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 80px;
+}
+
+.categories {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+}
